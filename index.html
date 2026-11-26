@@ -1,0 +1,3595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIDUSUN Dusun 2 - Desa Makam, Kec. Rembang, Kab. Purbalingga</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef6ff', 100: '#d9eaff', 200: '#bcdbff', 300: '#8ec5ff',
+              400: '#59a5ff', 500: '#3381ff', 600: '#1b60f5', 700: '#144be1',
+              800: '#173db6', 900: '#19388f',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { font-size: 15.2px; }
+    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
+    h1, h2, h3, .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+
+    /* Form & Input Precision Compactness */
+    #main-content input:not([type="checkbox"]):not([type="radio"]),
+    #main-content select,
+    #main-content textarea {
+      padding-top: 0.45rem;
+      padding-bottom: 0.45rem;
+      font-size: 0.875rem;
+      line-height: 1.35;
+    }
+    #main-content input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    #main-content select {
+      height: 2.25rem;
+    }
+
+    /* Enlarge input result tables & cards */
+    #main-content table th {
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+      padding: 0.65rem 0.75rem;
+      white-space: nowrap;
+    }
+    #main-content table td {
+      font-size: 0.86rem;
+      padding: 0.65rem 0.75rem;
+      vertical-align: middle;
+    }
+
+    /* Enlarge input result tables & cards (+10%) */
+    #main-content table th {
+      font-size: 0.78rem;
+      padding-top: 0.68rem;
+      padding-bottom: 0.68rem;
+    }
+    #main-content table td {
+      font-size: 0.92rem;
+      padding-top: 0.72rem;
+      padding-bottom: 0.72rem;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printable-letter-area, #printable-letter-area * { visibility: visible; }
+      #printable-letter-area {
+        position: fixed; left: 0; top: 0; width: 100%;
+        padding: 20px; background: white; box-shadow: none !important;
+      }
+      .no-print { display: none !important; }
+    }
+
+    @keyframes smoothSlideFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-smooth-slide {
+      animation: smoothSlideFade 0.25s ease-out forwards;
+    }
+
+    @keyframes serviceVerticalSlideIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-service-slide-down {
+      animation: serviceVerticalSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes applicantBlink {
+      0%, 100% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.45; transform: translateY(-1px); }
+    }
+    .animate-applicant-blink {
+      animation: applicantBlink 2.6s ease-in-out infinite;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    @keyframes bellRing {
+      0%, 100% { transform: rotate(0deg); }
+      10% { transform: rotate(16deg); }
+      20% { transform: rotate(-14deg); }
+      30% { transform: rotate(12deg); }
+      40% { transform: rotate(-10deg); }
+      50% { transform: rotate(6deg); }
+      60% { transform: rotate(-4deg); }
+      70% { transform: rotate(0deg); }
+    }
+    .animate-bell-ring {
+      transform-origin: top center;
+      animation: bellRing 2.2s ease-in-out infinite;
+    }
+
+    /* Professional Card & Table Polish */
+    .ui-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05), 0 1px 3px 0 rgba(15, 23, 42, 0.03);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .ui-card-hover:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+    }
+    #main-content table thead tr {
+      background: linear-gradient(to right, #f8fafc, #f1f5f9);
+    }
+    #main-content table thead th:first-child { border-top-left-radius: 0.65rem; border-bottom-left-radius: 0.65rem; }
+    #main-content table thead th:last-child { border-top-right-radius: 0.65rem; border-bottom-right-radius: 0.65rem; }
+  </style>
+</head>
+<body class="antialiased selection:bg-brand-600 selection:text-white">
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- MODAL KONFIRMASI CUSTOM -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+      <div class="flex items-center gap-3 text-rose-600 mb-3">
+        <div class="p-2.5 bg-rose-50 rounded-xl"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+        <h3 id="confirm-title" class="text-lg font-bold text-slate-900">Konfirmasi</h3>
+      </div>
+      <p id="confirm-message" class="text-slate-600 text-sm leading-relaxed mb-6">Lanjutkan tindakan ini?</p>
+      <div class="flex justify-end gap-3">
+        <button type="button" id="confirm-cancel-btn" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200">Batal</button>
+        <button type="button" id="confirm-ok-btn" class="px-4 py-2 rounded-xl text-sm font-medium text-white bg-rose-600 hover:bg-rose-700">Ya, Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN LOGIN MULTI-USER ==================== -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-brand-950 to-slate-900 p-3">
+    <div class="max-w-3xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-white/10">
+      <!-- Info & Login Cepat -->
+      <div class="lg:col-span-5 bg-gradient-to-br from-brand-700 to-brand-900 text-white p-5 flex flex-col justify-between">
+        <div>
+          <!-- Informasi Desa & Dusun dari Database (Format Kop Surat Rata Kiri) -->
+          <div class="flex items-start gap-2.5 pb-3 mb-3 border-b border-white/20 text-left">
+            <div class="w-11 h-11 rounded-xl bg-white p-1 shrink-0 flex items-center justify-center shadow-xs">
+              <img id="login-kop-logo" src="https://placehold.co/120x120/e2e8f0/1e293b?text=LOGO" alt="Logo Desa" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="min-w-0 leading-tight">
+              <p id="login-kop-kab" class="text-[10px] font-bold uppercase tracking-wider text-brand-200 truncate">Pemerintah Kabupaten Purbalingga</p>
+              <p id="login-kop-kec" class="text-[10px] font-semibold uppercase tracking-wide text-brand-100 truncate">Kecamatan Rembang</p>
+              <h2 id="login-kop-desa" class="text-xs font-extrabold uppercase tracking-wide text-white mt-0.5 truncate">Desa Makam</h2>
+              <p id="login-kop-dusun" class="text-[11px] font-bold text-amber-300 mt-0.5 truncate">Dusun 2</p>
+              <p id="login-kop-alamat" class="text-[10px] text-brand-100/90 mt-0.5 line-clamp-2">Desa Makam, Kec. Rembang, Kab. Purbalingga</p>
+            </div>
+          </div>
+
+          <span class="inline-flex items-center gap-1.5 bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase mb-2">
+            <i data-lucide="landmark" class="w-3 h-3 text-emerald-300"></i> Pelayanan Digital Dusun 2
+          </span>
+          <h1 id="login-brand-title" class="text-lg font-extrabold mb-1 tracking-tight">SIDUSUN • Dusun 2</h1>
+          <p id="login-brand-desc" class="text-brand-100 text-xs leading-relaxed mb-3.5">
+            Sistem Informasi Kumpulan Data & Pelayanan Administrasi Terpadu Dusun 2, Desa Makam, Kecamatan Rembang, Kabupaten Purbalingga.
+          </p>
+
+          <div class="bg-white/10 border border-white/15 rounded-xl p-3 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-brand-200 flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i> Informasi Layanan Aplikasi:
+              </p>
+              <div class="flex items-center gap-1" aria-label="Navigasi Slide Layanan">
+                <button type="button" onclick="goToLoginServiceSlide(0)" id="service-slide-dot-0" class="w-4 h-1.5 rounded-full bg-amber-300 transition-all duration-300" title="Slide 1"></button>
+                <button type="button" onclick="goToLoginServiceSlide(1)" id="service-slide-dot-1" class="w-1.5 h-1.5 rounded-full bg-white/35 hover:bg-white/60 transition-all duration-300" title="Slide 2"></button>
+                <button type="button" onclick="goToLoginServiceSlide(2)" id="service-slide-dot-2" class="w-1.5 h-1.5 rounded-full bg-white/35 hover:bg-white/60 transition-all duration-300" title="Slide 3"></button>
+              </div>
+            </div>
+
+            <div id="login-service-slider-viewport" class="relative overflow-hidden min-h-[78px]">
+              <div id="login-service-slide-0" class="login-service-slide p-2.5 rounded-xl bg-white/15 border border-white/15 text-xs flex items-start gap-2.5 animate-service-slide-down">
+                <div class="w-7 h-7 rounded-lg bg-emerald-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="file-check-2" class="w-4 h-4 text-emerald-300"></i>
+                </div>
+                <div class="min-w-0">
+                  <span class="font-bold text-white block">Pelayanan Surat Online Warga</span>
+                  <span class="text-brand-100 text-[10px] leading-snug block mt-0.5">Pengajuan surat keterangan domisili, usaha, & SKTM secara mandiri menggunakan NIK dan PIN warga.</span>
+                </div>
+              </div>
+
+              <div id="login-service-slide-1" class="login-service-slide hidden p-2.5 rounded-xl bg-white/15 border border-white/15 text-xs flex items-start gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-amber-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="database" class="w-4 h-4 text-amber-300"></i>
+                </div>
+                <div class="min-w-0">
+                  <span class="font-bold text-white block">Basis Data Kependudukan RT / RW</span>
+                  <span class="text-brand-100 text-[10px] leading-snug block mt-0.5">Pengelolaan data warga terpadu per wilayah RT/RW yang tersinkronisasi langsung dengan Google Spreadsheet.</span>
+                </div>
+              </div>
+
+              <div id="login-service-slide-2" class="login-service-slide hidden p-2.5 rounded-xl bg-white/15 border border-white/15 text-xs flex items-start gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-sky-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="heart-handshake" class="w-4 h-4 text-sky-300"></i>
+                </div>
+                <div class="min-w-0">
+                  <span class="font-bold text-white block">Data Bantuan & Kelompok Giat Warga</span>
+                  <span class="text-brand-100 text-[10px] leading-snug block mt-0.5">Pemantauan penerima bantuan sosial serta pendataan anggota UMKM, Kelompok Tani, dan PKK Dusun 2.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 pt-2 border-t border-white/15 flex justify-between text-[10px] text-brand-200">
+          <span id="login-db-sync-badge">Google Sheets Sync</span>
+          <span>Dusun 2 • Desa Makam</span>
+        </div>
+      </div>
+
+      <!-- Form Login -->
+      <div class="lg:col-span-7 p-5 sm:p-7 flex flex-col justify-center">
+        <h2 class="text-lg font-bold text-slate-900">Masuk ke Sistem</h2>
+        <p class="text-slate-500 text-xs mt-0.5 mb-4">Pilih peran pengguna yang sesuai untuk melanjutkan.</p>
+
+        <div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl mb-4">
+          <button type="button" id="tab-role-superadmin" onclick="switchLoginTab('superadmin')" class="py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 bg-white text-brand-700 shadow-xs">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Super Admin
+          </button>
+          <button type="button" id="tab-role-admin_rt" onclick="switchLoginTab('admin_rt')" class="py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 text-slate-600">
+            <i data-lucide="users" class="w-3.5 h-3.5"></i> Admin RT
+          </button>
+          <button type="button" id="tab-role-warga" onclick="switchLoginTab('warga')" class="py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 text-slate-600">
+            <i data-lucide="user-check" class="w-3.5 h-3.5"></i> User Warga
+          </button>
+        </div>
+
+        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-3">
+          <input type="hidden" id="login-role" value="superadmin" />
+
+          <div>
+            <label id="login-username-label" class="block text-xs font-semibold text-slate-700 mb-1">Username Super Admin</label>
+            <input type="text" id="login-username" required placeholder="Masukkan username..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white" />
+            <p id="login-helper-text" class="text-[11px] text-slate-400 mt-0.5">Gunakan akun Super Admin dusun.</p>
+          </div>
+
+          <div>
+            <label id="login-password-label" class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi</label>
+            <div class="relative">
+              <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white" />
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                <i id="eye-icon" data-lucide="eye" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="login-error-box" class="hidden p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+            <span id="login-error-msg">Username atau kata sandi salah.</span>
+          </div>
+
+          <button type="submit" class="w-full py-2 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs shadow-sm transition flex items-center justify-center gap-1.5">
+            <span>Masuk Aplikasi</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== APLIKASI UTAMA ==================== -->
+  <div id="app-shell" class="hidden min-h-screen flex flex-col lg:flex-row bg-slate-100/80">
+    <!-- Mobile Header (Sticky Melayang Diperbesar Sedikit agar Jelas di HP) -->
+    <header class="lg:hidden bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-indigo-700 text-white flex items-center justify-center font-bold shadow-xs">
+          <i data-lucide="landmark" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="font-display font-extrabold text-slate-900 text-sm block leading-tight">SIDUSUN Dusun 2</span>
+          <span id="mobile-role-badge" class="text-[11px] font-semibold text-brand-600 block mt-0.5">Super Admin</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="navigateTo('permohonan')" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Notifikasi Surat">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span id="mobile-notif-dot" class="hidden absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
+        </button>
+        <button type="button" onclick="toggleMobileSidebar()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Buka Menu">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/50 z-30 hidden lg:hidden"></div>
+
+    <!-- SIDEBAR LEBIH LEBAR AGAR TULISAN MENU TIDAK TERPOTONG (w-64) -->
+    <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 h-screen w-64 bg-white/95 backdrop-blur-md border-r border-slate-200/80 shadow-[4px_0_24px_-12px_rgba(15,23,42,0.08)] flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shrink-0">
+      <div>
+        <div class="px-3.5 py-3.5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-600 to-indigo-700 text-white flex items-center justify-center shadow-sm shadow-brand-600/25 shrink-0">
+              <i data-lucide="landmark" class="w-4 h-4"></i>
+            </div>
+            <div class="min-w-0">
+              <h1 class="font-display font-extrabold text-sm text-slate-900 leading-none tracking-tight">SIDUSUN Dusun 2</h1>
+              <p id="sidebar-dusun-name" class="text-[10px] text-slate-500 mt-0.5 truncate">Dusun 2 • Desa Makam</p>
+            </div>
+          </div>
+          <button type="button" onclick="toggleMobileSidebar()" class="lg:hidden p-1 text-slate-400">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <div class="px-3 py-2.5 mx-2.5 mt-2.5 rounded-xl bg-gradient-to-br from-slate-50 via-white to-indigo-50/40 border border-slate-200/80 shadow-2xs">
+          <div class="flex items-center gap-2.5">
+            <div id="user-avatar" class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-600 to-indigo-600 text-white font-bold flex items-center justify-center text-[11px] shadow-2xs shrink-0">SA</div>
+            <div class="overflow-hidden min-w-0">
+              <p id="sidebar-user-name" class="text-[11px] font-bold text-slate-900 truncate">Kepala Dusun</p>
+              <span id="sidebar-user-role" class="inline-block text-[10px] font-semibold text-brand-700 truncate max-w-full">Super Admin</span>
+            </div>
+          </div>
+          <div class="mt-2 pt-1.5 border-t border-slate-200/70 text-[10px] text-slate-500 flex items-center justify-between">
+            <span>Wilayah:</span>
+            <span id="sidebar-wilayah-badge" class="px-1.5 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-800 truncate max-w-[105px]">Semua RT/RW</span>
+          </div>
+        </div>
+
+        <nav id="sidebar-nav" class="px-2.5 py-2.5 space-y-1 overflow-y-auto max-h-[calc(100vh-205px)]"></nav>
+      </div>
+
+      <div class="p-2.5 border-t border-slate-100 space-y-1.5 bg-white/80">
+        <!-- Hanya muncul untuk Super Admin -->
+        <div id="sidebar-sync-box" class="hidden px-2.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-[10px]">
+          <span class="flex items-center gap-1.5 text-emerald-800 font-semibold truncate">
+            <span id="sync-indicator-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+            <span id="sync-status-label" class="truncate">Database Lokal</span>
+          </span>
+          <button type="button" onclick="syncWithAppScript()" class="text-emerald-700 hover:text-emerald-900 font-bold underline ml-1 shrink-0">Sync</button>
+        </div>
+
+        <button type="button" onclick="logout()" class="w-full py-2 px-2.5 rounded-xl text-[11px] font-bold text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-100 transition flex items-center justify-center gap-1.5">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span>Keluar</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- KONTEN UTAMA DENGAN RUANG WARNA DINAMIS -->
+    <main id="main-workspace" class="flex-1 flex flex-col min-w-0 transition-colors duration-300 bg-gradient-to-br from-indigo-50/70 via-slate-50 to-blue-50/50">
+      <header id="workspace-header" class="hidden lg:flex bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-5 py-3.5 items-center justify-between sticky top-0 z-20 transition-colors duration-200 shadow-[0_1px_12px_-4px_rgba(15,23,42,0.05)]">
+        <div class="flex items-center gap-3">
+          <span id="page-space-dot" class="w-2.5 h-6 rounded-full bg-indigo-600 shrink-0 transition-all duration-300"></span>
+          <div>
+            <h2 id="page-title" class="text-sm font-extrabold text-slate-900 leading-tight tracking-tight">Dashboard Utama</h2>
+            <p id="page-subtitle" class="text-[11px] text-slate-500">Ringkasan data kependudukan dan layanan administrasi dusun</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="navigateTo('permohonan')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5 text-[11px] font-semibold">
+            <i data-lucide="bell" class="w-3.5 h-3.5 text-brand-600"></i>
+            <span id="header-notif-text">Surat Masuk</span>
+            <span id="header-notif-badge" class="hidden px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold">0</span>
+          </button>
+          <div class="h-4 w-px bg-slate-200"></div>
+          <div class="text-right">
+            <p id="current-date-display" class="text-[11px] font-semibold text-slate-700"></p>
+            <p id="header-wilayah-sub" class="text-[10px] text-slate-400">Dusun 2 • Desa Makam, Kec. Rembang</p>
+          </div>
+        </div>
+      </header>
+
+      <div id="main-content" class="p-3.5 sm:p-5 lg:p-6 max-w-7xl w-[97%] mx-auto space-y-4"></div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL TAMBAH / EDIT PENDUDUK ==================== -->
+  <div id="resident-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-3 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-5 shadow-2xl border border-slate-100 my-6">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 id="resident-modal-title" class="text-base font-bold text-slate-900">Tambah Data Penduduk</h3>
+          <p class="text-[11px] text-slate-500 mt-0.5">NIK & PIN digunakan warga untuk login layanan surat online.</p>
+        </div>
+        <button type="button" onclick="closeResidentModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="resident-form" onsubmit="saveResident(event)" class="mt-3.5 space-y-3">
+        <input type="hidden" id="res-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">NIK (16 Digit) *</label>
+            <input type="text" id="res-nik" required maxlength="16" minlength="16" pattern="\d{16}" placeholder="16 digit NIK" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">No. Kartu Keluarga (KK) *</label>
+            <input type="text" id="res-kk" required maxlength="16" placeholder="16 digit No. KK" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nama Lengkap *</label>
+            <input type="text" id="res-nama" required placeholder="Nama sesuai KTP" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">PIN Login Warga *</label>
+            <input type="text" id="res-pin" required maxlength="6" minlength="4" placeholder="6 digit PIN" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-brand-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Jenis Kelamin *</label>
+            <select id="res-jk" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none">
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Tempat Lahir *</label>
+            <input type="text" id="res-tempat-lahir" required placeholder="Kota/Kabupaten" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Tanggal Lahir *</label>
+            <input type="date" id="res-tgl-lahir" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-brand-50/60 rounded-xl border border-brand-100">
+          <div>
+            <label class="block text-[11px] font-bold text-brand-900 uppercase mb-1">Wilayah RW *</label>
+            <select id="res-rw" required class="w-full px-2.5 py-1.5 bg-white border border-brand-200 rounded-lg text-xs font-semibold"></select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-brand-900 uppercase mb-1">Wilayah RT *</label>
+            <select id="res-rt" onchange="autoSetRwFromRt()" required class="w-full px-2.5 py-1.5 bg-white border border-brand-200 rounded-lg text-xs font-semibold"></select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-brand-900 uppercase mb-1">Status</label>
+            <select id="res-status" class="w-full px-2.5 py-1.5 bg-white border border-brand-200 rounded-lg text-xs font-semibold">
+              <option value="Tetap">Penduduk Tetap</option>
+              <option value="Pendatang">Pendatang / Kontrak</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Agama</label>
+            <select id="res-agama" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+              <option value="Islam">Islam</option>
+              <option value="Kristen">Kristen</option>
+              <option value="Katolik">Katolik</option>
+              <option value="Hindu">Hindu</option>
+              <option value="Buddha">Buddha</option>
+              <option value="Konghucu">Konghucu</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Pekerjaan *</label>
+            <input type="text" id="res-pekerjaan" required placeholder="Petani / Wiraswasta / Pelajar" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Alamat Lengkap *</label>
+          <input type="text" id="res-alamat" required placeholder="Blok / No. Rumah" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeResidentModal()" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200">Batal</button>
+          <button type="submit" class="px-5 py-1.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700">Simpan Data Warga</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL FORMAT SURAT (ADMIN) ==================== -->
+  <div id="template-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-3 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-5 shadow-2xl border border-slate-100 my-6">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 id="template-modal-title" class="text-base font-bold text-slate-900">Tambah Varian Jenis Surat</h3>
+        <button type="button" onclick="closeTemplateModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <form id="template-form" onsubmit="saveLetterTemplate(event)" class="mt-3.5 space-y-3">
+        <input type="hidden" id="tpl-id" />
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Kode Surat *</label>
+            <input type="text" id="tpl-kode" required placeholder="470 / SKU" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nama Jenis Surat *</label>
+            <input type="text" id="tpl-nama" required placeholder="Surat Keterangan Usaha" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Deskripsi Kegunaan *</label>
+          <input type="text" id="tpl-deskripsi" required placeholder="Keterangan singkat surat" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+        </div>
+        <div>
+          <div class="flex flex-wrap justify-between gap-1 mb-1">
+            <label class="text-[11px] font-bold text-slate-700 uppercase">Format Redaksi Surat *</label>
+            <span class="text-[10px] text-brand-600">{NAMA}, {NIK}, {TTL}, {PEKERJAAN}, {ALAMAT}, {RT}, {RW}, {KEPERLUAN}</span>
+          </div>
+          <textarea id="tpl-isi" rows="6" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono"></textarea>
+        </div>
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeTemplateModal()" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100">Batal</button>
+          <button type="submit" class="px-5 py-1.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700">Simpan Format</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL PENGAJUAN & EDIT ISI SURAT ==================== -->
+  <div id="letter-request-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-3 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-5 shadow-2xl border border-slate-100 my-6">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 id="req-modal-title" class="text-base font-bold text-slate-900">Formulir Permohonan & Edit Isi Surat</h3>
+          <p class="text-[11px] text-slate-500 mt-0.5">Edit redaksi surat sesuai permintaan warga sebelum dikirim atau dicetak.</p>
+        </div>
+        <button type="button" onclick="closeRequestModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <form id="letter-request-form" onsubmit="submitLetterRequest(event)" class="mt-3.5 space-y-3">
+        <input type="hidden" id="req-edit-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Pemohon (Warga) *</label>
+            <select id="req-pemohon-nik" onchange="populateLetterDraft()" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"></select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Varian Jenis Surat *</label>
+            <select id="req-template-id" onchange="populateLetterDraft()" required class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"></select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Keperluan Spesifik *</label>
+          <input type="text" id="req-keperluan" oninput="populateLetterDraft()" required placeholder="Contoh: Persyaratan Administrasi Bank / Pendaftaran Kerja" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+        </div>
+
+        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-[11px] font-bold text-amber-900 uppercase">Editor Redaksi Isi Surat</label>
+            <button type="button" onclick="populateLetterDraft(true)" class="text-[11px] font-semibold text-brand-600 hover:underline">Reset Format Standar</button>
+          </div>
+          <textarea id="req-custom-body" rows="7" required class="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-xs leading-relaxed text-slate-800"></textarea>
+        </div>
+
+        <div id="req-admin-status-box" class="hidden grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Status Persetujuan</label>
+            <select id="req-status" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold">
+              <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+              <option value="Disetujui">Selesai & Siap Diambil</option>
+              <option value="Perlu Revisi">Perlu Revisi</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nomor Surat Resmi / Catatan Revisi</label>
+            <input type="text" id="req-nomor-surat" placeholder="Contoh: 470/015/DS/2026 atau catatan revisi" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs" />
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeRequestModal()" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100">Batal</button>
+          <button type="submit" class="px-5 py-1.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700">
+            <span id="req-submit-btn-text">Kirim Permohonan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL PRATINJAU & CETAK SURAT RESMI ==================== -->
+  <div id="print-preview-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-2 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white sticky top-0 z-10 shrink-0 no-print">
+        <h3 class="text-sm sm:text-base font-bold text-slate-900">Pratinjau Dokumen Surat Resmi</h3>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak / PDF
+          </button>
+          <button type="button" onclick="closePrintModal()" class="p-1.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100" title="Tutup">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-3 sm:p-5 overflow-y-auto flex-1 bg-slate-50/60">
+        <div id="printable-letter-area" class="p-4 sm:p-7 bg-white border border-slate-200 rounded-xl text-slate-900 font-serif shadow-2xs">
+          <!-- Kop Surat Desa dengan Logo Kabupaten -->
+          <div class="flex items-center justify-between gap-3 border-b-4 border-double border-slate-900 pb-3 mb-4">
+            <div id="print-kop-logo-wrap" class="w-12 h-12 sm:w-16 sm:h-16 shrink-0 flex items-center justify-center">
+              <img id="print-kop-logo" src="https://placehold.co/120x120/e2e8f0/1e293b?text=LOGO" alt="Logo Kabupaten" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="flex-1 text-center">
+              <p id="print-kop-kab" class="text-xs font-bold tracking-widest uppercase">Pemerintah Kabupaten Purbalingga</p>
+              <p id="print-kop-kec" class="text-xs font-bold tracking-wider uppercase">Kecamatan Rembang</p>
+              <h2 id="print-kop-desa" class="text-base sm:text-lg font-extrabold tracking-wide uppercase mt-0.5">Desa Makam</h2>
+              <p id="print-kop-alamat" class="text-[11px] italic text-slate-600 mt-0.5">Alamat: Desa Makam, Kecamatan Rembang, Kabupaten Purbalingga</p>
+            </div>
+            <div id="print-kop-spacer" class="w-12 sm:w-16 shrink-0 hidden sm:block"></div>
+          </div>
+
+          <div class="text-center mb-4">
+            <h3 id="print-letter-title" class="text-sm sm:text-base font-bold uppercase underline underline-offset-4">SURAT KETERANGAN</h3>
+            <p id="print-letter-number" class="text-xs mt-1">Nomor: 470 / 001 / DS / 2026</p>
+          </div>
+
+          <div id="print-letter-body" class="text-xs sm:text-sm leading-relaxed text-justify space-y-1.5"></div>
+
+          <!-- Tanda Tangan Tunggal di Sebelah Kanan -->
+          <div class="mt-8 flex justify-end text-xs sm:text-sm">
+            <div class="w-64 text-center">
+              <p id="print-date-city">Makam, 25 November 2026</p>
+              <p id="print-signer-head" class="font-semibold mt-0.5">Kepala Desa Makam</p>
+              <p id="print-signer-title" class="font-medium text-xs text-slate-700"></p>
+              <div class="h-14"></div>
+              <p id="print-signer-name" class="font-bold underline">KEPALA DESA MAKAM</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT SEDERHANA & STABIL ==================== -->
+  <script>
+    // =========================================================================
+    // [PETUNJUK PEMASANGAN LINK DATABASE SPREADSHEET LANGSUNG DI KODE HTML]
+    // Tempelkan URL Web App Google Apps Script (/exec) dan/atau URL file Google
+    // Spreadsheet Anda di antara tanda kutip ('...') di bawah ini agar aplikasi
+    // langsung terhubung permanen di semua perangkat tanpa pengaturan manual:
+    // =========================================================================
+    const EMBEDDED_DATABASE_CONFIG = {
+      APP_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwYSG8maoyBNHbp7-C4jO9R2x6fY49don9brGLYJDYoVQ_-ZQgeOPLaIMLGN5xjBfr7vw/exec',   // Contoh: 'https://script.google.com/macros/s/AKfycbx.../exec'
+      SPREADSHEET_URL: 'https://docs.google.com/spreadsheets/d/11PQOPjM5hgPm8VzPapa5dNL8IOW1-CvlGWAfjpas-3c/edit'   // Contoh: 'https://docs.google.com/spreadsheets/d/1AbCdEf.../edit'
+    };
+    // =========================================================================
+
+    // 1. KONSTANTA & DATA DEFAULT
+    const STORAGE_KEYS = {
+      RESIDENTS: 'sidusun_residents_v3',
+      TEMPLATES: 'sidusun_templates_v3',
+      REQUESTS: 'sidusun_requests_v3',
+      APPSCRIPT_URL: 'sidusun_appscript_url_v3',
+      SPREADSHEET_URL: 'sidusun_spreadsheet_url_v3',
+      SESSION: 'sidusun_session_v3',
+      SETTINGS: 'sidusun_settings_v3',
+      WILAYAH: 'sidusun_wilayah_v3',
+      BANTUAN_TYPES: 'sidusun_bantuan_types_v3',
+      GIAT_GROUPS: 'sidusun_giat_groups_v3'
+    };
+
+    const DEFAULT_SETTINGS = {
+      dusun: 'Dusun 2',
+      desa: 'Makam',
+      kecamatan: 'Rembang',
+      kabupaten: 'Purbalingga',
+      kadus: 'Kepala Dusun 2',
+      kades: 'KEPALA DESA MAKAM',
+      signerRole: 'Kepala Desa',
+      signerTitle: 'Kepala Desa Makam',
+      alamat: 'Desa Makam, Kecamatan Rembang, Kabupaten Purbalingga',
+      logoUrl: 'https://placehold.co/120x120/e2e8f0/1e293b?text=LOGO'
+    };
+
+    const DEFAULT_WILAYAH = {
+      rws: [
+        { rw: '01', pengurus: 'Bapak H. Slamet Riyadi' },
+        { rw: '02', pengurus: 'Bapak Drs. Mulyono' }
+      ],
+      rts: [
+        { rt: '01', rw: '01', ketua: 'Bapak Suyono', username: 'rt01', password: 'rt01123' },
+        { rt: '02', rw: '01', ketua: 'Bapak Hendra', username: 'rt02', password: 'rt02123' },
+        { rt: '03', rw: '02', ketua: 'Ibu Ratna', username: 'rt03', password: 'rt03123' },
+        { rt: '04', rw: '02', ketua: 'Bapak Joko', username: 'rt04', password: 'rt04123' }
+      ]
+    };
+
+    const DEFAULT_RESIDENTS = [
+      {
+        id: 'res-1', nik: '3201011205850001', kk: '3201011002100001',
+        nama: 'Budi Santoso', pin: '120585', jk: 'Laki-laki',
+        tempatLahir: 'Bandung', tglLahir: '1985-05-12',
+        rw: '01', rt: '01', status: 'Tetap', agama: 'Islam',
+        pekerjaan: 'Wiraswasta', alamat: 'Blok A No. 04',
+        bantuan: ['BLT Dana Desa']
+      },
+      {
+        id: 'res-2', nik: '3201012208900002', kk: '3201011002100001',
+        nama: 'Siti Aminah', pin: '220890', jk: 'Perempuan',
+        tempatLahir: 'Garut', tglLahir: '1990-08-22',
+        rw: '01', rt: '01', status: 'Tetap', agama: 'Islam',
+        pekerjaan: 'Ibu Rumah Tangga', alamat: 'Blok A No. 04',
+        bantuan: ['PKH']
+      },
+      {
+        id: 'res-3', nik: '3201010503780003', kk: '3201011002100002',
+        nama: 'Ahmad Subarjo', pin: '050378', jk: 'Laki-laki',
+        tempatLahir: 'Sumedang', tglLahir: '1978-03-05',
+        rw: '01', rt: '02', status: 'Tetap', agama: 'Islam',
+        pekerjaan: 'Petani', alamat: 'Blok B No. 11',
+        bantuan: ['BPNT / Sembako']
+      },
+      {
+        id: 'res-4', nik: '3201011411950004', kk: '3201011002100003',
+        nama: 'Rina Marlina', pin: '141195', jk: 'Perempuan',
+        tempatLahir: 'Cianjur', tglLahir: '1995-11-14',
+        rw: '02', rt: '03', status: 'Tetap', agama: 'Islam',
+        pekerjaan: 'Guru Honorer', alamat: 'Blok C No. 08',
+        bantuan: []
+      },
+      {
+        id: 'res-5', nik: '3201013001820005', kk: '3201011002100004',
+        nama: 'Dedi Kurniawan', pin: '300182', jk: 'Laki-laki',
+        tempatLahir: 'Tasikmalaya', tglLahir: '1982-01-30',
+        rw: '02', rt: '04', status: 'Tetap', agama: 'Islam',
+        pekerjaan: 'Pedagang', alamat: 'Blok D No. 02',
+        bantuan: ['BLT Dana Desa', 'BPNT / Sembako']
+      }
+    ];
+
+    const DEFAULT_TEMPLATES = [
+      {
+        id: 'tpl-1',
+        kode: '470 / DOM',
+        nama: 'Surat Keterangan Domisili',
+        deskripsi: 'Keterangan tempat tinggal resmi warga di lingkungan dusun/desa.',
+        isi: 'Yang bertanda tangan di bawah ini Kepala Desa menerangkan dengan sebenarnya bahwa:\n\nNama Lengkap : {NAMA}\nNIK : {NIK}\nTempat, Tgl Lahir : {TTL}\nPekerjaan : {PEKERJAAN}\nAlamat : {ALAMAT}, RT {RT} / RW {RW}\n\nAdalah benar warga yang berdomisili dan bertempat tinggal di alamat tersebut di atas.\n\nSurat keterangan ini diberikan untuk keperluan: {KEPERLUAN}.\n\nDemikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.'
+      },
+      {
+        id: 'tpl-2',
+        kode: '503 / SKU',
+        nama: 'Surat Keterangan Usaha (SKU)',
+        deskripsi: 'Keterangan kepemilikan usaha mikro/kecil warga untuk perbankan atau izin.',
+        isi: 'Yang bertanda tangan di bawah ini menerangkan bahwa:\n\nNama Lengkap : {NAMA}\nNIK : {NIK}\nTempat, Tgl Lahir : {TTL}\nPekerjaan : {PEKERJAAN}\nAlamat : {ALAMAT}, RT {RT} / RW {RW}\n\nBenar yang bersangkutan memiliki usaha produktif yang berlokasi di wilayah RT {RT} / RW {RW}.\n\nSurat keterangan ini diterbitkan untuk keperluan: {KEPERLUAN}.\n\nDemikian surat ini dibuat agar dapat digunakan sebagaimana mestinya.'
+      },
+      {
+        id: 'tpl-3',
+        kode: '401 / SKTM',
+        nama: 'Surat Keterangan Tidak Mampu (SKTM)',
+        deskripsi: 'Pengantar keringanan biaya pendidikan, kesehatan, atau bantuan sosial.',
+        isi: 'Yang bertanda tangan di bawah ini menerangkan dengan sebenarnya bahwa:\n\nNama Lengkap : {NAMA}\nNIK : {NIK}\nTempat, Tgl Lahir : {TTL}\nPekerjaan : {PEKERJAAN}\nAlamat : {ALAMAT}, RT {RT} / RW {RW}\n\nBerdasarkan data kependudukan dan pengamatan lingkungan setempat, nama tersebut di atas tergolong keluarga kurang mampu.\n\nSurat keterangan ini dibuat untuk keperluan: {KEPERLUAN}.'
+      }
+    ];
+
+    const DEFAULT_BANTUAN_TYPES = ['BLT Dana Desa', 'PKH', 'BPNT / Sembako', 'Bedah Rumah (RTLH)', 'Beasiswa KIP'];
+
+    const DEFAULT_GIAT_GROUPS = [
+      { id: 'giat-1', nama: 'Kelompok Tani Makmur', kategori: 'Pertanian', jadwal: 'Sabtu Pagi', rt: 'ALL', anggotaNiks: ['3201010503780003'] },
+      { id: 'giat-2', nama: 'Paguyuban UMKM Dusun', kategori: 'UMKM & Ekonomi', jadwal: 'Rabu Sore', rt: 'ALL', anggotaNiks: ['3201011205850001', '3201013001820005'] }
+    ];
+
+    const SPACE_THEMES = {
+      dashboard: {
+        bg: 'bg-gradient-to-br from-indigo-50/80 via-slate-50 to-blue-50/60',
+        dot: 'bg-gradient-to-b from-indigo-500 to-blue-600',
+        activeNav: 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white border-indigo-600 shadow-sm shadow-indigo-600/20',
+        iconBg: 'bg-indigo-100 text-indigo-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-indigo-100/90'
+      },
+      penduduk: {
+        bg: 'bg-gradient-to-br from-emerald-50/80 via-slate-50 to-teal-50/50',
+        dot: 'bg-gradient-to-b from-emerald-500 to-green-600',
+        activeNav: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-600 shadow-sm shadow-emerald-600/20',
+        iconBg: 'bg-emerald-100 text-emerald-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-emerald-200/80'
+      },
+      profil: {
+        bg: 'bg-gradient-to-br from-emerald-50/80 via-slate-50 to-teal-50/50',
+        dot: 'bg-gradient-to-b from-emerald-500 to-green-600',
+        activeNav: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-600 shadow-sm shadow-emerald-600/20',
+        iconBg: 'bg-emerald-100 text-emerald-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-emerald-200/80'
+      },
+      bantuan: {
+        bg: 'bg-gradient-to-br from-teal-50/80 via-slate-50 to-cyan-50/60',
+        dot: 'bg-gradient-to-b from-teal-500 to-cyan-600',
+        activeNav: 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white border-teal-600 shadow-sm shadow-teal-600/20',
+        iconBg: 'bg-teal-100 text-teal-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-teal-200/80'
+      },
+      giat: {
+        bg: 'bg-gradient-to-br from-rose-50/80 via-slate-50 to-pink-50/50',
+        dot: 'bg-gradient-to-b from-rose-500 to-pink-600',
+        activeNav: 'bg-gradient-to-r from-rose-600 to-pink-600 text-white border-rose-600 shadow-sm shadow-rose-600/20',
+        iconBg: 'bg-rose-100 text-rose-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-rose-200/80'
+      },
+      permohonan: {
+        bg: 'bg-gradient-to-br from-amber-50/80 via-slate-50 to-orange-50/60',
+        dot: 'bg-gradient-to-b from-amber-500 to-orange-600',
+        activeNav: 'bg-gradient-to-r from-amber-500 to-orange-600 text-white border-amber-500 shadow-sm shadow-amber-500/25',
+        iconBg: 'bg-amber-100 text-amber-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-amber-200/80'
+      },
+      templates: {
+        bg: 'bg-gradient-to-br from-violet-50/80 via-slate-50 to-purple-50/60',
+        dot: 'bg-gradient-to-b from-violet-500 to-purple-600',
+        activeNav: 'bg-gradient-to-r from-violet-600 to-purple-600 text-white border-violet-600 shadow-sm shadow-violet-600/20',
+        iconBg: 'bg-violet-100 text-violet-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-violet-200/80'
+      },
+      pengaturan: {
+        bg: 'bg-gradient-to-br from-sky-50/80 via-slate-50 to-blue-50/60',
+        dot: 'bg-gradient-to-b from-sky-500 to-blue-600',
+        activeNav: 'bg-gradient-to-r from-sky-600 to-blue-600 text-white border-sky-600 shadow-sm shadow-sky-600/20',
+        iconBg: 'bg-sky-100 text-sky-600',
+        activeIconBg: 'bg-white/20 text-white',
+        cardBorder: 'border-sky-200/80'
+      },
+      appscript: {
+        bg: 'bg-gradient-to-br from-slate-200/60 via-slate-100/80 to-zinc-100/70',
+        dot: 'bg-gradient-to-b from-slate-700 to-slate-900',
+        activeNav: 'bg-gradient-to-r from-slate-800 to-slate-900 text-white border-slate-800 shadow-sm shadow-slate-800/20',
+        iconBg: 'bg-slate-200/80 text-slate-700',
+        activeIconBg: 'bg-white/15 text-white',
+        cardBorder: 'border-slate-300/80'
+      }
+    };
+
+    // 2. STATE APLIKASI
+    let residents = [];
+    let letterTemplates = [];
+    let letterRequests = [];
+    let appSettings = { ...DEFAULT_SETTINGS };
+    let wilayahConfig = JSON.parse(JSON.stringify(DEFAULT_WILAYAH));
+    let bantuanTypes = [...DEFAULT_BANTUAN_TYPES];
+    let giatGroups = [];
+    let appScriptUrl = '';
+    let spreadsheetUrl = '';
+    let currentUser = null;
+    let currentPage = 'dashboard';
+    let residentSearchQuery = '';
+    let residentRtFilter = 'ALL';
+    let searchDebounceTimer = null;
+    let autoSyncDebounceTimer = null;
+    let isDatabaseSyncing = false;
+    let pendingNotifTickerTimer = null;
+    let pendingNotifTickerIndex = 0;
+    let lastKnownPendingCount = null;
+    let lastKnownReadyLetterIds = null;
+    let sharedAudioCtx = null;
+    let periodicDbScanTimer = null;
+    let loginServiceSlideTimer = null;
+    let loginServiceSlideIndex = 0;
+
+    function goToLoginServiceSlide(targetIndex) {
+      const totalSlides = 3;
+      loginServiceSlideIndex = ((targetIndex % totalSlides) + totalSlides) % totalSlides;
+
+      for (let i = 0; i < totalSlides; i++) {
+        const slideEl = document.getElementById(`login-service-slide-${i}`);
+        const dotEl = document.getElementById(`service-slide-dot-${i}`);
+        if (slideEl) {
+          if (i === loginServiceSlideIndex) {
+            slideEl.classList.remove('hidden', 'animate-service-slide-down');
+            void slideEl.offsetWidth;
+            slideEl.classList.add('animate-service-slide-down');
+          } else {
+            slideEl.classList.add('hidden');
+            slideEl.classList.remove('animate-service-slide-down');
+          }
+        }
+        if (dotEl) {
+          dotEl.className = i === loginServiceSlideIndex
+            ? 'w-4 h-1.5 rounded-full bg-amber-300 transition-all duration-300'
+            : 'w-1.5 h-1.5 rounded-full bg-white/35 hover:bg-white/60 transition-all duration-300';
+        }
+      }
+      startLoginServiceSlider();
+    }
+
+    function startLoginServiceSlider() {
+      if (loginServiceSlideTimer) {
+        clearInterval(loginServiceSlideTimer);
+      }
+      loginServiceSlideTimer = setInterval(() => {
+        const loginScreen = document.getElementById('login-screen');
+        if (!loginScreen || loginScreen.classList.contains('hidden')) return;
+        goToLoginServiceSlide(loginServiceSlideIndex + 1);
+      }, 3800);
+    }
+
+    function unlockAudioContext() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!sharedAudioCtx) {
+          sharedAudioCtx = new AudioCtx();
+        }
+        if (sharedAudioCtx.state === 'suspended') {
+          sharedAudioCtx.resume();
+        }
+      } catch (e) {}
+    }
+
+    // 3. HELPER UTILITAS & SUARA NOTIFIKASI TING-TONG (NYARING DI SPEAKER)
+    function playTingTongSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!sharedAudioCtx) {
+          sharedAudioCtx = new AudioCtx();
+        }
+        const ctx = sharedAudioCtx;
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const now = ctx.currentTime;
+
+        // Compressor + Master Gain agar output speaker maksimal dan jernih tanpa pecah
+        const compressor = ctx.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-12, now);
+        compressor.knee.setValueAtTime(10, now);
+        compressor.ratio.setValueAtTime(4, now);
+        compressor.attack.setValueAtTime(0.005, now);
+        compressor.release.setValueAtTime(0.2, now);
+
+        const masterGain = ctx.createGain();
+        masterGain.gain.setValueAtTime(0.95, now);
+        compressor.connect(masterGain);
+        masterGain.connect(ctx.destination);
+
+        const triggerChimeTone = (freq, startTime, duration) => {
+          // Nada utama (Triangle agar kaya resonansi & nyaring di speaker HP/laptop)
+          const oscMain = ctx.createOscillator();
+          const gainMain = ctx.createGain();
+          oscMain.type = 'triangle';
+          oscMain.frequency.setValueAtTime(freq, startTime);
+
+          gainMain.gain.setValueAtTime(0.001, startTime);
+          gainMain.gain.linearRampToValueAtTime(0.85, startTime + 0.02);
+          gainMain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+          oscMain.connect(gainMain);
+          gainMain.connect(compressor);
+          oscMain.start(startTime);
+          oscMain.stop(startTime + duration + 0.02);
+
+          // Harmonik oktaf atas (Sine) untuk efek denting bel yang jelas terdengar
+          const oscOver = ctx.createOscillator();
+          const gainOver = ctx.createGain();
+          oscOver.type = 'sine';
+          oscOver.frequency.setValueAtTime(freq * 2, startTime);
+
+          gainOver.gain.setValueAtTime(0.001, startTime);
+          gainOver.gain.linearRampToValueAtTime(0.45, startTime + 0.015);
+          gainOver.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.75);
+
+          oscOver.connect(gainOver);
+          gainOver.connect(compressor);
+          oscOver.start(startTime);
+          oscOver.stop(startTime + duration * 0.78);
+        };
+
+        // Nada 1: "TING" (E5 ~ 659.25 Hz)
+        triggerChimeTone(659.25, now, 0.65);
+        // Nada 2: "TONG" (C5 ~ 523.25 Hz)
+        triggerChimeTone(523.25, now + 0.30, 1.15);
+      } catch (e) {
+        // Abaikan jika perangkat dalam mode senyap/diblokir sistem
+      }
+    }
+
+    function escapeHTML(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function safeParse(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed !== null && parsed !== undefined ? parsed : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const colors = {
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-rose-600 text-white',
+        info: 'bg-slate-900 text-white'
+      };
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto px-3.5 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center justify-between gap-2 animate-smooth-slide ${colors[type] || colors.info}`;
+      el.innerHTML = `<span>${escapeHTML(message)}</span>`;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3400);
+    }
+
+    function openConfirmModal(title, message, onConfirm) {
+      const modal = document.getElementById('confirm-modal');
+      document.getElementById('confirm-title').textContent = title;
+      document.getElementById('confirm-message').textContent = message;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      const cancelBtn = document.getElementById('confirm-cancel-btn');
+      const okBtn = document.getElementById('confirm-ok-btn');
+      const cleanup = () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      };
+      cancelBtn.onclick = cleanup;
+      okBtn.onclick = () => {
+        cleanup();
+        if (typeof onConfirm === 'function') onConfirm();
+      };
+    }
+
+    // 4. PEMUATAN & PENYIMPANAN DATA
+    function loadAppData() {
+      residents = safeParse(STORAGE_KEYS.RESIDENTS, JSON.parse(JSON.stringify(DEFAULT_RESIDENTS)));
+      letterTemplates = safeParse(STORAGE_KEYS.TEMPLATES, JSON.parse(JSON.stringify(DEFAULT_TEMPLATES)));
+      letterRequests = safeParse(STORAGE_KEYS.REQUESTS, []);
+      appSettings = { ...DEFAULT_SETTINGS, ...safeParse(STORAGE_KEYS.SETTINGS, {}) };
+      bantuanTypes = safeParse(STORAGE_KEYS.BANTUAN_TYPES, [...DEFAULT_BANTUAN_TYPES]);
+      giatGroups = safeParse(STORAGE_KEYS.GIAT_GROUPS, JSON.parse(JSON.stringify(DEFAULT_GIAT_GROUPS)));
+
+      wilayahConfig = safeParse(STORAGE_KEYS.WILAYAH, JSON.parse(JSON.stringify(DEFAULT_WILAYAH)));
+      if (Array.isArray(wilayahConfig.rws)) {
+        wilayahConfig.rws = wilayahConfig.rws.map(item =>
+          typeof item === 'string' ? { rw: item, pengurus: '-' } : item
+        );
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const dbFromUrl = urlParams.get('db');
+      const embeddedAppScript = (EMBEDDED_DATABASE_CONFIG.APP_SCRIPT_URL || '').trim();
+      const embeddedSpreadsheet = (EMBEDDED_DATABASE_CONFIG.SPREADSHEET_URL || '').trim();
+
+      if (dbFromUrl) {
+        appScriptUrl = dbFromUrl.trim();
+        localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+      } else if (embeddedAppScript) {
+        appScriptUrl = embeddedAppScript;
+        localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+      } else {
+        appScriptUrl = localStorage.getItem(STORAGE_KEYS.APPSCRIPT_URL) || '';
+      }
+
+      if (embeddedSpreadsheet) {
+        spreadsheetUrl = embeddedSpreadsheet;
+        localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+      } else {
+        spreadsheetUrl = localStorage.getItem(STORAGE_KEYS.SPREADSHEET_URL) || '';
+      }
+    }
+
+    function saveAllDataToLocal() {
+      localStorage.setItem(STORAGE_KEYS.RESIDENTS, JSON.stringify(residents));
+      localStorage.setItem(STORAGE_KEYS.TEMPLATES, JSON.stringify(letterTemplates));
+      localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(letterRequests));
+      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
+      localStorage.setItem(STORAGE_KEYS.WILAYAH, JSON.stringify(wilayahConfig));
+      localStorage.setItem(STORAGE_KEYS.BANTUAN_TYPES, JSON.stringify(bantuanTypes));
+      localStorage.setItem(STORAGE_KEYS.GIAT_GROUPS, JSON.stringify(giatGroups));
+
+      // Kirim perubahan lokal ke database Spreadsheet saat admin/warga menyimpan perubahan
+      scheduleFastAutoSync();
+    }
+
+    function scheduleFastAutoSync() {
+      if (!appScriptUrl && !spreadsheetUrl) return;
+      clearTimeout(autoSyncDebounceTimer);
+      autoSyncDebounceTimer = setTimeout(() => {
+        pushToGoogleAppScript(true);
+      }, 600);
+    }
+
+    function applyBrandingSettings() {
+      const loginTitle = document.getElementById('login-brand-title');
+      const sidebarDusun = document.getElementById('sidebar-dusun-name');
+      const headerWilayah = document.getElementById('header-wilayah-sub');
+      const dateDisp = document.getElementById('current-date-display');
+
+      // Update Informasi Desa & Dusun bergaya Kop Surat Rata Kiri di halaman awal/login
+      const loginLogo = document.getElementById('login-kop-logo');
+      const loginKab = document.getElementById('login-kop-kab');
+      const loginKec = document.getElementById('login-kop-kec');
+      const loginDesa = document.getElementById('login-kop-desa');
+      const loginDusun = document.getElementById('login-kop-dusun');
+      const loginAlamat = document.getElementById('login-kop-alamat');
+
+      if (loginLogo) loginLogo.src = appSettings.logoUrl || DEFAULT_SETTINGS.logoUrl;
+      if (loginKab) loginKab.textContent = `Pemerintah Kabupaten ${appSettings.kabupaten}`;
+      if (loginKec) loginKec.textContent = `Kecamatan ${appSettings.kecamatan}`;
+      if (loginDesa) loginDesa.textContent = `Desa ${appSettings.desa}`;
+      if (loginDusun) loginDusun.textContent = appSettings.dusun;
+      if (loginAlamat) loginAlamat.textContent = appSettings.alamat;
+
+      if (loginTitle) loginTitle.textContent = `SIDUSUN • ${appSettings.dusun}`;
+      if (sidebarDusun) sidebarDusun.textContent = `${appSettings.dusun} • Desa ${appSettings.desa}`;
+      if (headerWilayah) headerWilayah.textContent = `${appSettings.dusun} • Desa ${appSettings.desa}, Kec. ${appSettings.kecamatan}`;
+      document.title = `SIDUSUN ${appSettings.dusun} - Desa ${appSettings.desa}, Kec. ${appSettings.kecamatan}, Kab. ${appSettings.kabupaten}`;
+      if (dateDisp) {
+        dateDisp.textContent = new Date().toLocaleDateString('id-ID', {
+          weekday: 'long', day: 'numeric', month: 'short', year: 'numeric'
+        });
+      }
+    }
+
+    // 5. OTENTIKASI MULTI-USER & NAVIGASI RUANG
+    function switchLoginTab(role) {
+      document.getElementById('login-role').value = role;
+      ['superadmin', 'admin_rt', 'warga'].forEach(r => {
+        const btn = document.getElementById(`tab-role-${r}`);
+        if (!btn) return;
+        if (r === role) {
+          btn.className = 'py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 bg-white text-brand-700 shadow-xs';
+        } else {
+          btn.className = 'py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 text-slate-600';
+        }
+      });
+
+      const uLabel = document.getElementById('login-username-label');
+      const pLabel = document.getElementById('login-password-label');
+      const helper = document.getElementById('login-helper-text');
+      if (role === 'warga') {
+        uLabel.textContent = 'NIK Warga (16 Digit)';
+        pLabel.textContent = 'PIN Warga';
+        helper.textContent = 'Login menggunakan NIK & PIN yang terdaftar di database warga.';
+      } else if (role === 'admin_rt') {
+        uLabel.textContent = 'Username Admin RT';
+        pLabel.textContent = 'Kata Sandi RT';
+        helper.textContent = 'Akses khusus mengelola penduduk dan surat di wilayah RT masing-masing.';
+      } else {
+        uLabel.textContent = 'Username Super Admin';
+        pLabel.textContent = 'Kata Sandi';
+        helper.textContent = 'Gunakan akun Super Admin dusun.';
+      }
+      document.getElementById('login-error-box').classList.add('hidden');
+    }
+
+    function quickFillLogin(user, pass, role) {
+      switchLoginTab(role);
+      document.getElementById('login-username').value = user;
+      document.getElementById('login-password').value = pass;
+    }
+
+    function togglePasswordVisibility() {
+      const inp = document.getElementById('login-password');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('login-role').value;
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      const errBox = document.getElementById('login-error-box');
+      const errMsg = document.getElementById('login-error-msg');
+
+      let authenticatedUser = null;
+
+      if (role === 'superadmin') {
+        if (username === 'admin' && password === 'admin123') {
+          authenticatedUser = {
+            role: 'superadmin',
+            name: appSettings.kadus || 'Kepala Dusun',
+            roleLabel: 'Super Administrator',
+            wilayahLabel: 'Semua RT/RW'
+          };
+        }
+      } else if (role === 'admin_rt') {
+        const rtAcc = (wilayahConfig.rts || []).find(r => r.username === username && r.password === password);
+        if (rtAcc) {
+          authenticatedUser = {
+            role: 'admin_rt',
+            name: rtAcc.ketua || `Ketua RT ${rtAcc.rt}`,
+            rt: rtAcc.rt,
+            rw: rtAcc.rw,
+            roleLabel: `Admin RT ${rtAcc.rt}`,
+            wilayahLabel: `RT ${rtAcc.rt} / RW ${rtAcc.rw}`
+          };
+        }
+      } else if (role === 'warga') {
+        const warga = residents.find(r => String(r.nik) === username && String(r.pin) === password);
+        if (warga) {
+          authenticatedUser = {
+            role: 'warga',
+            nik: warga.nik,
+            name: warga.nama,
+            rt: warga.rt,
+            rw: warga.rw,
+            roleLabel: 'User Warga',
+            wilayahLabel: `RT ${warga.rt} / RW ${warga.rw}`
+          };
+        }
+      }
+
+      if (!authenticatedUser) {
+        errMsg.textContent = role === 'warga'
+          ? 'NIK atau PIN warga tidak ditemukan di database penduduk.'
+          : 'Username atau kata sandi tidak sesuai.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      errBox.classList.add('hidden');
+      lastKnownPendingCount = null;
+      lastKnownReadyLetterIds = null;
+      currentUser = authenticatedUser;
+      sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
+      enterApplication();
+      showToast(`Selamat datang, ${currentUser.name}!`, 'success');
+    }
+
+    function logout() {
+      currentUser = null;
+      lastKnownPendingCount = null;
+      lastKnownReadyLetterIds = null;
+      sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+      document.getElementById('app-shell').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function enterApplication() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+
+      const initials = (currentUser.name || 'US')
+        .split(' ')
+        .slice(0, 2)
+        .map(w => w[0])
+        .join('')
+        .toUpperCase();
+
+      document.getElementById('user-avatar').textContent = initials;
+      document.getElementById('sidebar-user-name').textContent = currentUser.name;
+      document.getElementById('sidebar-user-role').textContent = currentUser.roleLabel;
+      document.getElementById('sidebar-wilayah-badge').textContent = currentUser.wilayahLabel;
+      document.getElementById('mobile-role-badge').textContent = currentUser.roleLabel;
+
+      const syncBox = document.getElementById('sidebar-sync-box');
+      if (currentUser.role === 'superadmin') {
+        syncBox.classList.remove('hidden');
+        document.getElementById('sync-status-label').textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+      } else {
+        syncBox.classList.add('hidden');
+      }
+
+      updateNotificationBadges();
+      navigateTo('dashboard');
+
+      // Baca data terbaru dari database Spreadsheet agar langsung terupdate saat user membuka aplikasi
+      if (appScriptUrl || spreadsheetUrl) {
+        readLatestFromDatabase(true);
+      }
+      startPeriodicDatabaseScan();
+    }
+
+    function startPeriodicDatabaseScan() {
+      if (periodicDbScanTimer) {
+        clearInterval(periodicDbScanTimer);
+      }
+      // Skening database otomatis setiap 30 detik sekali
+      periodicDbScanTimer = setInterval(() => {
+        if (!document.hidden && (appScriptUrl || spreadsheetUrl)) {
+          readLatestFromDatabase(true);
+        }
+      }, 30000);
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      sidebar.classList.toggle('-translate-x-full');
+      backdrop.classList.toggle('hidden');
+    }
+
+    function getAccessibleResidents() {
+      if (!currentUser) return [];
+      if (currentUser.role === 'superadmin') return residents;
+      if (currentUser.role === 'admin_rt') return residents.filter(r => r.rt === currentUser.rt);
+      return residents.filter(r => r.nik === currentUser.nik);
+    }
+
+    function getAccessibleRequests() {
+      if (!currentUser) return [];
+      if (currentUser.role === 'superadmin') return letterRequests;
+      if (currentUser.role === 'admin_rt') return letterRequests.filter(req => req.rt === currentUser.rt);
+      return letterRequests.filter(req => req.nik === currentUser.nik);
+    }
+
+    function updateNotificationBadges() {
+      const accessible = getAccessibleRequests();
+      const pending = accessible.filter(r => r.status === 'Menunggu Verifikasi').length;
+
+      if (currentUser && currentUser.role === 'warga') {
+        const readyLetters = accessible.filter(r => r.status === 'Disetujui');
+        const currentReadyIds = readyLetters.map(r => String(r.id));
+        if (lastKnownReadyLetterIds !== null) {
+          const newlyReady = readyLetters.filter(r => !lastKnownReadyLetterIds.includes(String(r.id)));
+          if (newlyReady.length > 0) {
+            playTingTongSound();
+            const labelSurat = newlyReady.length === 1
+              ? `"${newlyReady[0].templateNama}"`
+              : `${newlyReady.length} permohonan surat`;
+            showToast(`Ting-Tong! Surat ${labelSurat} Anda sudah selesai dan siap diambil.`, 'success');
+          }
+        }
+        lastKnownReadyLetterIds = currentReadyIds;
+      } else {
+        if (lastKnownPendingCount !== null && pending > lastKnownPendingCount && currentUser && currentUser.role !== 'warga') {
+          playTingTongSound();
+          showToast(`Ting-Tong! Ada ${pending - lastKnownPendingCount} permohonan surat masuk baru.`, 'info');
+        }
+        lastKnownPendingCount = pending;
+      }
+
+      const activeBadgeCount = (currentUser && currentUser.role === 'warga')
+        ? accessible.filter(r => r.status === 'Disetujui').length
+        : pending;
+
+      const headerBadge = document.getElementById('header-notif-badge');
+      const mobileDot = document.getElementById('mobile-notif-dot');
+      if (headerBadge) {
+        headerBadge.textContent = activeBadgeCount;
+        headerBadge.classList.toggle('hidden', activeBadgeCount === 0);
+      }
+      if (mobileDot) {
+        mobileDot.classList.toggle('hidden', activeBadgeCount === 0);
+      }
+    }
+
+    function getMenuItemsForRole() {
+      if (currentUser.role === 'superadmin') {
+        return [
+          { id: 'dashboard', label: 'Dashboard Dusun', icon: 'layout-dashboard', color: 'text-indigo-600' },
+          { id: 'penduduk', label: 'Data Penduduk', icon: 'users', color: 'text-emerald-600' },
+          { id: 'bantuan', label: 'Penerima Bantuan', icon: 'heart-handshake', color: 'text-teal-600' },
+          { id: 'giat', label: 'Kelompok Giat Warga', icon: 'sparkles', color: 'text-rose-600' },
+          { id: 'permohonan', label: 'Permohonan Surat', icon: 'mail-check', color: 'text-amber-600' },
+          { id: 'templates', label: 'Format & Jenis Surat', icon: 'file-text', color: 'text-violet-600' },
+          { id: 'pengaturan', label: 'Identitas Dusun & KOP Surat', icon: 'settings', color: 'text-sky-600' },
+          { id: 'appscript', label: 'Database & Apps Script', icon: 'database', color: 'text-slate-700' }
+        ];
+      }
+      if (currentUser.role === 'admin_rt') {
+        return [
+          { id: 'dashboard', label: `Dashboard RT ${currentUser.rt}`, icon: 'layout-dashboard', color: 'text-indigo-600' },
+          { id: 'penduduk', label: `Data Warga RT ${currentUser.rt}`, icon: 'users', color: 'text-emerald-600' },
+          { id: 'bantuan', label: 'Penerima Bantuan', icon: 'heart-handshake', color: 'text-teal-600' },
+          { id: 'giat', label: `Giat Warga RT ${currentUser.rt}`, icon: 'sparkles', color: 'text-rose-600' },
+          { id: 'permohonan', label: 'Permohonan Surat', icon: 'mail-check', color: 'text-amber-600' }
+        ];
+      }
+      return [
+        { id: 'dashboard', label: 'Beranda Warga', icon: 'layout-dashboard', color: 'text-indigo-600' },
+        { id: 'profil', label: 'Data Diri & Keluarga', icon: 'user-check', color: 'text-emerald-600' },
+        { id: 'permohonan', label: 'Layanan & Status Surat', icon: 'file-text', color: 'text-amber-600' }
+      ];
+    }
+
+    function navigateTo(pageId) {
+      currentPage = pageId;
+      const items = getMenuItemsForRole();
+      const theme = SPACE_THEMES[pageId] || SPACE_THEMES.dashboard;
+
+      const workspace = document.getElementById('main-workspace');
+      if (workspace) {
+        workspace.className = `flex-1 flex flex-col min-w-0 transition-colors duration-300 ${theme.bg}`;
+      }
+
+      const spaceDot = document.getElementById('page-space-dot');
+      if (spaceDot) {
+        spaceDot.className = `w-2.5 h-6 rounded-full shrink-0 transition-all duration-300 ${theme.dot}`;
+      }
+
+      const nav = document.getElementById('sidebar-nav');
+      if (nav) {
+        nav.innerHTML = items.map(item => {
+          const isActive = item.id === pageId;
+          const itemTheme = SPACE_THEMES[item.id] || SPACE_THEMES.dashboard;
+          const activeClasses = isActive
+            ? `${itemTheme.activeNav} border font-bold`
+            : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border border-transparent font-medium';
+          const badgeIconClasses = isActive ? itemTheme.activeIconBg : itemTheme.iconBg;
+          return `
+            <button type="button" onclick="navigateTo('${item.id}'); if(window.innerWidth < 1024) toggleMobileSidebar();" class="w-full px-2.5 py-2 rounded-xl text-xs transition-all duration-150 flex items-center gap-2.5 text-left ${activeClasses}">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors ${badgeIconClasses}">
+                <i data-lucide="${item.icon}" class="w-3.5 h-3.5"></i>
+              </span>
+              <span class="truncate">${escapeHTML(item.label)}</span>
+            </button>
+          `;
+        }).join('');
+      }
+
+      const titles = {
+        dashboard: ['Dashboard Utama', 'Ringkasan statistik wilayah dan pelayanan administrasi dusun'],
+        penduduk: ['Data Penduduk', 'Input langsung di atas tabel dan kelola data kependudukan'],
+        profil: ['Profil Warga', 'Informasi kependudukan dan kartu keluarga Anda'],
+        bantuan: ['Warga Penerima Bantuan', 'Pengelolaan data warga penerima program bantuan sosial'],
+        giat: ['Kelompok Giat Warga', 'Pengelolaan kelompok UMKM, Kelompok Tani, PKK, dan anggotanya'],
+        permohonan: ['Permohonan & Layanan Surat', 'Pengajuan, verifikasi redaksi, dan pencetakan surat resmi'],
+        templates: ['Format & Jenis Surat', 'Kelola template redaksi surat keterangan yang tersedia bagi warga'],
+        pengaturan: ['Identitas Dusun, KOP Surat & Wilayah', 'Konfigurasi identitas dusun, edit KOP & logo surat, pengurus RW, serta ketua RT'],
+        appscript: ['Database & Apps Script', 'Sinkronisasi data dengan Google Sheets & Google Apps Script']
+      };
+      const [tTitle, tSub] = titles[pageId] || ['SIDUSUN', 'Sistem Administrasi Dusun'];
+      const titleEl = document.getElementById('page-title');
+      const subEl = document.getElementById('page-subtitle');
+      if (titleEl) titleEl.textContent = tTitle;
+      if (subEl) subEl.textContent = tSub;
+
+      renderCurrentPage();
+    }
+
+    function renderCurrentPage() {
+      switch (currentPage) {
+        case 'dashboard': renderDashboard(); break;
+        case 'penduduk': renderResidentsPage(); break;
+        case 'profil': renderWargaProfilePage(); break;
+        case 'bantuan': renderBantuanPage(); break;
+        case 'giat': renderGiatPage(); break;
+        case 'permohonan': renderPermohonanPage(); break;
+        case 'templates': renderTemplatesPage(); break;
+        case 'pengaturan': renderSettingsPage(); break;
+        case 'appscript': renderAppScriptPage(); break;
+        default: renderDashboard();
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // 6. DASHBOARD UTAMA (NOTIFIKASI RINGKAS DI ATAS + STATISTIK PER RT/RW)
+    function startPendingNotifTicker(pendingList) {
+      if (pendingNotifTickerTimer) {
+        clearInterval(pendingNotifTickerTimer);
+        pendingNotifTickerTimer = null;
+      }
+      if (!Array.isArray(pendingList) || pendingList.length <= 1) return;
+
+      pendingNotifTickerIndex = 0;
+      pendingNotifTickerTimer = setInterval(() => {
+        const tickerEl = document.getElementById('dashboard-pending-applicant-ticker');
+        if (!tickerEl) {
+          clearInterval(pendingNotifTickerTimer);
+          pendingNotifTickerTimer = null;
+          return;
+        }
+        tickerEl.style.opacity = '0';
+        setTimeout(() => {
+          if (!document.getElementById('dashboard-pending-applicant-ticker')) return;
+          pendingNotifTickerIndex = (pendingNotifTickerIndex + 1) % pendingList.length;
+          const item = pendingList[pendingNotifTickerIndex];
+          tickerEl.innerHTML = `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-white/25 text-white font-extrabold text-xs animate-applicant-blink">
+              <span>(${pendingNotifTickerIndex + 1}/${pendingList.length})</span>
+              <span>${escapeHTML(item.namaPemohon)}</span>
+              <span class="font-normal text-orange-100">• RT ${escapeHTML(item.rt)}/RW ${escapeHTML(item.rw)} (${escapeHTML(item.templateNama)})</span>
+            </span>
+          `;
+          tickerEl.style.opacity = '1';
+        }, 320);
+      }, 4200);
+    }
+
+    function renderDashboard() {
+      if (pendingNotifTickerTimer) {
+        clearInterval(pendingNotifTickerTimer);
+        pendingNotifTickerTimer = null;
+      }
+      const container = document.getElementById('main-content');
+      const accessibleResidents = getAccessibleResidents();
+      const accessibleRequests = getAccessibleRequests();
+      const pendingRequests = accessibleRequests.filter(r => r.status === 'Menunggu Verifikasi');
+      const isWarga = currentUser.role === 'warga';
+
+      if (isWarga) {
+        const myData = accessibleResidents[0] || {};
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-indigo-600 to-brand-700 rounded-2xl p-5 text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <p class="text-xs text-indigo-100">Selamat Datang di Layanan Mandiri Warga</p>
+                <h3 class="text-lg font-extrabold mt-0.5">${escapeHTML(currentUser.name)}</h3>
+                <p class="text-xs text-indigo-100 mt-1">NIK: ${escapeHTML(currentUser.nik)} • Wilayah RT ${escapeHTML(currentUser.rt)} / RW ${escapeHTML(currentUser.rw)}</p>
+              </div>
+              <button type="button" onclick="openRequestModal()" class="px-4 py-2.5 rounded-xl bg-white text-brand-700 hover:bg-brand-50 text-xs font-bold shadow-xs self-start sm:self-center">
+                + Ajukan Surat Online
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
+                <p class="text-[11px] font-semibold text-slate-500">Total Pengajuan Surat Saya</p>
+                <p class="text-2xl font-extrabold text-slate-900 mt-1">${accessibleRequests.length}</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
+                <p class="text-[11px] font-semibold text-slate-500">Menunggu Verifikasi</p>
+                <p class="text-2xl font-extrabold text-amber-600 mt-1">${pendingRequests.length}</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
+                <p class="text-[11px] font-semibold text-slate-500">Status Bantuan Sosial</p>
+                <p class="text-xs font-bold text-teal-700 mt-2">${Array.isArray(myData.bantuan) && myData.bantuan.length ? myData.bantuan.join(', ') : 'Tidak Terdaftar'}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const lakiCount = accessibleResidents.filter(r => r.jk === 'Laki-laki').length;
+      const perempuanCount = accessibleResidents.filter(r => r.jk === 'Perempuan').length;
+      const bantuanCount = accessibleResidents.filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0).length;
+
+      const rtCardsHtml = (wilayahConfig.rts || []).map(rtObj => {
+        const count = residents.filter(r => r.rt === rtObj.rt).length;
+        return `
+          <div class="ui-card ui-card-hover p-3.5 border border-indigo-100/80 flex items-center justify-between">
+            <div>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-50 text-[10px] font-bold uppercase text-indigo-700">RT ${escapeHTML(rtObj.rt)} / RW ${escapeHTML(rtObj.rw)}</span>
+              <p class="text-xs font-bold text-slate-800 mt-1">${escapeHTML(rtObj.ketua)}</p>
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-extrabold text-indigo-950">${count}</span>
+              <span class="block text-[10px] text-slate-400">Warga</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const rwCardsHtml = (wilayahConfig.rws || []).map(rwObj => {
+        const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+        const pengurus = typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-';
+        const count = residents.filter(r => r.rw === rwCode).length;
+        return `
+          <div class="ui-card ui-card-hover p-3.5 border border-sky-100/90 flex items-center justify-between">
+            <div>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-sky-50 text-[10px] font-bold uppercase text-sky-700">Wilayah RW ${escapeHTML(rwCode)}</span>
+              <p class="text-xs font-bold text-slate-800 mt-1">${escapeHTML(pengurus)}</p>
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-extrabold text-sky-950">${count}</span>
+              <span class="block text-[10px] text-slate-400">Warga</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <!-- Notifikasi Permintaan Surat Online Terbaru (Posisi Atas, Warna Orange) -->
+          <div class="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-md shadow-orange-500/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-xs flex items-center justify-center shrink-0">
+                <i data-lucide="bell-ring" class="w-5 h-5 text-white animate-bell-ring"></i>
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-sm font-extrabold tracking-tight">Notifikasi Permintaan Surat Online</h3>
+                <p class="text-xs text-orange-50 mt-0.5">
+                  Terdapat <strong>${pendingRequests.length} permohonan surat masuk</strong> yang menunggu verifikasi (Total ${accessibleRequests.length} riwayat surat).
+                </p>
+                ${pendingRequests.length > 0 ? `
+                  <div id="dashboard-pending-applicant-ticker" class="mt-1.5 transition-opacity duration-300">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-white/25 text-white font-extrabold text-xs ${pendingRequests.length > 1 ? 'animate-applicant-blink' : ''}">
+                      ${pendingRequests.length > 1 ? `<span>(1/${pendingRequests.length})</span>` : ''}
+                      <span>${escapeHTML(pendingRequests[0].namaPemohon)}</span>
+                      <span class="font-normal text-orange-100">• RT ${escapeHTML(pendingRequests[0].rt)}/RW ${escapeHTML(pendingRequests[0].rw)} (${escapeHTML(pendingRequests[0].templateNama)})</span>
+                    </span>
+                  </div>
+                ` : `
+                  <p class="text-[11px] text-orange-100/90 mt-1">Belum ada pemohon baru yang menunggu verifikasi saat ini.</p>
+                `}
+              </div>
+            </div>
+            <button type="button" onclick="navigateTo('permohonan')" class="px-4 py-2 rounded-xl bg-white text-orange-700 hover:bg-orange-50 text-xs font-extrabold shadow-xs shrink-0 self-start sm:self-center transition">
+              Proses Permohonan Surat →
+            </button>
+          </div>
+
+          <!-- Ringkasan Utama Penduduk -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="ui-card ui-card-hover p-4 border border-indigo-100/80 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold text-slate-500">Total Penduduk</span>
+                <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center"><i data-lucide="users" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-2xl font-extrabold text-slate-900 mt-1">${accessibleResidents.length}</p>
+              <span class="text-[10px] text-indigo-600 font-semibold">Jiwa Terdata</span>
+            </div>
+            <div class="ui-card ui-card-hover p-4 border border-blue-100/80 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold text-slate-500">Laki-laki</span>
+                <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="user" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-2xl font-extrabold text-blue-700 mt-1">${lakiCount}</p>
+              <span class="text-[10px] text-slate-400">Warga Pria</span>
+            </div>
+            <div class="ui-card ui-card-hover p-4 border border-rose-100/80 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold text-slate-500">Perempuan</span>
+                <span class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center"><i data-lucide="user-check" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-2xl font-extrabold text-rose-600 mt-1">${perempuanCount}</p>
+              <span class="text-[10px] text-slate-400">Warga Wanita</span>
+            </div>
+            <div class="ui-card ui-card-hover p-4 border border-teal-100/80 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-semibold text-slate-500">Penerima Bantuan</span>
+                <span class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center"><i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-2xl font-extrabold text-teal-700 mt-1">${bantuanCount}</p>
+              <span class="text-[10px] text-slate-400">Keluarga / Warga</span>
+            </div>
+          </div>
+
+          <!-- Statistik Jumlah Penduduk per RT -->
+          <div class="ui-card p-4 border border-indigo-100/80 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                <span>Statistik Jumlah Penduduk per RT</span>
+              </h4>
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-bold">${(wilayahConfig.rts || []).length} Wilayah RT</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              ${rtCardsHtml}
+            </div>
+          </div>
+
+          <!-- Statistik Penduduk per RW -->
+          <div class="ui-card p-4 border border-sky-100/80 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                <span>Statistik Penduduk & Pengurus RW</span>
+              </h4>
+              <span class="px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 text-[10px] font-bold">${(wilayahConfig.rws || []).length} Wilayah RW</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              ${rwCardsHtml}
+            </div>
+          </div>
+        </div>
+      `;
+      startPendingNotifTicker(pendingRequests);
+    }
+
+    // 7. DATA PENDUDUK (FORM INPUT INLINE DI ATAS DATA + PENCARIAN PER KATA)
+    function handleResidentSearchInput(val) {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        residentSearchQuery = val.trim().toLowerCase();
+        renderResidentTableBody();
+      }, 320);
+    }
+
+    function renderResidentsPage() {
+      const container = document.getElementById('main-content');
+      const rtFilterHtml = currentUser.role === 'superadmin'
+        ? `<select id="filter-resident-rt" onchange="residentRtFilter = this.value; renderResidentTableBody();" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+            <option value="ALL">Semua RT</option>
+            ${(wilayahConfig.rts || []).map(r => `<option value="${r.rt}" ${residentRtFilter === r.rt ? 'selected' : ''}>RT ${r.rt} / RW ${r.rw}</option>`).join('')}
+          </select>`
+        : `<span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">Wilayah Terkunci: RT ${escapeHTML(currentUser.rt)}</span>`;
+
+      const rwOptionsHtml = (wilayahConfig.rws || []).map(rwObj => {
+        const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+        return `<option value="${rwCode}">RW ${rwCode}</option>`;
+      }).join('');
+
+      const availableRts = currentUser.role === 'admin_rt'
+        ? (wilayahConfig.rts || []).filter(r => r.rt === currentUser.rt)
+        : (wilayahConfig.rts || []);
+      const rtOptionsHtml = availableRts.map(r => `<option value="${r.rt}">RT ${r.rt} (RW ${r.rw})</option>`).join('');
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <!-- Form Input / Edit Penduduk Langsung di Atas Tabel Data -->
+          <div class="bg-white rounded-2xl p-4 border border-emerald-200/80 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <div>
+                <h3 id="resident-inline-form-title" class="text-sm font-bold text-slate-900">Input Data Penduduk Baru</h3>
+                <p class="text-[11px] text-slate-500">Isi formulir di bawah ini untuk menambahkan atau memperbarui data warga secara langsung.</p>
+              </div>
+              <button type="button" id="resident-cancel-edit-btn" onclick="resetInlineResidentForm()" class="hidden px-3 py-1 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200">
+                Batal Edit
+              </button>
+            </div>
+
+            <form id="resident-form" onsubmit="saveResident(event)" class="space-y-2.5">
+              <input type="hidden" id="res-id" />
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">NIK (16 Digit) *</label>
+                  <input type="text" id="res-nik" required maxlength="16" minlength="16" pattern="\\d{16}" placeholder="16 digit NIK" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">No. Kartu Keluarga (KK) *</label>
+                  <input type="text" id="res-kk" required maxlength="16" placeholder="16 digit No. KK" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Lengkap *</label>
+                  <input type="text" id="res-nama" required placeholder="Nama sesuai KTP" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">PIN Login Warga *</label>
+                  <input type="text" id="res-pin" required maxlength="6" minlength="4" placeholder="6 digit PIN" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Jenis Kelamin *</label>
+                  <select id="res-jk" required class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none">
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Tempat Lahir *</label>
+                  <input type="text" id="res-tempat-lahir" required placeholder="Kota/Kab" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Tanggal Lahir *</label>
+                  <input type="date" id="res-tgl-lahir" required class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RT *</label>
+                  <select id="res-rt" onchange="autoSetRwFromRt()" required class="w-full px-2.5 py-1.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs font-semibold">${rtOptionsHtml}</select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RW *</label>
+                  <select id="res-rw" required class="w-full px-2.5 py-1.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs font-semibold">${rwOptionsHtml}</select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Agama</label>
+                  <select id="res-agama" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Pekerjaan *</label>
+                  <input type="text" id="res-pekerjaan" required placeholder="Petani / Wiraswasta / Pelajar" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Status</label>
+                  <select id="res-status" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                    <option value="Tetap">Tetap</option>
+                    <option value="Pendatang">Pendatang</option>
+                  </select>
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Alamat Lengkap *</label>
+                  <input type="text" id="res-alamat" required placeholder="Blok / No. Rumah" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3 flex gap-2">
+                  <button type="submit" id="resident-submit-btn" class="w-full py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-2xs">
+                    <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                    <span id="resident-submit-btn-label">Simpan Penduduk</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tabel Daftar Penduduk -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2 flex-1">
+                <div class="relative flex-1 min-w-[200px] max-w-sm">
+                  <input type="text" value="${escapeHTML(residentSearchQuery)}" oninput="handleResidentSearchInput(this.value)" placeholder="Cari nama, NIK, atau alamat (per kata)..." class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+                </div>
+                ${rtFilterHtml}
+              </div>
+              <span class="text-xs font-semibold text-slate-500">Total Tampil: <strong id="resident-visible-count" class="text-slate-800">0</strong> Warga</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-200 text-[11px] uppercase text-slate-500">
+                    <th class="py-2.5 px-3 w-10 text-center">No.</th>
+                    <th class="py-2.5 px-3">NIK / KK</th>
+                    <th class="py-2.5 px-3">Nama Lengkap</th>
+                    <th class="py-2.5 px-3">L/P</th>
+                    <th class="py-2.5 px-3">RT/RW</th>
+                    <th class="py-2.5 px-3">Pekerjaan & Alamat</th>
+                    <th class="py-2.5 px-3 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="resident-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+      autoSetRwFromRt();
+      renderResidentTableBody();
+    }
+
+    function renderResidentTableBody() {
+      const tbody = document.getElementById('resident-table-body');
+      const countEl = document.getElementById('resident-visible-count');
+      if (!tbody) return;
+      let list = getAccessibleResidents();
+      if (currentUser.role === 'superadmin' && residentRtFilter !== 'ALL') {
+        list = list.filter(r => r.rt === residentRtFilter);
+      }
+      if (residentSearchQuery) {
+        const words = residentSearchQuery.split(/\s+/).filter(Boolean);
+        list = list.filter(r => {
+          const hay = `${r.nama} ${r.nik} ${r.kk} ${r.alamat} ${r.pekerjaan}`.toLowerCase();
+          return words.every(w => hay.includes(w));
+        });
+      }
+
+      if (countEl) countEl.textContent = list.length;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400">Tidak ada data penduduk yang sesuai pencarian.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map((r, index) => `
+        <tr class="hover:bg-slate-50/80 animate-smooth-slide">
+          <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
+          <td class="py-2.5 px-3 font-mono text-[11px]">
+            <div class="font-semibold text-slate-800">${escapeHTML(r.nik)}</div>
+            <div class="text-slate-400">KK: ${escapeHTML(r.kk)}</div>
+          </td>
+          <td class="py-2.5 px-3">
+            <div class="font-bold text-slate-900">${escapeHTML(r.nama)}</div>
+            <div class="text-[11px] text-slate-500">PIN Login: <span class="font-mono font-semibold">${escapeHTML(r.pin)}</span></div>
+          </td>
+          <td class="py-2.5 px-3">${r.jk === 'Laki-laki' ? 'L' : 'P'}</td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-slate-100 font-semibold">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</span></td>
+          <td class="py-2.5 px-3">
+            <div>${escapeHTML(r.pekerjaan)}</div>
+            <div class="text-[11px] text-slate-500">${escapeHTML(r.alamat)}</div>
+          </td>
+          <td class="py-2.5 px-3 text-right space-x-1 whitespace-nowrap">
+            <button type="button" onclick="openResidentModal('${r.id}')" class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 font-semibold">Edit</button>
+            <button type="button" onclick="deleteResident('${r.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 font-semibold">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function resetInlineResidentForm() {
+      const form = document.getElementById('resident-form');
+      if (!form) return;
+      form.reset();
+      document.getElementById('res-id').value = '';
+      document.getElementById('resident-inline-form-title').textContent = 'Input Data Penduduk Baru';
+      document.getElementById('resident-submit-btn-label').textContent = 'Simpan Penduduk';
+      document.getElementById('resident-cancel-edit-btn').classList.add('hidden');
+      autoSetRwFromRt();
+    }
+
+    function openResidentModal(id = null) {
+      if (!id) {
+        resetInlineResidentForm();
+        const nikInput = document.getElementById('res-nik');
+        if (nikInput) nikInput.focus();
+        return;
+      }
+
+      const res = residents.find(r => r.id === id);
+      if (!res) return;
+
+      document.getElementById('res-id').value = res.id;
+      document.getElementById('resident-inline-form-title').textContent = `Edit Data Penduduk: ${res.nama}`;
+      document.getElementById('resident-submit-btn-label').textContent = 'Update Data';
+      document.getElementById('resident-cancel-edit-btn').classList.remove('hidden');
+
+      document.getElementById('res-nik').value = res.nik || '';
+      document.getElementById('res-kk').value = res.kk || '';
+      document.getElementById('res-nama').value = res.nama || '';
+      document.getElementById('res-pin').value = res.pin || '';
+      document.getElementById('res-jk').value = res.jk || 'Laki-laki';
+      document.getElementById('res-tempat-lahir').value = res.tempatLahir || '';
+      document.getElementById('res-tgl-lahir').value = res.tglLahir || '';
+      document.getElementById('res-rt').value = res.rt || '01';
+      document.getElementById('res-rw').value = res.rw || '01';
+      document.getElementById('res-status').value = res.status || 'Tetap';
+      document.getElementById('res-agama').value = res.agama || 'Islam';
+      document.getElementById('res-pekerjaan').value = res.pekerjaan || '';
+      document.getElementById('res-alamat').value = res.alamat || '';
+
+      const mainWorkspace = document.getElementById('main-workspace');
+      if (mainWorkspace) mainWorkspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeResidentModal() {
+      resetInlineResidentForm();
+    }
+
+    function autoSetRwFromRt() {
+      const rtEl = document.getElementById('res-rt');
+      const rwEl = document.getElementById('res-rw');
+      if (!rtEl || !rwEl) return;
+      const found = (wilayahConfig.rts || []).find(r => r.rt === rtEl.value);
+      if (found) rwEl.value = found.rw;
+    }
+
+    function saveResident(e) {
+      e.preventDefault();
+      const id = document.getElementById('res-id').value;
+      const nik = document.getElementById('res-nik').value.trim();
+      const duplicate = residents.find(r => r.nik === nik && r.id !== id);
+      if (duplicate) {
+        showToast('NIK sudah terdaftar atas nama ' + duplicate.nama, 'error');
+        return;
+      }
+
+      const existing = id ? residents.find(r => r.id === id) : null;
+      const record = {
+        id: id || 'res-' + Date.now(),
+        nik,
+        kk: document.getElementById('res-kk').value.trim(),
+        nama: document.getElementById('res-nama').value.trim(),
+        pin: document.getElementById('res-pin').value.trim(),
+        jk: document.getElementById('res-jk').value,
+        tempatLahir: document.getElementById('res-tempat-lahir').value.trim(),
+        tglLahir: document.getElementById('res-tgl-lahir').value,
+        rw: document.getElementById('res-rw').value,
+        rt: document.getElementById('res-rt').value,
+        status: document.getElementById('res-status').value,
+        agama: document.getElementById('res-agama').value,
+        pekerjaan: document.getElementById('res-pekerjaan').value.trim(),
+        alamat: document.getElementById('res-alamat').value.trim(),
+        bantuan: existing && Array.isArray(existing.bantuan) ? existing.bantuan : []
+      };
+
+      if (id) {
+        const idx = residents.findIndex(r => r.id === id);
+        if (idx !== -1) residents[idx] = record;
+        showToast('Data penduduk berhasil diperbarui.', 'success');
+      } else {
+        residents.unshift(record);
+        showToast('Penduduk baru berhasil ditambahkan.', 'success');
+      }
+
+      saveAllDataToLocal();
+      resetInlineResidentForm();
+      renderResidentTableBody();
+    }
+
+    function deleteResident(id) {
+      const target = residents.find(r => r.id === id);
+      if (!target) return;
+      openConfirmModal('Hapus Data Penduduk', `Yakin ingin menghapus data warga "${target.nama}" (NIK: ${target.nik})?`, () => {
+        residents = residents.filter(r => r.id !== id);
+        saveAllDataToLocal();
+        renderCurrentPage();
+        showToast('Data penduduk dihapus.', 'info');
+      });
+    }
+
+    // 8. DATA WARGA PENERIMA BANTUAN
+    let bantuanSearchQuery = '';
+    let bantuanFilterType = 'ALL';
+    let bantuanResidentPickerQuery = '';
+
+    function filterBantuanResidentOptions(query) {
+      bantuanResidentPickerQuery = query.trim().toLowerCase();
+      const selectEl = document.getElementById('bantuan-resident-select');
+      if (!selectEl) return;
+      const accessible = getAccessibleResidents();
+      const words = bantuanResidentPickerQuery.split(/\s+/).filter(Boolean);
+      const filtered = words.length === 0
+        ? accessible
+        : accessible.filter(r => {
+            const hay = `${r.nama} ${r.nik} rt ${r.rt} ${r.alamat || ''}`.toLowerCase();
+            return words.every(w => hay.includes(w));
+          });
+
+      if (filtered.length === 0) {
+        selectEl.innerHTML = `<option value="">-- Tidak ada warga yang cocok (${escapeHTML(query)}) --</option>`;
+        return;
+      }
+
+      selectEl.innerHTML = (words.length === 0 ? `<option value="">-- Pilih Warga (${filtered.length} warga) --</option>` : '') +
+        filtered.map(r => `<option value="${r.id}">${escapeHTML(r.nama)} (NIK: ${escapeHTML(r.nik)} - RT ${escapeHTML(r.rt)})</option>`).join('');
+    }
+
+    function renderBantuanPage() {
+      const container = document.getElementById('main-content');
+      const accessible = getAccessibleResidents();
+      const recipients = accessible.filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0);
+      bantuanResidentPickerQuery = '';
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Penetapan Bantuan Sosial Warga</h3>
+              <p class="text-[11px] text-slate-500">Cari nama atau NIK warga agar lebih cepat ditemukan tanpa scroll panjang, lalu tetapkan bantuannya.</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold">Total Penerima: ${recipients.length} Warga</span>
+          </div>
+
+          <form onsubmit="assignBantuanToResident(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end p-3.5 rounded-xl bg-teal-50/70 border border-teal-100">
+            <div class="sm:col-span-3">
+              <label class="block text-[10px] font-bold text-teal-900 uppercase mb-1">Cari Warga (Nama / NIK)</label>
+              <div class="relative">
+                <input type="text" id="bantuan-resident-search" oninput="filterBantuanResidentOptions(this.value)" placeholder="Ketik nama / NIK..." class="w-full pl-8 pr-2.5 bg-white border border-teal-200 rounded-xl text-xs focus:ring-2 focus:ring-teal-500 outline-none" />
+                <i data-lucide="search" class="w-3.5 h-3.5 text-teal-500 absolute left-2.5 top-2.5"></i>
+              </div>
+            </div>
+            <div class="sm:col-span-4">
+              <label class="block text-[10px] font-bold text-teal-900 uppercase mb-1">Pilih Warga *</label>
+              <select id="bantuan-resident-select" required class="w-full px-3 bg-white border border-teal-200 rounded-xl text-xs font-medium">
+                <option value="">-- Pilih Warga (${accessible.length} warga) --</option>
+                ${accessible.map(r => `<option value="${r.id}">${escapeHTML(r.nama)} (NIK: ${escapeHTML(r.nik)} - RT ${escapeHTML(r.rt)})</option>`).join('')}
+              </select>
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-[10px] font-bold text-teal-900 uppercase mb-1">Jenis Bantuan *</label>
+              <select id="bantuan-type-select" required class="w-full px-3 bg-white border border-teal-200 rounded-xl text-xs font-medium">
+                ${bantuanTypes.map(bt => `<option value="${escapeHTML(bt)}">${escapeHTML(bt)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <button type="submit" class="w-full h-9 px-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-2xs">+ Tetapkan</button>
+            </div>
+          </form>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <input type="text" value="${escapeHTML(bantuanSearchQuery)}" oninput="bantuanSearchQuery = this.value.trim().toLowerCase(); renderBantuanTableBody();" placeholder="Cari nama atau NIK penerima..." class="flex-1 min-w-[200px] max-w-sm px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+            <select onchange="bantuanFilterType = this.value; renderBantuanTableBody();" class="px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+              <option value="ALL">Semua Jenis Bantuan</option>
+              ${bantuanTypes.map(bt => `<option value="${escapeHTML(bt)}" ${bantuanFilterType === bt ? 'selected' : ''}>${escapeHTML(bt)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 text-[11px] uppercase text-slate-500">
+                  <th class="py-2 px-3 w-10 text-center">No.</th>
+                  <th class="py-2 px-3">Nama Warga & NIK</th>
+                  <th class="py-2 px-3">RT/RW</th>
+                  <th class="py-2 px-3">Jenis Bantuan Diterima</th>
+                </tr>
+              </thead>
+              <tbody id="bantuan-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      renderBantuanTableBody();
+    }
+
+    function renderBantuanTableBody() {
+      const tbody = document.getElementById('bantuan-table-body');
+      if (!tbody) return;
+      let list = getAccessibleResidents().filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0);
+      if (bantuanFilterType !== 'ALL') {
+        list = list.filter(r => r.bantuan.includes(bantuanFilterType));
+      }
+      if (bantuanSearchQuery) {
+        const words = bantuanSearchQuery.split(/\s+/).filter(Boolean);
+        list = list.filter(r => words.every(w => `${r.nama} ${r.nik} ${r.bantuan.join(' ')}`.toLowerCase().includes(w)));
+      }
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-5 text-center text-slate-400">Belum ada warga penerima bantuan yang sesuai.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map((r, index) => `
+        <tr class="hover:bg-slate-50 animate-smooth-slide">
+          <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
+          <td class="py-2.5 px-3">
+            <div class="font-bold text-slate-900">${escapeHTML(r.nama)}</div>
+            <div class="text-[11px] font-mono text-slate-500">${escapeHTML(r.nik)}</div>
+          </td>
+          <td class="py-2.5 px-3">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</td>
+          <td class="py-2.5 px-3">
+            <div class="flex flex-wrap gap-1.5">
+              ${r.bantuan.map(bt => `
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-[11px] font-semibold">
+                  ${escapeHTML(bt)}
+                  <button type="button" onclick="removeBantuanFromResident('${r.id}', '${escapeHTML(bt)}')" class="text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              `).join('')}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function assignBantuanToResident(e) {
+      e.preventDefault();
+      const resId = document.getElementById('bantuan-resident-select').value;
+      const jenis = document.getElementById('bantuan-type-select').value;
+      const res = residents.find(r => r.id === resId);
+      if (!res) return;
+      if (!Array.isArray(res.bantuan)) res.bantuan = [];
+      if (!res.bantuan.includes(jenis)) {
+        res.bantuan.push(jenis);
+        saveAllDataToLocal();
+        renderBantuanPage();
+        showToast(`Bantuan "${jenis}" ditambahkan untuk ${res.nama}.`, 'success');
+      } else {
+        showToast('Warga sudah terdaftar pada jenis bantuan tersebut.', 'info');
+      }
+    }
+
+    function removeBantuanFromResident(resId, jenis) {
+      const res = residents.find(r => r.id === resId);
+      if (!res || !Array.isArray(res.bantuan)) return;
+      res.bantuan = res.bantuan.filter(b => b !== jenis);
+      saveAllDataToLocal();
+      renderBantuanPage();
+      showToast('Status bantuan warga diperbarui.', 'info');
+    }
+
+    // 9. KELOMPOK GIAT WARGA (UMKM, KELOMPOK TANI, PKK, DLL.)
+    function renderGiatPage() {
+      const container = document.getElementById('main-content');
+      const accessibleResidents = getAccessibleResidents();
+      const visibleGroups = currentUser.role === 'admin_rt'
+        ? giatGroups.filter(g => !g.rt || g.rt === 'ALL' || g.rt === currentUser.rt)
+        : giatGroups;
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">Tambah Kelompok Giat Warga Baru</h3>
+            <form onsubmit="addGiatGroup(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+              <input type="text" id="giat-nama" required placeholder="Nama Kelompok (mis. Kelompok Tani Makmur / UMKM)" class="sm:col-span-4 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <input type="text" id="giat-kategori" required placeholder="Bidang (Pertanian / UMKM / PKK)" class="sm:col-span-3 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <input type="text" id="giat-jadwal" placeholder="Jadwal (mis. Minggu Pagi)" class="sm:col-span-3 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <button type="submit" class="sm:col-span-2 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold">+ Kelompok</button>
+            </form>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${visibleGroups.map(grp => {
+              const memberObjs = (grp.anggotaNiks || [])
+                .map(nik => residents.find(r => r.nik === nik))
+                .filter(Boolean)
+                .filter(r => currentUser.role !== 'admin_rt' || r.rt === currentUser.rt);
+
+              return `
+                <div class="bg-white rounded-2xl p-4 border border-slate-200/80 flex flex-col justify-between space-y-3">
+                  <div>
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 text-[10px] font-bold uppercase">${escapeHTML(grp.kategori)}</span>
+                        <h4 class="text-sm font-bold text-slate-900 mt-1">${escapeHTML(grp.nama)}</h4>
+                        <p class="text-[11px] text-slate-500">Jadwal: ${escapeHTML(grp.jadwal || '-')}</p>
+                      </div>
+                      <button type="button" onclick="deleteGiatGroup('${grp.id}')" class="px-2 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-semibold">Hapus</button>
+                    </div>
+
+                    <form onsubmit="addMemberToGiat(event, '${grp.id}')" class="flex gap-1.5 mt-3">
+                      <select id="select-member-${grp.id}" required class="flex-1 px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                        <option value="">+ Pilih warga untuk ditambahkan...</option>
+                        ${accessibleResidents.map(r => `<option value="${escapeHTML(r.nik)}">${escapeHTML(r.nama)} (RT ${escapeHTML(r.rt)})</option>`).join('')}
+                      </select>
+                      <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0">Tambah</button>
+                    </form>
+
+                    <div class="mt-3 space-y-1.5 max-h-44 overflow-y-auto">
+                      ${memberObjs.length === 0
+                        ? `<p class="text-[11px] text-slate-400 italic py-2">Belum ada anggota terdaftar.</p>`
+                        : memberObjs.map((m, mIdx) => `
+                          <div class="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs">
+                            <div>
+                              <span class="font-semibold text-slate-400 mr-1.5">${mIdx + 1}.</span>
+                              <span class="font-semibold text-slate-800">${escapeHTML(m.nama)}</span>
+                              <span class="text-[10px] text-slate-500 ml-1">(RT ${escapeHTML(m.rt)})</span>
+                            </div>
+                            <button type="button" onclick="removeMemberFromGiat('${grp.id}', '${escapeHTML(m.nik)}')" class="text-rose-600 hover:underline text-[11px] font-semibold">Keluarkan</button>
+                          </div>
+                        `).join('')
+                      }
+                    </div>
+                  </div>
+                  <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
+                    <span>Jumlah Anggota</span>
+                    <strong class="text-slate-800">${memberObjs.length} Warga</strong>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function addGiatGroup(e) {
+      e.preventDefault();
+      giatGroups.unshift({
+        id: 'giat-' + Date.now(),
+        nama: document.getElementById('giat-nama').value.trim(),
+        kategori: document.getElementById('giat-kategori').value.trim(),
+        jadwal: document.getElementById('giat-jadwal').value.trim() || 'Sesuai Kesepakatan',
+        rt: currentUser.role === 'admin_rt' ? currentUser.rt : 'ALL',
+        anggotaNiks: []
+      });
+      saveAllDataToLocal();
+      renderGiatPage();
+      showToast('Kelompok giat warga berhasil dibuat.', 'success');
+    }
+
+    function deleteGiatGroup(id) {
+      giatGroups = giatGroups.filter(g => g.id !== id);
+      saveAllDataToLocal();
+      renderGiatPage();
+      showToast('Kelompok giat dihapus.', 'info');
+    }
+
+    function addMemberToGiat(e, groupId) {
+      e.preventDefault();
+      const sel = document.getElementById(`select-member-${groupId}`);
+      const nik = sel ? sel.value : '';
+      const grp = giatGroups.find(g => g.id === groupId);
+      if (!grp || !nik) return;
+      if (!Array.isArray(grp.anggotaNiks)) grp.anggotaNiks = [];
+      if (!grp.anggotaNiks.includes(nik)) {
+        grp.anggotaNiks.push(nik);
+        saveAllDataToLocal();
+        renderGiatPage();
+        showToast('Anggota berhasil ditambahkan.', 'success');
+      } else {
+        showToast('Warga sudah tergabung di kelompok ini.', 'info');
+      }
+    }
+
+    function removeMemberFromGiat(groupId, nik) {
+      const grp = giatGroups.find(g => g.id === groupId);
+      if (!grp) return;
+      grp.anggotaNiks = (grp.anggotaNiks || []).filter(n => n !== nik);
+      saveAllDataToLocal();
+      renderGiatPage();
+      showToast('Anggota dikeluarkan dari kelompok.', 'info');
+    }
+
+    // 10. PERMOHONAN & RIWAYAT SURAT
+    function renderPermohonanPage() {
+      const container = document.getElementById('main-content');
+      const list = getAccessibleRequests();
+      const isWarga = currentUser.role === 'warga';
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">${isWarga ? 'Pengajuan & Status Surat Saya' : 'Daftar Permohonan Surat Masuk'}</h3>
+              <p class="text-[11px] text-slate-500">${isWarga ? 'Ajukan surat keterangan online dan pantau status kesiapan pengambilan surat.' : 'Verifikasi, edit redaksi isi surat, dan cetak dokumen resmi warga.'}</p>
+            </div>
+            <button type="button" onclick="openRequestModal()" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="file-plus" class="w-3.5 h-3.5"></i> ${isWarga ? 'Ajukan Surat Baru' : 'Buat Surat Warga'}
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 text-[11px] uppercase text-slate-500">
+                  <th class="py-2.5 px-3 w-10 text-center">No.</th>
+                  <th class="py-2.5 px-3">Tanggal</th>
+                  <th class="py-2.5 px-3">Pemohon</th>
+                  <th class="py-2.5 px-3">Jenis Surat & Keperluan</th>
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3 text-right">Tindakan</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-xs">
+                ${list.length === 0
+                  ? `<tr><td colspan="6" class="py-6 text-center text-slate-400">Belum ada riwayat permohonan surat.</td></tr>`
+                  : list.map((req, index) => {
+                    let badgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
+                    if (req.status === 'Disetujui') badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                    else if (req.status === 'Perlu Revisi') badgeClass = 'bg-orange-50 text-orange-700 border-orange-200';
+                    else if (req.status === 'Ditolak') badgeClass = 'bg-rose-50 text-rose-700 border-rose-200';
+
+                    const actionHtml = isWarga
+                      ? `<div class="inline-flex items-center gap-1">
+                          ${req.status === 'Disetujui'
+                            ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px]">Selesai • Siap Diambil</span>`
+                            : req.status === 'Perlu Revisi'
+                              ? `<button type="button" onclick="openRequestModal(null, '${req.id}')" class="px-2.5 py-1 rounded-lg bg-orange-600 text-white font-bold text-[11px]">Perlu Revisi • Edit</button>`
+                              : `<button type="button" onclick="openRequestModal(null, '${req.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[11px]">Edit Isi Surat</button>`}
+                          ${req.status !== 'Disetujui'
+                            ? `<button type="button" onclick="deleteLetterRequest('${req.id}')" class="px-2 py-1 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-[11px]" title="Hapus Permohonan Surat">Hapus</button>`
+                            : ''}
+                        </div>`
+                      : `<div class="inline-flex items-center gap-1">
+                          <button type="button" onclick="openRequestModal(null, '${req.id}')" class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold">Proses / Edit</button>
+                          <button type="button" onclick="openPrintPreview('${req.id}')" class="px-2.5 py-1 rounded-lg bg-brand-600 text-white hover:bg-brand-700 font-semibold">Pratinjau & Cetak</button>
+                          <button type="button" onclick="deleteLetterRequest('${req.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold">Hapus</button>
+                        </div>`;
+
+                    return `
+                      <tr class="hover:bg-slate-50/80">
+                        <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
+                        <td class="py-2.5 px-3 whitespace-nowrap text-slate-500">${escapeHTML(req.tanggal || '-')}</td>
+                        <td class="py-2.5 px-3">
+                          <div class="font-bold text-slate-900">${escapeHTML(req.namaPemohon)}</div>
+                          <div class="text-[11px] text-slate-500">RT ${escapeHTML(req.rt)} / RW ${escapeHTML(req.rw)}</div>
+                        </td>
+                        <td class="py-2.5 px-3">
+                          <div class="font-semibold text-slate-800">${escapeHTML(req.templateNama)}</div>
+                          <div class="text-[11px] text-slate-500">${escapeHTML(req.keperluan)}</div>
+                          ${req.nomorSurat ? `<div class="text-[10px] font-mono text-brand-700 mt-0.5">No/Ket: ${escapeHTML(req.nomorSurat)}</div>` : ''}
+                        </td>
+                        <td class="py-2.5 px-3 whitespace-nowrap">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] leading-tight font-bold whitespace-nowrap ${badgeClass}">
+                            ${req.status === 'Disetujui' ? 'Selesai & Siap Diambil' : escapeHTML(req.status)}
+                          </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-right whitespace-nowrap">${actionHtml}</td>
+                      </tr>
+                    `;
+                  }).join('')
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function openRequestModal(preselectedTemplateId = null, editRequestId = null) {
+      const modal = document.getElementById('letter-request-modal');
+      const form = document.getElementById('letter-request-form');
+      form.reset();
+
+      const pemohonSelect = document.getElementById('req-pemohon-nik');
+      const tplSelect = document.getElementById('req-template-id');
+      const adminBox = document.getElementById('req-admin-status-box');
+
+      const accessibleResidents = getAccessibleResidents();
+      pemohonSelect.innerHTML = accessibleResidents.map(r => `<option value="${escapeHTML(r.nik)}">${escapeHTML(r.nama)} (NIK: ${escapeHTML(r.nik)})</option>`).join('');
+      tplSelect.innerHTML = letterTemplates.map(t => `<option value="${t.id}">${escapeHTML(t.nama)}</option>`).join('');
+
+      if (currentUser.role === 'warga') {
+        pemohonSelect.value = currentUser.nik;
+        pemohonSelect.disabled = true;
+        adminBox.classList.add('hidden');
+        adminBox.classList.remove('grid');
+        document.getElementById('req-submit-btn-text').textContent = 'Kirim Permohonan Surat';
+      } else {
+        pemohonSelect.disabled = false;
+        adminBox.classList.remove('hidden');
+        adminBox.classList.add('grid');
+        document.getElementById('req-submit-btn-text').textContent = 'Simpan & Perbarui Status';
+      }
+
+      document.getElementById('req-edit-id').value = editRequestId || '';
+
+      if (editRequestId) {
+        const existing = letterRequests.find(r => r.id === editRequestId);
+        if (existing) {
+          pemohonSelect.value = existing.nik;
+          tplSelect.value = existing.templateId;
+          document.getElementById('req-keperluan').value = existing.keperluan || '';
+          document.getElementById('req-custom-body').value = existing.customBody || '';
+          document.getElementById('req-status').value = existing.status || 'Menunggu Verifikasi';
+          document.getElementById('req-nomor-surat').value = existing.nomorSurat || '';
+        }
+      } else {
+        if (preselectedTemplateId) tplSelect.value = preselectedTemplateId;
+        populateLetterDraft(true);
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeRequestModal() {
+      const modal = document.getElementById('letter-request-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function populateLetterDraft(forceReset = false) {
+      const editId = document.getElementById('req-edit-id').value;
+      if (editId && !forceReset) return;
+
+      const nik = document.getElementById('req-pemohon-nik').value;
+      const tplId = document.getElementById('req-template-id').value;
+      const keperluan = document.getElementById('req-keperluan').value.trim() || '[Isi Keperluan Surat]';
+      const res = residents.find(r => r.nik === nik) || residents[0];
+      const tpl = letterTemplates.find(t => t.id === tplId) || letterTemplates[0];
+      if (!res || !tpl) return;
+
+      const text = tpl.isi
+        .replace(/\{NAMA\}/g, res.nama)
+        .replace(/\{NIK\}/g, res.nik)
+        .replace(/\{TTL\}/g, `${res.tempatLahir}, ${res.tglLahir}`)
+        .replace(/\{PEKERJAAN\}/g, res.pekerjaan)
+        .replace(/\{ALAMAT\}/g, res.alamat)
+        .replace(/\{RT\}/g, res.rt)
+        .replace(/\{RW\}/g, res.rw)
+        .replace(/\{KEPERLUAN\}/g, keperluan);
+
+      document.getElementById('req-custom-body').value = text;
+    }
+
+    function submitLetterRequest(e) {
+      e.preventDefault();
+      const editId = document.getElementById('req-edit-id').value;
+      const nik = document.getElementById('req-pemohon-nik').value;
+      const tplId = document.getElementById('req-template-id').value;
+      const res = residents.find(r => r.nik === nik);
+      const tpl = letterTemplates.find(t => t.id === tplId);
+      if (!res || !tpl) return;
+
+      const isWarga = currentUser.role === 'warga';
+      const statusVal = isWarga ? 'Menunggu Verifikasi' : document.getElementById('req-status').value;
+      const nomorVal = isWarga ? '' : document.getElementById('req-nomor-surat').value.trim();
+
+      const payload = {
+        id: editId || 'req-' + Date.now(),
+        tanggal: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+        nik: res.nik,
+        namaPemohon: res.nama,
+        rt: res.rt,
+        rw: res.rw,
+        templateId: tpl.id,
+        templateNama: tpl.nama,
+        keperluan: document.getElementById('req-keperluan').value.trim(),
+        customBody: document.getElementById('req-custom-body').value,
+        status: statusVal,
+        nomorSurat: nomorVal
+      };
+
+      if (editId) {
+        const idx = letterRequests.findIndex(r => r.id === editId);
+        if (idx !== -1) {
+          payload.tanggal = letterRequests[idx].tanggal;
+          letterRequests[idx] = payload;
+        }
+        showToast('Permohonan surat berhasil diperbarui.', 'success');
+      } else {
+        letterRequests.unshift(payload);
+        showToast('Permohonan surat berhasil dikirim.', 'success');
+      }
+
+      saveAllDataToLocal();
+      updateNotificationBadges();
+      closeRequestModal();
+      renderCurrentPage();
+    }
+
+    function deleteLetterRequest(reqId) {
+      const target = letterRequests.find(r => r.id === reqId);
+      if (!target) return;
+      openConfirmModal(
+        'Hapus Permohonan Surat',
+        `Yakin ingin menghapus permohonan "${target.templateNama}" atas nama ${target.namaPemohon}?`,
+        () => {
+          letterRequests = letterRequests.filter(r => r.id !== reqId);
+          saveAllDataToLocal();
+          updateNotificationBadges();
+          renderCurrentPage();
+          showToast('Permohonan surat berhasil dihapus.', 'info');
+        }
+      );
+    }
+
+    function formatAlignedLetterBody(rawText) {
+      const lines = String(rawText || '').split('\n');
+      let html = '';
+      let tableRows = [];
+
+      const flushTable = () => {
+        if (tableRows.length === 0) return;
+        html += `<table class="w-full my-2 text-xs sm:text-sm border-collapse"><tbody>`;
+        tableRows.forEach(pair => {
+          html += `
+            <tr>
+              <td class="py-0.5 pr-2 align-top w-40 sm:w-44 font-normal">${escapeHTML(pair.label)}</td>
+              <td class="py-0.5 px-1.5 align-top w-4">:</td>
+              <td class="py-0.5 align-top font-medium">${escapeHTML(pair.value)}</td>
+            </tr>
+          `;
+        });
+        html += `</tbody></table>`;
+        tableRows = [];
+      };
+
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          flushTable();
+          html += `<div class="h-2"></div>`;
+          return;
+        }
+        const colonIdx = trimmed.indexOf(':');
+        if (colonIdx > 0 && colonIdx <= 32 && !trimmed.endsWith(':')) {
+          const label = trimmed.slice(0, colonIdx).trim();
+          const value = trimmed.slice(colonIdx + 1).trim();
+          tableRows.push({ label, value });
+        } else {
+          flushTable();
+          html += `<p>${escapeHTML(trimmed)}</p>`;
+        }
+      });
+      flushTable();
+      return html;
+    }
+
+    function openPrintPreview(reqId) {
+      const req = letterRequests.find(r => r.id === reqId);
+      if (!req) return;
+
+      document.getElementById('print-kop-logo').src = appSettings.logoUrl || DEFAULT_SETTINGS.logoUrl;
+      document.getElementById('print-kop-kab').textContent = `Pemerintah Kabupaten ${appSettings.kabupaten}`;
+      document.getElementById('print-kop-kec').textContent = `Kecamatan ${appSettings.kecamatan}`;
+      document.getElementById('print-kop-desa').textContent = `Desa ${appSettings.desa}`;
+      document.getElementById('print-kop-alamat').textContent = `Alamat: ${appSettings.alamat}`;
+
+      document.getElementById('print-letter-title').textContent = req.templateNama;
+      document.getElementById('print-letter-number').textContent = `Nomor: ${req.nomorSurat || '470 / ... / DS / ' + new Date().getFullYear()}`;
+      document.getElementById('print-letter-body').innerHTML = formatAlignedLetterBody(req.customBody);
+
+      const todayStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      document.getElementById('print-date-city').textContent = `${appSettings.desa}, ${todayStr}`;
+
+      const signerRole = appSettings.signerRole || 'Kepala Desa';
+      const headEl = document.getElementById('print-signer-head');
+      const titleEl = document.getElementById('print-signer-title');
+      if (headEl) headEl.textContent = `Kepala Desa ${appSettings.desa}`;
+      if (titleEl) {
+        if (signerRole === 'Kepala Desa') {
+          titleEl.textContent = '';
+          titleEl.classList.add('hidden');
+        } else {
+          const cleanTitle = (appSettings.signerTitle || '')
+            .replace(new RegExp(`^a\\.n\\.?\\s*Kepala\\s+Desa\\s+${appSettings.desa}\\s*\\/\\s*`, 'i'), 'a.n. ')
+            .trim();
+          const customSub = cleanTitle && cleanTitle !== `Kepala Desa ${appSettings.desa}`
+            ? (cleanTitle.toLowerCase().startsWith('a.n') ? cleanTitle : `a.n. ${cleanTitle}`)
+            : `a.n. ${signerRole}`;
+          titleEl.textContent = customSub;
+          titleEl.classList.remove('hidden');
+        }
+      }
+      document.getElementById('print-signer-name').textContent = appSettings.kades;
+
+      const modal = document.getElementById('print-preview-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closePrintModal() {
+      const modal = document.getElementById('print-preview-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // 11. KELOLA FORMAT & JENIS SURAT + PENGATURAN IDENTITAS DUSUN, KOP SURAT & RT/RW
+    function renderTemplatesPage() {
+      const container = document.getElementById('main-content');
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Varian & Format Surat Menyurat</h3>
+              <p class="text-[11px] text-slate-500">Format yang ditambahkan di sini otomatis dapat dipilih oleh warga pada menu layanan surat.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="navigateTo('pengaturan')" class="px-3 py-1.5 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold">Atur KOP & Logo Surat</button>
+              <button type="button" onclick="openTemplateModal()" class="px-3.5 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold">+ Tambah Format Surat</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${letterTemplates.map((t, index) => `
+              <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col justify-between gap-2">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-violet-100 text-violet-700 text-[10px] font-bold">#${index + 1} • Kode: ${escapeHTML(t.kode)}</span>
+                  <h4 class="text-sm font-bold text-slate-900 mt-1">${escapeHTML(t.nama)}</h4>
+                  <p class="text-[11px] text-slate-500 mt-0.5">${escapeHTML(t.deskripsi)}</p>
+                </div>
+                <div class="flex justify-end gap-1.5 pt-2 border-t border-slate-200/70">
+                  <button type="button" onclick="openTemplateModal('${t.id}')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-100">Edit Format</button>
+                  <button type="button" onclick="deleteLetterTemplate('${t.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-xs font-semibold text-rose-600 hover:bg-rose-100">Hapus</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openTemplateModal(id = null) {
+      const modal = document.getElementById('template-modal');
+      document.getElementById('template-form').reset();
+      document.getElementById('tpl-id').value = id || '';
+      document.getElementById('template-modal-title').textContent = id ? 'Edit Format Jenis Surat' : 'Tambah Varian Jenis Surat';
+      if (id) {
+        const tpl = letterTemplates.find(t => t.id === id);
+        if (tpl) {
+          document.getElementById('tpl-kode').value = tpl.kode;
+          document.getElementById('tpl-nama').value = tpl.nama;
+          document.getElementById('tpl-deskripsi').value = tpl.deskripsi;
+          document.getElementById('tpl-isi').value = tpl.isi;
+        }
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeTemplateModal() {
+      const modal = document.getElementById('template-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveLetterTemplate(e) {
+      e.preventDefault();
+      const id = document.getElementById('tpl-id').value;
+      const obj = {
+        id: id || 'tpl-' + Date.now(),
+        kode: document.getElementById('tpl-kode').value.trim(),
+        nama: document.getElementById('tpl-nama').value.trim(),
+        deskripsi: document.getElementById('tpl-deskripsi').value.trim(),
+        isi: document.getElementById('tpl-isi').value
+      };
+      if (id) {
+        const idx = letterTemplates.findIndex(t => t.id === id);
+        if (idx !== -1) letterTemplates[idx] = obj;
+      } else {
+        letterTemplates.push(obj);
+      }
+      saveAllDataToLocal();
+      closeTemplateModal();
+      renderTemplatesPage();
+      showToast('Format surat berhasil disimpan.', 'success');
+    }
+
+    function deleteLetterTemplate(id) {
+      letterTemplates = letterTemplates.filter(t => t.id !== id);
+      saveAllDataToLocal();
+      renderTemplatesPage();
+      showToast('Format surat dihapus.', 'info');
+    }
+
+    function handleLogoFileUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const urlInput = document.getElementById('set-logo');
+        if (urlInput) urlInput.value = reader.result;
+        const previewImg = document.getElementById('kop-preview-logo-img');
+        if (previewImg) previewImg.src = reader.result;
+        showToast('Logo berhasil dimuat. Klik Simpan Identitas & KOP Surat.', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateLiveKopPreview() {
+      const kab = document.getElementById('set-kab')?.value.trim() || appSettings.kabupaten;
+      const kec = document.getElementById('set-kec')?.value.trim() || appSettings.kecamatan;
+      const desa = document.getElementById('set-desa')?.value.trim() || appSettings.desa;
+      const alamat = document.getElementById('set-alamat')?.value.trim() || appSettings.alamat;
+      const logo = document.getElementById('set-logo')?.value.trim() || DEFAULT_SETTINGS.logoUrl;
+
+      const pKab = document.getElementById('kop-preview-kab');
+      const pKec = document.getElementById('kop-preview-kec');
+      const pDesa = document.getElementById('kop-preview-desa');
+      const pAlamat = document.getElementById('kop-preview-alamat');
+      const pLogo = document.getElementById('kop-preview-logo-img');
+
+      if (pKab) pKab.textContent = `Pemerintah Kabupaten ${kab}`;
+      if (pKec) pKec.textContent = `Kecamatan ${kec}`;
+      if (pDesa) pDesa.textContent = `Desa ${desa}`;
+      if (pAlamat) pAlamat.textContent = `Alamat: ${alamat}`;
+      if (pLogo) pLogo.src = logo;
+    }
+
+    function handleSignerRoleDropdownChange() {
+      const roleSelect = document.getElementById('set-signer-role');
+      const titleInput = document.getElementById('set-signer-title');
+      const desaVal = document.getElementById('set-desa')?.value.trim() || appSettings.desa;
+      if (!roleSelect || !titleInput) return;
+
+      const selectedRole = roleSelect.value;
+      if (selectedRole === 'Kepala Desa') {
+        titleInput.value = `Kepala Desa ${desaVal}`;
+      } else {
+        titleInput.value = `a.n. ${selectedRole}`;
+      }
+    }
+
+    function renderSettingsPage() {
+      const container = document.getElementById('main-content');
+      const currentSignerRole = appSettings.signerRole || 'Kepala Desa';
+      const roleOptions = [
+        'Kepala Desa',
+        'Sekretaris Desa',
+        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
+        'Kasi Pemerintahan',
+        'Kasi Pelayanan',
+        'Kasi Kesejahteraan',
+        'Kaur Keuangan',
+        'Kaur TU & Umum'
+      ];
+      const hasCurrentInOptions = roleOptions.includes(currentSignerRole);
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <!-- Identitas Dusun & Edit KOP Surat -->
+          <div class="ui-card p-4 border border-sky-200/90 space-y-3.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Identitas Dusun & Pengaturan Edit KOP Surat</h3>
+                <p class="text-[11px] text-slate-500">Atur identitas wilayah dusun, kepala dusun, serta redaksi KOP surat resmi & pejabat penandatangan.</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200 text-[10px] font-bold">Tersinkron ke Header & Cetak Surat</span>
+            </div>
+
+            <form onsubmit="saveGeneralSettings(event)" class="space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Dusun *</label>
+                  <input type="text" id="set-dusun" required value="${escapeHTML(appSettings.dusun)}" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Kepala Dusun (Kadus) *</label>
+                  <input type="text" id="set-kadus" required value="${escapeHTML(appSettings.kadus)}" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Nama Desa (KOP) *</label>
+                  <input type="text" id="set-desa" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.desa)}" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Kecamatan (KOP) *</label>
+                  <input type="text" id="set-kec" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.kecamatan)}" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Kabupaten (KOP) *</label>
+                  <input type="text" id="set-kab" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.kabupaten)}" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs font-semibold" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-5">
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Alamat Lengkap KOP Surat *</label>
+                  <input type="text" id="set-alamat" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.alamat)}" placeholder="Jl. Raya Dusun..." class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">URL Logo Kabupaten / Desa</label>
+                  <input type="text" id="set-logo" oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.logoUrl || '')}" placeholder="https://... atau unggah file di samping" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Unggah File Logo</label>
+                  <input type="file" accept="image/*" onchange="handleLogoFileUpload(event)" class="w-full text-[11px] text-slate-600 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-sky-100 file:text-sky-800 hover:file:bg-sky-200" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Pilih Jabatan Penandatangan *</label>
+                  <select id="set-signer-role" onchange="handleSignerRoleDropdownChange()" class="w-full px-3 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-semibold">
+                    ${roleOptions.map(role => `<option value="${escapeHTML(role)}" ${currentSignerRole === role ? 'selected' : ''}>${escapeHTML(role)}</option>`).join('')}
+                    ${!hasCurrentInOptions ? `<option value="${escapeHTML(currentSignerRole)}" selected>${escapeHTML(currentSignerRole)}</option>` : ''}
+                  </select>
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Keterangan Jabatan di Surat *</label>
+                  <input type="text" id="set-signer-title" required value="${escapeHTML((appSettings.signerTitle || 'Kepala Desa ' + appSettings.desa).replace(new RegExp(`^a\\.n\\.?\\s*Kepala\\s+Desa\\s+${appSettings.desa}\\s*\\/\\s*`, 'i'), 'a.n. '))}" placeholder="Contoh: a.n. Kepala Dusun 2" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Pejabat Penandatangan *</label>
+                  <input type="text" id="set-kades" required value="${escapeHTML(appSettings.kades)}" placeholder="Nama lengkap & gelar" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold" />
+                </div>
+                <div class="sm:col-span-3">
+                  <button type="submit" class="w-full h-9 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-2xs flex items-center justify-center gap-1.5">
+                    <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                    <span>Simpan Identitas & KOP</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pratinjau Langsung KOP Surat -->
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Pratinjau Langsung KOP Surat Resmi:</span>
+                <div class="bg-white p-3 rounded-lg border border-slate-200 flex items-center justify-between gap-3 font-serif">
+                  <div class="w-12 h-12 shrink-0 flex items-center justify-center">
+                    <img id="kop-preview-logo-img" src="${escapeHTML(appSettings.logoUrl || DEFAULT_SETTINGS.logoUrl)}" alt="Logo KOP" class="max-h-full max-w-full object-contain" />
+                  </div>
+                  <div class="flex-1 text-center">
+                    <p id="kop-preview-kab" class="text-[11px] font-bold tracking-widest uppercase">Pemerintah Kabupaten ${escapeHTML(appSettings.kabupaten)}</p>
+                    <p id="kop-preview-kec" class="text-[11px] font-bold tracking-wider uppercase">Kecamatan ${escapeHTML(appSettings.kecamatan)}</p>
+                    <h4 id="kop-preview-desa" class="text-sm font-extrabold tracking-wide uppercase">Desa ${escapeHTML(appSettings.desa)}</h4>
+                    <p id="kop-preview-alamat" class="text-[10px] italic text-slate-600">Alamat: ${escapeHTML(appSettings.alamat)}</p>
+                  </div>
+                  <div class="w-12 shrink-0 hidden sm:block"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Pengaturan RW & RT Manual -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            <div class="lg:col-span-5 ui-card p-4 border border-sky-100/90 space-y-3">
+              <h4 class="text-sm font-bold text-slate-900">Kelola Daftar RW & Pengurus RW</h4>
+              <form onsubmit="addRwManual(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end">
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">No. RW</label>
+                  <input type="text" id="new-rw-input" required maxlength="3" placeholder="03" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-6">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Nama Pengurus RW</label>
+                  <input type="text" id="new-rw-pengurus" required placeholder="Nama Pengurus" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3">
+                  <button type="submit" class="w-full h-9 px-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold">+ RW</button>
+                </div>
+              </form>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-[10px] uppercase text-slate-500">
+                      <th class="py-1.5 w-8 text-center">No.</th>
+                      <th class="py-1.5">RW</th>
+                      <th class="py-1.5">Nama Pengurus RW</th>
+                      <th class="py-1.5 text-right">Hapus</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    ${(wilayahConfig.rws || []).map((rwObj, idx) => {
+                      const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+                      const pengurus = typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-';
+                      return `
+                        <tr>
+                          <td class="py-1.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                          <td class="py-1.5 font-bold text-sky-800 whitespace-nowrap">RW ${escapeHTML(rwCode)}</td>
+                          <td class="py-1.5">${escapeHTML(pengurus)}</td>
+                          <td class="py-1.5 text-right"><button type="button" onclick="deleteRwManual('${rwCode}')" class="text-rose-600 font-bold">Hapus</button></td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 ui-card p-4 border border-emerald-100/90 space-y-3">
+              <h4 class="text-sm font-bold text-slate-900">Kelola Daftar RT & Akun Login Admin RT</h4>
+              <form onsubmit="addRtManual(event)" class="grid grid-cols-2 sm:grid-cols-12 gap-2 items-end">
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">No. RT</label>
+                  <input type="text" id="new-rt-no" required maxlength="3" placeholder="05" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Wilayah</label>
+                  <select id="new-rt-rw" class="w-full px-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+                    ${(wilayahConfig.rws || []).map(rwObj => {
+                      const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+                      return `<option value="${rwCode}">RW ${rwCode}</option>`;
+                    }).join('')}
+                  </select>
+                </div>
+                <div class="col-span-2 sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Ketua RT</label>
+                  <input type="text" id="new-rt-ketua" required placeholder="Nama Ketua RT" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">User</label>
+                  <input type="text" id="new-rt-user" required placeholder="rt05" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3 flex gap-1.5 items-end">
+                  <div class="flex-1">
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Sandi</label>
+                    <input type="text" id="new-rt-pass" required placeholder="Sandi" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  </div>
+                  <button type="submit" class="h-9 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shrink-0">+ RT</button>
+                </div>
+              </form>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-[10px] uppercase text-slate-500">
+                      <th class="py-1.5 w-8 text-center">No.</th>
+                      <th class="py-1.5">RT / RW</th>
+                      <th class="py-1.5">Ketua RT</th>
+                      <th class="py-1.5">Login Admin RT</th>
+                      <th class="py-1.5 text-right">Hapus</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    ${(wilayahConfig.rts || []).map((r, idx) => `
+                      <tr>
+                        <td class="py-1.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                        <td class="py-1.5 font-bold">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</td>
+                        <td class="py-1.5">${escapeHTML(r.ketua)}</td>
+                        <td class="py-1.5 font-mono text-[11px]">${escapeHTML(r.username)} / ${escapeHTML(r.password)}</td>
+                        <td class="py-1.5 text-right"><button type="button" onclick="deleteRtManual('${r.rt}')" class="text-rose-600 font-bold">Hapus</button></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pengaturan Master Jenis Bantuan -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+            <h4 class="text-sm font-bold text-slate-900">Master Jenis Bantuan Sosial Warga</h4>
+            <form onsubmit="addBantuanType(event)" class="flex gap-2 max-w-md">
+              <input type="text" id="new-bantuan-input" required placeholder="Nama jenis bantuan baru..." class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <button type="submit" class="px-4 py-1.5 rounded-xl bg-teal-600 text-white text-xs font-bold">+ Tambah Bantuan</button>
+            </form>
+            <div class="flex flex-wrap gap-1.5">
+              ${bantuanTypes.map(bt => `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-semibold">
+                  ${escapeHTML(bt)}
+                  <button type="button" onclick="deleteBantuanType('${escapeHTML(bt)}')" class="text-rose-600 font-bold">×</button>
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveGeneralSettings(e) {
+      e.preventDefault();
+      appSettings.dusun = document.getElementById('set-dusun').value.trim();
+      appSettings.desa = document.getElementById('set-desa').value.trim();
+      appSettings.kecamatan = document.getElementById('set-kec').value.trim();
+      appSettings.kabupaten = document.getElementById('set-kab').value.trim();
+      appSettings.kadus = document.getElementById('set-kadus').value.trim();
+      appSettings.logoUrl = document.getElementById('set-logo').value.trim() || DEFAULT_SETTINGS.logoUrl;
+      appSettings.signerRole = document.getElementById('set-signer-role')?.value || 'Kepala Desa';
+      appSettings.signerTitle = document.getElementById('set-signer-title').value.trim();
+      appSettings.kades = document.getElementById('set-kades').value.trim();
+      appSettings.alamat = document.getElementById('set-alamat').value.trim();
+      if (currentUser && currentUser.role === 'superadmin') {
+        currentUser.name = appSettings.kadus || 'Kepala Dusun';
+        sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
+        const sbName = document.getElementById('sidebar-user-name');
+        if (sbName) sbName.textContent = currentUser.name;
+      }
+      saveAllDataToLocal();
+      applyBrandingSettings();
+      showToast('Identitas Dusun, Desa & KOP Surat disimpan.', 'success');
+    }
+
+    function addRwManual(e) {
+      e.preventDefault();
+      const rw = document.getElementById('new-rw-input').value.trim().padStart(2, '0');
+      const pengurus = document.getElementById('new-rw-pengurus').value.trim();
+      const existingIdx = (wilayahConfig.rws || []).findIndex(item => (typeof item === 'string' ? item : item.rw) === rw);
+      if (existingIdx !== -1) {
+        wilayahConfig.rws[existingIdx] = { rw, pengurus };
+        showToast(`Data pengurus RW ${rw} diperbarui.`, 'success');
+      } else {
+        wilayahConfig.rws.push({ rw, pengurus });
+        wilayahConfig.rws.sort((a, b) => a.rw.localeCompare(b.rw));
+        showToast(`RW ${rw} & Pengurus berhasil ditambahkan.`, 'success');
+      }
+      saveAllDataToLocal();
+      renderSettingsPage();
+    }
+
+    function deleteRwManual(rw) {
+      wilayahConfig.rws = wilayahConfig.rws.filter(item => (typeof item === 'string' ? item : item.rw) !== rw);
+      saveAllDataToLocal();
+      renderSettingsPage();
+      showToast(`RW ${rw} dihapus.`, 'info');
+    }
+
+    function addRtManual(e) {
+      e.preventDefault();
+      const rt = document.getElementById('new-rt-no').value.trim().padStart(2, '0');
+      const rw = document.getElementById('new-rt-rw').value;
+      const ketua = document.getElementById('new-rt-ketua').value.trim();
+      const username = document.getElementById('new-rt-user').value.trim();
+      const password = document.getElementById('new-rt-pass').value.trim();
+      if (wilayahConfig.rts.some(r => r.rt === rt)) {
+        showToast('Nomor RT sudah ada.', 'error');
+        return;
+      }
+      wilayahConfig.rts.push({ rt, rw, ketua, username, password });
+      wilayahConfig.rts.sort((a, b) => a.rt.localeCompare(b.rt));
+      saveAllDataToLocal();
+      renderSettingsPage();
+      showToast(`RT ${rt} berhasil ditambahkan.`, 'success');
+    }
+
+    function deleteRtManual(rt) {
+      wilayahConfig.rts = wilayahConfig.rts.filter(r => r.rt !== rt);
+      saveAllDataToLocal();
+      renderSettingsPage();
+    }
+
+    function addBantuanType(e) {
+      e.preventDefault();
+      const val = document.getElementById('new-bantuan-input').value.trim();
+      if (val && !bantuanTypes.includes(val)) {
+        bantuanTypes.push(val);
+        saveAllDataToLocal();
+        renderSettingsPage();
+      }
+    }
+
+    function deleteBantuanType(name) {
+      bantuanTypes = bantuanTypes.filter(b => b !== name);
+      saveAllDataToLocal();
+      renderSettingsPage();
+    }
+
+    function renderWargaProfilePage() {
+      const container = document.getElementById('main-content');
+      const me = residents.find(r => r.nik === currentUser.nik);
+      if (!me) {
+        container.innerHTML = `<div class="p-4 bg-white rounded-2xl text-xs">Data warga tidak ditemukan.</div>`;
+        return;
+      }
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 max-w-2xl space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">${escapeHTML(me.nama)}</h3>
+              <p class="text-xs text-slate-500">NIK: ${escapeHTML(me.nik)} • No. KK: ${escapeHTML(me.kk)}</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">RT ${escapeHTML(me.rt)} / RW ${escapeHTML(me.rw)}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div><span class="text-slate-400 block">Tempat, Tanggal Lahir</span><strong>${escapeHTML(me.tempatLahir)}, ${escapeHTML(me.tglLahir)}</strong></div>
+            <div><span class="text-slate-400 block">Jenis Kelamin</span><strong>${escapeHTML(me.jk)}</strong></div>
+            <div><span class="text-slate-400 block">Agama</span><strong>${escapeHTML(me.agama)}</strong></div>
+            <div><span class="text-slate-400 block">Pekerjaan</span><strong>${escapeHTML(me.pekerjaan)}</strong></div>
+            <div class="sm:col-span-2"><span class="text-slate-400 block">Alamat Domisili</span><strong>${escapeHTML(me.alamat)}, RT ${escapeHTML(me.rt)} / RW ${escapeHTML(me.rw)}, ${escapeHTML(appSettings.dusun)}</strong></div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 12. INTEGRASI GOOGLE APPS SCRIPT (SUPER ADMIN)
+    function renderAppScriptPage() {
+      const container = document.getElementById('main-content');
+      const shareLink = appScriptUrl
+        ? `${window.location.origin}${window.location.pathname}?db=${encodeURIComponent(appScriptUrl)}`
+        : '';
+
+      const gsCode = `function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : 'pull';
+  if (action === 'pull') {
+    var configRows = getSheetRows(ss, 'Konfigurasi');
+    var configObj = configRows.length > 0 ? configRows[0] : {};
+    // Simpan otomatis URL Spreadsheet aktif ke dalam sheet Konfigurasi
+    if (!configObj.spreadsheetUrl) {
+      configObj.spreadsheetUrl = ss.getUrl();
+      saveSheetRows(ss, 'Konfigurasi', [configObj]);
+    }
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      config: configObj,
+      residents: getSheetRows(ss, 'Penduduk'),
+      templates: getSheetRows(ss, 'TemplateSurat'),
+      requests: getSheetRows(ss, 'PermohonanSurat'),
+      giatGroups: getSheetRows(ss, 'KelompokGiat')
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var payload = JSON.parse(e.postData.contents);
+  var configData = payload.config || {};
+  configData.spreadsheetUrl = ss.getUrl();
+  configData.updatedAt = new Date().toISOString();
+  saveSheetRows(ss, 'Konfigurasi', [configData]);
+
+  if (payload.residents) saveSheetRows(ss, 'Penduduk', payload.residents);
+  if (payload.templates) saveSheetRows(ss, 'TemplateSurat', payload.templates);
+  if (payload.requests) saveSheetRows(ss, 'PermohonanSurat', payload.requests);
+  if (payload.giatGroups) saveSheetRows(ss, 'KelompokGiat', payload.giatGroups);
+  return ContentService.createTextOutput(JSON.stringify({
+    status: 'saved',
+    spreadsheetUrl: ss.getUrl()
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getSheetRows(ss, name) {
+  var sheet = ss.getSheetByName(name);
+  if (!sheet) return [];
+  var values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+  var headers = values[0];
+  return values.slice(1).map(function(row) {
+    var obj = {};
+    headers.forEach(function(h, i) { obj[h] = row[i]; });
+    return obj;
+  });
+}
+
+function saveSheetRows(ss, name, list) {
+  var sheet = ss.getSheetByName(name) || ss.insertSheet(name);
+  sheet.clearContents();
+  if (!list || list.length === 0) return;
+  var headers = Object.keys(list[0]);
+  sheet.appendRow(headers);
+  list.forEach(function(item) {
+    sheet.appendRow(headers.map(function(h) {
+      var val = item[h];
+      return Array.isArray(val) ? val.join(', ') : val;
+    }));
+  });
+}`;
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-3.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">Koneksi Database & Konfigurasi Tersimpan di Spreadsheet</h3>
+                <p class="text-xs text-slate-500">Link Web App & URL Google Spreadsheet disimpan otomatis pada sheet <strong>Konfigurasi</strong> di dalam file Spreadsheet Anda.</p>
+              </div>
+              ${spreadsheetUrl ? `
+                <a href="${escapeHTML(spreadsheetUrl)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold inline-flex items-center gap-1.5 self-start">
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                  <span>Buka File Spreadsheet</span>
+                </a>
+              ` : ''}
+            </div>
+
+            <div class="grid grid-cols-1 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">URL Web App Google Apps Script *</label>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input type="url" id="appscript-url-input" value="${escapeHTML(appScriptUrl)}" placeholder="https://script.google.com/macros/s/XXXXX/exec" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  <button type="button" onclick="saveAppScriptUrl()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold">Simpan ke Spreadsheet</button>
+                  <button type="button" onclick="fetchDatabaseLinkFromKonfigurasiSheet()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold">Ambil dari Sheet Konfigurasi</button>
+                  <button type="button" onclick="autoScanAndSyncDatabase(false)" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold">Scan & Sinkron Cepat</button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">URL Google Spreadsheet (Opsional - Ambil Sheet Konfigurasi Langsung)</label>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input type="url" id="spreadsheet-url-input" value="${escapeHTML(spreadsheetUrl)}" placeholder="https://docs.google.com/spreadsheets/d/XXXXX/edit" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  <button type="button" onclick="pullKonfigurasiBySpreadsheetUrl()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shrink-0">Baca Sheet Konfigurasi</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <span class="text-[10px] font-bold uppercase text-slate-500 block">Link Google Spreadsheet (Diambil dari Sheet Konfigurasi)</span>
+                  <p class="text-xs font-mono text-slate-800 truncate mt-1">${spreadsheetUrl ? escapeHTML(spreadsheetUrl) : 'Belum terambil (Klik "Ambil dari Sheet Konfigurasi" atau "Kirim & Sinkron")'}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <span class="text-[10px] font-bold uppercase text-slate-500 block">Tautan Akses Cepat Perangkat Lain (Otomatis Terhubung DB)</span>
+                  ${shareLink ? `
+                    <div class="flex items-center gap-2 mt-1">
+                      <input type="text" id="share-db-link-input" readonly value="${escapeHTML(shareLink)}" class="flex-1 bg-white px-2 py-1 rounded border border-slate-200 text-[11px] font-mono text-slate-700" />
+                      <button type="button" onclick="copyShareDbLink()" class="px-2.5 py-1 rounded bg-slate-800 text-white text-[10px] font-bold shrink-0">Salin Link</button>
+                    </div>
+                  ` : `<p class="text-xs text-slate-400 mt-1">Simpan atau ambil URL Web App terlebih dahulu untuk membuat link.</p>`}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-slate-900">Kode Google Apps Script (Kode.gs) & Panduan Instalasi</h4>
+              <button type="button" onclick="copyGsCode()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold">Salin Kode</button>
+            </div>
+            <ol class="list-decimal list-inside text-xs text-slate-600 space-y-1">
+              <li>Buka Google Sheets baru → klik menu <strong>Ekstensi (Extensions)</strong> → <strong>Apps Script</strong>.</li>
+              <li>Hapus kode bawaan, tempel kode di bawah ini, lalu klik <strong>Simpan</strong>.</li>
+              <li>Klik <strong>Terapkan (Deploy)</strong> → <strong>Deployment baru</strong> → pilih jenis <strong>Aplikasi Web</strong> → akses: <strong>Siapa saja (Anyone)</strong>.</li>
+              <li>Salin URL Web App yang muncul, tempel di atas, lalu klik <strong>Simpan ke Spreadsheet</strong> agar link database tercatat di sheet <strong>Konfigurasi</strong>.</li>
+            </ol>
+            <textarea id="gs-code-textarea" rows="12" readonly class="w-full p-3.5 bg-slate-900 text-emerald-300 rounded-xl text-xs font-mono">${escapeHTML(gsCode)}</textarea>
+          </div>
+        </div>
+      `;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function saveAppScriptUrl() {
+      appScriptUrl = document.getElementById('appscript-url-input').value.trim();
+      const ssInput = document.getElementById('spreadsheet-url-input');
+      if (ssInput && ssInput.value.trim()) {
+        spreadsheetUrl = ssInput.value.trim();
+        localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+      }
+      localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+      const syncLabel = document.getElementById('sync-status-label');
+      if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+      if (appScriptUrl) {
+        await pushToGoogleAppScript(false);
+        await pullFromGoogleAppScript(true);
+      } else {
+        showToast('URL Google Apps Script dikosongkan.', 'info');
+      }
+      renderCurrentPage();
+    }
+
+    // Mengambil link database (appScriptUrl & spreadsheetUrl) langsung dari sheet 'Konfigurasi'
+    async function fetchDatabaseLinkFromKonfigurasiSheet() {
+      const inputUrl = document.getElementById('appscript-url-input')?.value.trim() || appScriptUrl;
+      if (!inputUrl) {
+        // Jika URL Web App kosong namun URL Spreadsheet diisi, baca langsung sheet Konfigurasi dari Spreadsheet
+        const ssVal = document.getElementById('spreadsheet-url-input')?.value.trim() || spreadsheetUrl;
+        if (ssVal) {
+          await pullKonfigurasiBySpreadsheetUrl();
+          return;
+        }
+        showToast('Masukkan URL Web App Apps Script atau URL Spreadsheet terlebih dahulu.', 'info');
+        return;
+      }
+
+      appScriptUrl = inputUrl;
+      localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+
+      try {
+        const sep = appScriptUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${appScriptUrl}${sep}action=pull&sheet=Konfigurasi`);
+        const data = await res.json();
+        if (data && data.status === 'success' && data.config) {
+          if (data.config.appScriptUrl) {
+            appScriptUrl = String(data.config.appScriptUrl).trim();
+            localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+          }
+          if (data.config.spreadsheetUrl) {
+            spreadsheetUrl = String(data.config.spreadsheetUrl).trim();
+            localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+          }
+          const syncLabel = document.getElementById('sync-status-label');
+          if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+          await pullFromGoogleAppScript(true);
+          renderCurrentPage();
+          showToast('Link database berhasil diambil dari sheet Konfigurasi!', 'success');
+        } else {
+          showToast('Sheet Konfigurasi ditemukan tetapi belum berisi URL database.', 'info');
+        }
+      } catch (err) {
+        showToast('Gagal membaca sheet Konfigurasi. Pastikan Web App berstatus Anyone.', 'error');
+      }
+    }
+
+    // Membaca sheet 'Konfigurasi' langsung melalui Google Visualization API dari URL Spreadsheet
+    async function pullKonfigurasiBySpreadsheetUrl() {
+      const rawSsUrl = document.getElementById('spreadsheet-url-input')?.value.trim() || spreadsheetUrl;
+      const match = rawSsUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!match) {
+        showToast('Format URL Google Spreadsheet tidak valid.', 'error');
+        return;
+      }
+
+      const sheetId = match[1];
+      spreadsheetUrl = rawSsUrl;
+      localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+
+      try {
+        const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Konfigurasi`;
+        const response = await fetch(gvizUrl);
+        const text = await response.text();
+        const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        const parsed = JSON.parse(jsonStr);
+
+        const cols = (parsed.table.cols || []).map(c => (c.label || '').trim());
+        const firstRow = (parsed.table.rows && parsed.table.rows[0]) ? parsed.table.rows[0].c : [];
+        const configObj = {};
+        cols.forEach((colName, idx) => {
+          if (colName && firstRow[idx] && firstRow[idx].v !== null) {
+            configObj[colName] = String(firstRow[idx].v).trim();
+          }
+        });
+
+        if (configObj.appScriptUrl) {
+          appScriptUrl = configObj.appScriptUrl;
+          localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+        }
+        if (configObj.spreadsheetUrl) {
+          spreadsheetUrl = configObj.spreadsheetUrl;
+          localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+        }
+
+        const syncLabel = document.getElementById('sync-status-label');
+        if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+
+        if (appScriptUrl) {
+          await pullFromGoogleAppScript(true);
+        }
+        renderCurrentPage();
+        showToast('Link database dari sheet Konfigurasi berhasil dimuat!', 'success');
+      } catch (err) {
+        showToast('Gagal membaca sheet Konfigurasi. Pastikan Spreadsheet dapat diakses publik (Lihat) atau gunakan URL Web App.', 'error');
+      }
+    }
+
+    function copyShareDbLink() {
+      const inp = document.getElementById('share-db-link-input');
+      if (!inp) return;
+      inp.select();
+      document.execCommand('copy');
+      showToast('Tautan akses otomatis terhubung database berhasil disalin!', 'success');
+    }
+
+    function copyGsCode() {
+      const ta = document.getElementById('gs-code-textarea');
+      ta.select();
+      document.execCommand('copy');
+      showToast('Kode Apps Script berhasil disalin!', 'success');
+    }
+
+    async function pullFromGoogleAppScript(silent = false) {
+      if (!appScriptUrl) {
+        if (!silent) showToast('Silakan masukkan URL Web App Google Apps Script terlebih dahulu.', 'info');
+        return;
+      }
+      try {
+        const sep = appScriptUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${appScriptUrl}${sep}action=pull`);
+        const data = await res.json();
+        if (data && data.status === 'success') {
+          if (data.config) {
+            if (data.config.appScriptUrl) {
+              appScriptUrl = String(data.config.appScriptUrl).trim();
+              localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+            }
+            if (data.config.spreadsheetUrl) {
+              spreadsheetUrl = String(data.config.spreadsheetUrl).trim();
+              localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+            }
+            // Perbarui identitas desa & dusun dari sheet Konfigurasi
+            if (data.config.dusun) appSettings.dusun = String(data.config.dusun).trim();
+            if (data.config.desa) appSettings.desa = String(data.config.desa).trim();
+            if (data.config.kecamatan) appSettings.kecamatan = String(data.config.kecamatan).trim();
+            if (data.config.kabupaten) appSettings.kabupaten = String(data.config.kabupaten).trim();
+            if (data.config.kadus) appSettings.kadus = String(data.config.kadus).trim();
+            if (data.config.kades) appSettings.kades = String(data.config.kades).trim();
+            if (data.config.signerTitle) appSettings.signerTitle = String(data.config.signerTitle).trim();
+            if (data.config.alamat) appSettings.alamat = String(data.config.alamat).trim();
+            if (data.config.logoUrl) appSettings.logoUrl = String(data.config.logoUrl).trim();
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
+            applyBrandingSettings();
+          }
+          if (Array.isArray(data.residents) && data.residents.length > 0) {
+            residents = data.residents.map(r => ({
+              ...r,
+              nik: String(r.nik || ''),
+              kk: String(r.kk || ''),
+              pin: String(r.pin || ''),
+              rt: String(r.rt || '').padStart(2, '0'),
+              rw: String(r.rw || '').padStart(2, '0'),
+              bantuan: typeof r.bantuan === 'string' && r.bantuan.trim()
+                ? r.bantuan.split(',').map(s => s.trim()).filter(Boolean)
+                : (Array.isArray(r.bantuan) ? r.bantuan : [])
+            }));
+            localStorage.setItem(STORAGE_KEYS.RESIDENTS, JSON.stringify(residents));
+          }
+          if (Array.isArray(data.templates) && data.templates.length > 0) {
+            letterTemplates = data.templates;
+            localStorage.setItem(STORAGE_KEYS.TEMPLATES, JSON.stringify(letterTemplates));
+          }
+          if (Array.isArray(data.requests) && data.requests.length > 0) {
+            letterRequests = data.requests.map(req => ({
+              ...req,
+              nik: String(req.nik || ''),
+              rt: String(req.rt || '').padStart(2, '0'),
+              rw: String(req.rw || '').padStart(2, '0')
+            }));
+            localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(letterRequests));
+          }
+          if (Array.isArray(data.giatGroups) && data.giatGroups.length > 0) {
+            giatGroups = data.giatGroups.map(g => ({
+              ...g,
+              anggotaNiks: typeof g.anggotaNiks === 'string' && g.anggotaNiks.trim()
+                ? g.anggotaNiks.split(',').map(s => s.trim()).filter(Boolean)
+                : (Array.isArray(g.anggotaNiks) ? g.anggotaNiks : [])
+            }));
+            localStorage.setItem(STORAGE_KEYS.GIAT_GROUPS, JSON.stringify(giatGroups));
+          }
+          updateNotificationBadges();
+          if (currentUser) renderCurrentPage();
+          if (!silent) showToast('Konfigurasi & data terbaru berhasil dibaca dari Spreadsheet!', 'success');
+        }
+      } catch (err) {
+        if (!silent) showToast('Gagal membaca data dari Spreadsheet. Periksa izin akses Web App (Anyone).', 'error');
+      }
+    }
+
+    async function pushToGoogleAppScript(silent = false) {
+      if (!appScriptUrl) return;
+      try {
+        await fetch(appScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            config: {
+              appScriptUrl,
+              spreadsheetUrl,
+              dusun: appSettings.dusun,
+              desa: appSettings.desa,
+              kecamatan: appSettings.kecamatan,
+              kabupaten: appSettings.kabupaten,
+              kadus: appSettings.kadus,
+              kades: appSettings.kades,
+              signerTitle: appSettings.signerTitle,
+              alamat: appSettings.alamat,
+              logoUrl: appSettings.logoUrl
+            },
+            residents,
+            templates: letterTemplates,
+            requests: letterRequests,
+            giatGroups
+          })
+        });
+        if (!silent) showToast('Link database & data berhasil disimpan ke Spreadsheet!', 'success');
+      } catch (err) {
+        if (!silent) showToast('Gagal terhubung ke URL Apps Script.', 'error');
+      }
+    }
+
+    async function syncWithAppScript() {
+      await autoScanAndSyncDatabase(false);
+    }
+
+    // Mode Baca Database (Read-Only Pull) saat aplikasi dibuka oleh user lain agar data lokal tidak menimpa cloud
+    async function readLatestFromDatabase(silent = true) {
+      if (isDatabaseSyncing) return;
+      if (!appScriptUrl && !spreadsheetUrl) return;
+
+      isDatabaseSyncing = true;
+      const syncLabel = document.getElementById('sync-status-label');
+      const syncDot = document.getElementById('sync-indicator-dot');
+      const loginSyncBadge = document.getElementById('login-db-sync-badge');
+      if (syncLabel) syncLabel.textContent = 'Membaca DB...';
+      if (loginSyncBadge) loginSyncBadge.textContent = 'Memuat Data Desa...';
+      if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0';
+
+      try {
+        if (!appScriptUrl && spreadsheetUrl) {
+          await pullKonfigurasiBySpreadsheetUrl();
+        }
+        if (appScriptUrl) {
+          await pullFromGoogleAppScript(true);
+        }
+        if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Terhubung DB Cloud' : 'Database Lokal';
+        if (loginSyncBadge) loginSyncBadge.textContent = appScriptUrl ? 'Database Terhubung' : 'Google Sheets Ready';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0';
+        if (!silent) showToast('Data terbaru berhasil dibaca dari database Spreadsheet!', 'success');
+      } catch (err) {
+        if (syncLabel) syncLabel.textContent = 'Gagal Baca DB';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0';
+      } finally {
+        isDatabaseSyncing = false;
+      }
+    }
+
+    // Pemindaian & sinkronisasi penuh (hanya dipanggil manual oleh admin saat ingin kirim & tarik sekaligus)
+    async function autoScanAndSyncDatabase(silent = true) {
+      if (isDatabaseSyncing) return;
+      if (!appScriptUrl && !spreadsheetUrl) {
+        if (!silent) showToast('Silakan masukkan URL Web App Google Apps Script atau URL Spreadsheet terlebih dahulu.', 'info');
+        return;
+      }
+
+      isDatabaseSyncing = true;
+      const syncLabel = document.getElementById('sync-status-label');
+      const syncDot = document.getElementById('sync-indicator-dot');
+      if (syncLabel) syncLabel.textContent = 'Memindai DB...';
+      if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0';
+
+      try {
+        if (!appScriptUrl && spreadsheetUrl) {
+          await pullKonfigurasiBySpreadsheetUrl();
+        }
+        if (appScriptUrl) {
+          await pushToGoogleAppScript(true);
+          await pullFromGoogleAppScript(true);
+        }
+
+        if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Tersinkron Otomatis' : 'Database Lokal';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0';
+        if (!silent) showToast('Scan & sinkronisasi cepat database selesai!', 'success');
+      } catch (err) {
+        if (syncLabel) syncLabel.textContent = 'Gagal Scan DB';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0';
+        if (!silent) showToast('Gagal memindai database. Periksa koneksi internet atau URL Apps Script.', 'error');
+      } finally {
+        isDatabaseSyncing = false;
+      }
+    }
+
+    // 13. BOOTSTRAP APLIKASI SAAT HALAMAN DIMUAT
+    window.addEventListener('DOMContentLoaded', async () => {
+      ['click', 'touchstart', 'keydown'].forEach(evt => {
+        document.addEventListener(evt, unlockAudioContext, { passive: true });
+      });
+
+      loadAppData();
+      applyBrandingSettings();
+      startLoginServiceSlider();
+
+      // Prioritaskan memuat data terbaru dari database Spreadsheet saat halaman dibuka
+      if (appScriptUrl || spreadsheetUrl) {
+        await readLatestFromDatabase(true);
+      }
+      startPeriodicDatabaseScan();
+
+      // Baca ulang data terbaru dari database saat tab kembali aktif
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && (appScriptUrl || spreadsheetUrl)) {
+          readLatestFromDatabase(true);
+        }
+      });
+
+      const savedSession = sessionStorage.getItem(STORAGE_KEYS.SESSION);
+      if (savedSession) {
+        try {
+          currentUser = JSON.parse(savedSession);
+          if (currentUser) {
+            enterApplication();
+            return;
+          }
+        } catch (e) {
+          sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+        }
+      }
+
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
