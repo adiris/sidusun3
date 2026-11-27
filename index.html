@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIDUDI - Dusun 2 </title>
+  <title>SIDUSUN Dusun 2 - Desa Makam, Kec. Rembang, Kab. Purbalingga</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -180,18 +180,13 @@
               <p id="login-kop-kab" class="text-[10px] font-bold uppercase tracking-wider text-brand-200 truncate">Pemerintah Kabupaten Purbalingga</p>
               <p id="login-kop-kec" class="text-[10px] font-semibold uppercase tracking-wide text-brand-100 truncate">Kecamatan Rembang</p>
               <h2 id="login-kop-desa" class="text-xs font-extrabold uppercase tracking-wide text-white mt-0.5 truncate">Desa Makam</h2>
-              <p id="login-kop-dusun" class="text-[11px] font-bold text-amber-300 mt-0.5 truncate"> </p>
               <p id="login-kop-alamat" class="text-[10px] text-brand-100/90 mt-0.5 line-clamp-2">Desa Makam, Kec. Rembang, Kab. Purbalingga</p>
             </div>
           </div>
 
-          <span class="inline-flex items-center gap-1.5 bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase mb-2">
+          <span class="inline-flex items-center gap-1.5 bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase mb-3">
             <i data-lucide="landmark" class="w-3 h-3 text-emerald-300"></i> Pelayanan Digital Dusun 2
           </span>
-          <h1 id="login-brand-title" class="text-lg font-extrabold mb-1 tracking-tight"> </h1>
-          <p id="login-brand-desc" class="text-brand-100 text-xs leading-relaxed mb-3.5">
-            
-          </p>
 
           <div class="bg-white/10 border border-white/15 rounded-xl p-3 space-y-2.5">
             <div class="flex items-center justify-between gap-2">
@@ -267,7 +262,7 @@
           <div>
             <label id="login-username-label" class="block text-xs font-semibold text-slate-700 mb-1">Username Super Admin</label>
             <input type="text" id="login-username" required placeholder="Masukkan username..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white" />
-            <p id="login-helper-text" class="text-[11px] text-slate-400 mt-0.5">Gunakan akun Super Admin dusun.</p>
+            <p id="login-helper-text" class="text-[11px] text-slate-400 mt-0.5">Gunakan akun Super Admin perangkat masing-masing.</p>
           </div>
 
           <div>
@@ -685,9 +680,15 @@
       SESSION: 'sidusun_session_v3',
       SETTINGS: 'sidusun_settings_v3',
       WILAYAH: 'sidusun_wilayah_v3',
+      SUPERADMINS: 'sidusun_superadmins_v3',
       BANTUAN_TYPES: 'sidusun_bantuan_types_v3',
       GIAT_GROUPS: 'sidusun_giat_groups_v3'
     };
+
+    const DEFAULT_SUPERADMINS = [
+      { id: 'sa-1', username: 'admin', password: 'admin123', nama: 'Kepala Dusun 2', jabatan: 'Kepala Dusun 2', perangkat: 'Perangkat Utama Dusun' },
+      { id: 'sa-2', username: 'admin2', password: 'admin123', nama: 'Operator Pelayanan Dusun 2', jabatan: 'Kasi Pelayanan', perangkat: 'Perangkat Pelayanan Surat' }
+    ];
 
     const DEFAULT_SETTINGS = {
       dusun: 'Dusun 2',
@@ -870,6 +871,7 @@
     let letterRequests = [];
     let appSettings = { ...DEFAULT_SETTINGS };
     let wilayahConfig = JSON.parse(JSON.stringify(DEFAULT_WILAYAH));
+    let superAdmins = JSON.parse(JSON.stringify(DEFAULT_SUPERADMINS));
     let bantuanTypes = [...DEFAULT_BANTUAN_TYPES];
     let giatGroups = [];
     let appScriptUrl = '';
@@ -1068,6 +1070,10 @@
       letterTemplates = safeParse(STORAGE_KEYS.TEMPLATES, JSON.parse(JSON.stringify(DEFAULT_TEMPLATES)));
       letterRequests = safeParse(STORAGE_KEYS.REQUESTS, []);
       appSettings = { ...DEFAULT_SETTINGS, ...safeParse(STORAGE_KEYS.SETTINGS, {}) };
+      superAdmins = safeParse(STORAGE_KEYS.SUPERADMINS, JSON.parse(JSON.stringify(DEFAULT_SUPERADMINS)));
+      if (!Array.isArray(superAdmins) || superAdmins.length === 0) {
+        superAdmins = JSON.parse(JSON.stringify(DEFAULT_SUPERADMINS));
+      }
       bantuanTypes = safeParse(STORAGE_KEYS.BANTUAN_TYPES, [...DEFAULT_BANTUAN_TYPES]);
       giatGroups = safeParse(STORAGE_KEYS.GIAT_GROUPS, JSON.parse(JSON.stringify(DEFAULT_GIAT_GROUPS)));
 
@@ -1107,6 +1113,7 @@
       localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(letterRequests));
       localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
       localStorage.setItem(STORAGE_KEYS.WILAYAH, JSON.stringify(wilayahConfig));
+      localStorage.setItem(STORAGE_KEYS.SUPERADMINS, JSON.stringify(superAdmins));
       localStorage.setItem(STORAGE_KEYS.BANTUAN_TYPES, JSON.stringify(bantuanTypes));
       localStorage.setItem(STORAGE_KEYS.GIAT_GROUPS, JSON.stringify(giatGroups));
 
@@ -1133,469 +1140,80 @@
       const loginKab = document.getElementById('login-kop-kab');
       const loginKec = document.getElementById('login-kop-kec');
       const loginDesa = document.getElementById('login-kop-desa');
-      const loginDusun = document.getElementById('login-kop-dusun');
       const loginAlamat = document.getElementById('login-kop-alamat');
 
       if (loginLogo) loginLogo.src = appSettings.logoUrl || DEFAULT_SETTINGS.logoUrl;
       if (loginKab) loginKab.textContent = `Pemerintah Kabupaten ${appSettings.kabupaten}`;
       if (loginKec) loginKec.textContent = `Kecamatan ${appSettings.kecamatan}`;
       if (loginDesa) loginDesa.textContent = `Desa ${appSettings.desa}`;
-      if (loginDusun) loginDusun.textContent = appSettings.dusun;
       if (loginAlamat) loginAlamat.textContent = appSettings.alamat;
 
-      if (loginTitle) loginTitle.textContent = `SIDUSUN • ${appSettings.dusun}`;
       if (sidebarDusun) sidebarDusun.textContent = `${appSettings.dusun} • Desa ${appSettings.desa}`;
       if (headerWilayah) headerWilayah.textContent = `${appSettings.dusun} • Desa ${appSettings.desa}, Kec. ${appSettings.kecamatan}`;
-      document.title = `SIDUSUN ${appSettings.dusun} - Desa ${appSettings.desa}, Kec. ${appSettings.kecamatan}, Kab. ${appSettings.kabupaten}`;
-      if (dateDisp) {
-        dateDisp.textContent = new Date().toLocaleDateString('id-ID', {
-          weekday: 'long', day: 'numeric', month: 'short', year: 'numeric'
-        });
-      }
-    }
+// ... existing code ... -->
+    function handleSignerRoleDropdownChange() {
+      const roleSelect = document.getElementById('set-signer-role');
+      const titleInput = document.getElementById('set-signer-title');
+      const desaVal = document.getElementById('set-desa')?.value.trim() || appSettings.desa;
+      if (!roleSelect || !titleInput) return;
 
-    // 5. OTENTIKASI MULTI-USER & NAVIGASI RUANG
-    function switchLoginTab(role) {
-      document.getElementById('login-role').value = role;
-      ['superadmin', 'admin_rt', 'warga'].forEach(r => {
-        const btn = document.getElementById(`tab-role-${r}`);
-        if (!btn) return;
-        if (r === role) {
-          btn.className = 'py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 bg-white text-brand-700 shadow-xs';
-        } else {
-          btn.className = 'py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 text-slate-600';
-        }
-      });
-
-      const uLabel = document.getElementById('login-username-label');
-      const pLabel = document.getElementById('login-password-label');
-      const helper = document.getElementById('login-helper-text');
-      if (role === 'warga') {
-        uLabel.textContent = 'NIK Warga (16 Digit)';
-        pLabel.textContent = 'PIN Warga';
-        helper.textContent = 'Login menggunakan NIK & PIN yang terdaftar di database warga.';
-      } else if (role === 'admin_rt') {
-        uLabel.textContent = 'Username Admin RT';
-        pLabel.textContent = 'Kata Sandi RT';
-        helper.textContent = 'Akses khusus mengelola penduduk dan surat di wilayah RT masing-masing.';
+      const selectedRole = roleSelect.value;
+      if (selectedRole === 'Kepala Desa') {
+        titleInput.value = `Kepala Desa ${desaVal}`;
       } else {
-        uLabel.textContent = 'Username Super Admin';
-        pLabel.textContent = 'Kata Sandi';
-        helper.textContent = 'Gunakan akun Super Admin dusun.';
+        titleInput.value = `a.n. ${selectedRole}`;
       }
-      document.getElementById('login-error-box').classList.add('hidden');
     }
 
-    function quickFillLogin(user, pass, role) {
-      switchLoginTab(role);
-      document.getElementById('login-username').value = user;
-      document.getElementById('login-password').value = pass;
-    }
-
-    function togglePasswordVisibility() {
-      const inp = document.getElementById('login-password');
-      inp.type = inp.type === 'password' ? 'text' : 'password';
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const role = document.getElementById('login-role').value;
-      const username = document.getElementById('login-username').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-      const errBox = document.getElementById('login-error-box');
-      const errMsg = document.getElementById('login-error-msg');
-
-      let authenticatedUser = null;
-
-      if (role === 'superadmin') {
-        if (username === 'admin' && password === 'admin123') {
-          authenticatedUser = {
-            role: 'superadmin',
-            name: appSettings.kadus || 'Kepala Dusun',
-            roleLabel: 'Super Administrator',
-            wilayahLabel: 'Semua RT/RW'
-          };
-        }
-      } else if (role === 'admin_rt') {
-        const rtAcc = (wilayahConfig.rts || []).find(r => r.username === username && r.password === password);
-        if (rtAcc) {
-          authenticatedUser = {
-            role: 'admin_rt',
-            name: rtAcc.ketua || `Ketua RT ${rtAcc.rt}`,
-            rt: rtAcc.rt,
-            rw: rtAcc.rw,
-            roleLabel: `Admin RT ${rtAcc.rt}`,
-            wilayahLabel: `RT ${rtAcc.rt} / RW ${rtAcc.rw}`
-          };
-        }
-      } else if (role === 'warga') {
-        const warga = residents.find(r => String(r.nik) === username && String(r.pin) === password);
-        if (warga) {
-          authenticatedUser = {
-            role: 'warga',
-            nik: warga.nik,
-            name: warga.nama,
-            rt: warga.rt,
-            rw: warga.rw,
-            roleLabel: 'User Warga',
-            wilayahLabel: `RT ${warga.rt} / RW ${warga.rw}`
-          };
-        }
-      }
-
-      if (!authenticatedUser) {
-        errMsg.textContent = role === 'warga'
-          ? 'NIK atau PIN warga tidak ditemukan di database penduduk.'
-          : 'Username atau kata sandi tidak sesuai.';
-        errBox.classList.remove('hidden');
-        return;
-      }
-
-      errBox.classList.add('hidden');
-      lastKnownPendingCount = null;
-      lastKnownReadyLetterIds = null;
-      currentUser = authenticatedUser;
-      sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
-      enterApplication();
-      showToast(`Selamat datang, ${currentUser.name}!`, 'success');
-    }
-
-    function logout() {
-      currentUser = null;
-      lastKnownPendingCount = null;
-      lastKnownReadyLetterIds = null;
-      sessionStorage.removeItem(STORAGE_KEYS.SESSION);
-      document.getElementById('app-shell').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-    }
-
-    function enterApplication() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('app-shell').classList.remove('hidden');
-
-      const initials = (currentUser.name || 'US')
-        .split(' ')
-        .slice(0, 2)
-        .map(w => w[0])
-        .join('')
-        .toUpperCase();
-
-      document.getElementById('user-avatar').textContent = initials;
-      document.getElementById('sidebar-user-name').textContent = currentUser.name;
-      document.getElementById('sidebar-user-role').textContent = currentUser.roleLabel;
-      document.getElementById('sidebar-wilayah-badge').textContent = currentUser.wilayahLabel;
-      document.getElementById('mobile-role-badge').textContent = currentUser.roleLabel;
-
-      const syncBox = document.getElementById('sidebar-sync-box');
-      if (currentUser.role === 'superadmin') {
-        syncBox.classList.remove('hidden');
-        document.getElementById('sync-status-label').textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+    function handleNewUserJabatanChange() {
+      const jabatanSel = document.getElementById('new-sa-jabatan');
+      const rtWrap = document.getElementById('new-sa-rt-wrap');
+      if (!jabatanSel || !rtWrap) return;
+      if (jabatanSel.value === 'Ketua RT / Admin RT') {
+        rtWrap.classList.remove('hidden');
       } else {
-        syncBox.classList.add('hidden');
-      }
-
-      updateNotificationBadges();
-      navigateTo('dashboard');
-
-      // Baca data terbaru dari database Spreadsheet agar langsung terupdate saat user membuka aplikasi
-      if (appScriptUrl || spreadsheetUrl) {
-        readLatestFromDatabase(true);
-      }
-      startPeriodicDatabaseScan();
-    }
-
-    function startPeriodicDatabaseScan() {
-      if (periodicDbScanTimer) {
-        clearInterval(periodicDbScanTimer);
-      }
-      // Skening database otomatis setiap 30 detik sekali
-      periodicDbScanTimer = setInterval(() => {
-        if (!document.hidden && (appScriptUrl || spreadsheetUrl)) {
-          readLatestFromDatabase(true);
-        }
-      }, 30000);
-    }
-
-    function toggleMobileSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const backdrop = document.getElementById('sidebar-backdrop');
-      sidebar.classList.toggle('-translate-x-full');
-      backdrop.classList.toggle('hidden');
-    }
-
-    function getAccessibleResidents() {
-      if (!currentUser) return [];
-      if (currentUser.role === 'superadmin') return residents;
-      if (currentUser.role === 'admin_rt') return residents.filter(r => r.rt === currentUser.rt);
-      return residents.filter(r => r.nik === currentUser.nik);
-    }
-
-    function getAccessibleRequests() {
-      if (!currentUser) return [];
-      if (currentUser.role === 'superadmin') return letterRequests;
-      if (currentUser.role === 'admin_rt') return letterRequests.filter(req => req.rt === currentUser.rt);
-      return letterRequests.filter(req => req.nik === currentUser.nik);
-    }
-
-    function updateNotificationBadges() {
-      const accessible = getAccessibleRequests();
-      const pending = accessible.filter(r => r.status === 'Menunggu Verifikasi').length;
-
-      if (currentUser && currentUser.role === 'warga') {
-        const readyLetters = accessible.filter(r => r.status === 'Disetujui');
-        const currentReadyIds = readyLetters.map(r => String(r.id));
-        if (lastKnownReadyLetterIds !== null) {
-          const newlyReady = readyLetters.filter(r => !lastKnownReadyLetterIds.includes(String(r.id)));
-          if (newlyReady.length > 0) {
-            playTingTongSound();
-            const labelSurat = newlyReady.length === 1
-              ? `"${newlyReady[0].templateNama}"`
-              : `${newlyReady.length} permohonan surat`;
-            showToast(`Ting-Tong! Surat ${labelSurat} Anda sudah selesai dan siap diambil.`, 'success');
-          }
-        }
-        lastKnownReadyLetterIds = currentReadyIds;
-      } else {
-        if (lastKnownPendingCount !== null && pending > lastKnownPendingCount && currentUser && currentUser.role !== 'warga') {
-          playTingTongSound();
-          showToast(`Ting-Tong! Ada ${pending - lastKnownPendingCount} permohonan surat masuk baru.`, 'info');
-        }
-        lastKnownPendingCount = pending;
-      }
-
-      const activeBadgeCount = (currentUser && currentUser.role === 'warga')
-        ? accessible.filter(r => r.status === 'Disetujui').length
-        : pending;
-
-      const headerBadge = document.getElementById('header-notif-badge');
-      const mobileDot = document.getElementById('mobile-notif-dot');
-      if (headerBadge) {
-        headerBadge.textContent = activeBadgeCount;
-        headerBadge.classList.toggle('hidden', activeBadgeCount === 0);
-      }
-      if (mobileDot) {
-        mobileDot.classList.toggle('hidden', activeBadgeCount === 0);
+        rtWrap.classList.add('hidden');
       }
     }
 
-    function getMenuItemsForRole() {
-      if (currentUser.role === 'superadmin') {
-        return [
-          { id: 'dashboard', label: 'Dashboard Dusun', icon: 'layout-dashboard', color: 'text-indigo-600' },
-          { id: 'penduduk', label: 'Data Penduduk', icon: 'users', color: 'text-emerald-600' },
-          { id: 'bantuan', label: 'Penerima Bantuan', icon: 'heart-handshake', color: 'text-teal-600' },
-          { id: 'giat', label: 'Kelompok Giat Warga', icon: 'sparkles', color: 'text-rose-600' },
-          { id: 'permohonan', label: 'Permohonan Surat', icon: 'mail-check', color: 'text-amber-600' },
-          { id: 'templates', label: 'Format & Jenis Surat', icon: 'file-text', color: 'text-violet-600' },
-          { id: 'pengaturan', label: 'Identitas Dusun & KOP Surat', icon: 'settings', color: 'text-sky-600' },
-          { id: 'appscript', label: 'Database & Apps Script', icon: 'database', color: 'text-slate-700' }
-        ];
-      }
-      if (currentUser.role === 'admin_rt') {
-        return [
-          { id: 'dashboard', label: `Dashboard RT ${currentUser.rt}`, icon: 'layout-dashboard', color: 'text-indigo-600' },
-          { id: 'penduduk', label: `Data Warga RT ${currentUser.rt}`, icon: 'users', color: 'text-emerald-600' },
-          { id: 'bantuan', label: 'Penerima Bantuan', icon: 'heart-handshake', color: 'text-teal-600' },
-          { id: 'giat', label: `Giat Warga RT ${currentUser.rt}`, icon: 'sparkles', color: 'text-rose-600' },
-          { id: 'permohonan', label: 'Permohonan Surat', icon: 'mail-check', color: 'text-amber-600' }
-        ];
-      }
-      return [
-        { id: 'dashboard', label: 'Beranda Warga', icon: 'layout-dashboard', color: 'text-indigo-600' },
-        { id: 'profil', label: 'Data Diri & Keluarga', icon: 'user-check', color: 'text-emerald-600' },
-        { id: 'permohonan', label: 'Layanan & Status Surat', icon: 'file-text', color: 'text-amber-600' }
-      ];
-    }
-
-    function navigateTo(pageId) {
-      currentPage = pageId;
-      const items = getMenuItemsForRole();
-      const theme = SPACE_THEMES[pageId] || SPACE_THEMES.dashboard;
-
-      const workspace = document.getElementById('main-workspace');
-      if (workspace) {
-        workspace.className = `flex-1 flex flex-col min-w-0 transition-colors duration-300 ${theme.bg}`;
-      }
-
-      const spaceDot = document.getElementById('page-space-dot');
-      if (spaceDot) {
-        spaceDot.className = `w-2.5 h-6 rounded-full shrink-0 transition-all duration-300 ${theme.dot}`;
-      }
-
-      const nav = document.getElementById('sidebar-nav');
-      if (nav) {
-        nav.innerHTML = items.map(item => {
-          const isActive = item.id === pageId;
-          const itemTheme = SPACE_THEMES[item.id] || SPACE_THEMES.dashboard;
-          const activeClasses = isActive
-            ? `${itemTheme.activeNav} border font-bold`
-            : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border border-transparent font-medium';
-          const badgeIconClasses = isActive ? itemTheme.activeIconBg : itemTheme.iconBg;
-          return `
-            <button type="button" onclick="navigateTo('${item.id}'); if(window.innerWidth < 1024) toggleMobileSidebar();" class="w-full px-2.5 py-2 rounded-xl text-xs transition-all duration-150 flex items-center gap-2.5 text-left ${activeClasses}">
-              <span class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors ${badgeIconClasses}">
-                <i data-lucide="${item.icon}" class="w-3.5 h-3.5"></i>
-              </span>
-              <span class="truncate">${escapeHTML(item.label)}</span>
-            </button>
-          `;
-        }).join('');
-      }
-
-      const titles = {
-        dashboard: ['Dashboard Utama', 'Ringkasan statistik wilayah dan pelayanan administrasi dusun'],
-        penduduk: ['Data Penduduk', 'Input langsung di atas tabel dan kelola data kependudukan'],
-        profil: ['Profil Warga', 'Informasi kependudukan dan kartu keluarga Anda'],
-        bantuan: ['Warga Penerima Bantuan', 'Pengelolaan data warga penerima program bantuan sosial'],
-        giat: ['Kelompok Giat Warga', 'Pengelolaan kelompok UMKM, Kelompok Tani, PKK, dan anggotanya'],
-        permohonan: ['Permohonan & Layanan Surat', 'Pengajuan, verifikasi redaksi, dan pencetakan surat resmi'],
-        templates: ['Format & Jenis Surat', 'Kelola template redaksi surat keterangan yang tersedia bagi warga'],
-        pengaturan: ['Identitas Dusun, KOP Surat & Wilayah', 'Konfigurasi identitas dusun, edit KOP & logo surat, pengurus RW, serta ketua RT'],
-        appscript: ['Database & Apps Script', 'Sinkronisasi data dengan Google Sheets & Google Apps Script']
-      };
-      const [tTitle, tSub] = titles[pageId] || ['SIDUSUN', 'Sistem Administrasi Dusun'];
-      const titleEl = document.getElementById('page-title');
-      const subEl = document.getElementById('page-subtitle');
-      if (titleEl) titleEl.textContent = tTitle;
-      if (subEl) subEl.textContent = tSub;
-
-      renderCurrentPage();
-    }
-
-    function renderCurrentPage() {
-      switch (currentPage) {
-        case 'dashboard': renderDashboard(); break;
-        case 'penduduk': renderResidentsPage(); break;
-        case 'profil': renderWargaProfilePage(); break;
-        case 'bantuan': renderBantuanPage(); break;
-        case 'giat': renderGiatPage(); break;
-        case 'permohonan': renderPermohonanPage(); break;
-        case 'templates': renderTemplatesPage(); break;
-        case 'pengaturan': renderSettingsPage(); break;
-        case 'appscript': renderAppScriptPage(); break;
-        default: renderDashboard();
-      }
-      if (window.lucide) lucide.createIcons();
-    }
-
-    // 6. DASHBOARD UTAMA (NOTIFIKASI RINGKAS DI ATAS + STATISTIK PER RT/RW)
-    function startPendingNotifTicker(pendingList) {
-      if (pendingNotifTickerTimer) {
-        clearInterval(pendingNotifTickerTimer);
-        pendingNotifTickerTimer = null;
-      }
-      if (!Array.isArray(pendingList) || pendingList.length <= 1) return;
-
-      pendingNotifTickerIndex = 0;
-      pendingNotifTickerTimer = setInterval(() => {
-        const tickerEl = document.getElementById('dashboard-pending-applicant-ticker');
-        if (!tickerEl) {
-          clearInterval(pendingNotifTickerTimer);
-          pendingNotifTickerTimer = null;
-          return;
-        }
-        tickerEl.style.opacity = '0';
-        setTimeout(() => {
-          if (!document.getElementById('dashboard-pending-applicant-ticker')) return;
-          pendingNotifTickerIndex = (pendingNotifTickerIndex + 1) % pendingList.length;
-          const item = pendingList[pendingNotifTickerIndex];
-          tickerEl.innerHTML = `
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-white/25 text-white font-extrabold text-xs animate-applicant-blink">
-              <span>(${pendingNotifTickerIndex + 1}/${pendingList.length})</span>
-              <span>${escapeHTML(item.namaPemohon)}</span>
-              <span class="font-normal text-orange-100">• RT ${escapeHTML(item.rt)}/RW ${escapeHTML(item.rw)} (${escapeHTML(item.templateNama)})</span>
-            </span>
-          `;
-          tickerEl.style.opacity = '1';
-        }, 320);
-      }, 4200);
-    }
-
-    function renderDashboard() {
-      if (pendingNotifTickerTimer) {
-        clearInterval(pendingNotifTickerTimer);
-        pendingNotifTickerTimer = null;
-      }
+    function renderSettingsPage() {
       const container = document.getElementById('main-content');
-      const accessibleResidents = getAccessibleResidents();
-      const accessibleRequests = getAccessibleRequests();
-      const pendingRequests = accessibleRequests.filter(r => r.status === 'Menunggu Verifikasi');
-      const isWarga = currentUser.role === 'warga';
-
-      if (isWarga) {
-        const myData = accessibleResidents[0] || {};
-        container.innerHTML = `
-          <div class="space-y-4">
-            <div class="bg-gradient-to-r from-indigo-600 to-brand-700 rounded-2xl p-5 text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div>
-                <p class="text-xs text-indigo-100">Selamat Datang di Layanan Mandiri Warga</p>
-                <h3 class="text-lg font-extrabold mt-0.5">${escapeHTML(currentUser.name)}</h3>
-                <p class="text-xs text-indigo-100 mt-1">NIK: ${escapeHTML(currentUser.nik)} • Wilayah RT ${escapeHTML(currentUser.rt)} / RW ${escapeHTML(currentUser.rw)}</p>
-              </div>
-              <button type="button" onclick="openRequestModal()" class="px-4 py-2.5 rounded-xl bg-white text-brand-700 hover:bg-brand-50 text-xs font-bold shadow-xs self-start sm:self-center">
-                + Ajukan Surat Online
-              </button>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
-                <p class="text-[11px] font-semibold text-slate-500">Total Pengajuan Surat Saya</p>
-                <p class="text-2xl font-extrabold text-slate-900 mt-1">${accessibleRequests.length}</p>
-              </div>
-              <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
-                <p class="text-[11px] font-semibold text-slate-500">Menunggu Verifikasi</p>
-                <p class="text-2xl font-extrabold text-amber-600 mt-1">${pendingRequests.length}</p>
-              </div>
-              <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
-                <p class="text-[11px] font-semibold text-slate-500">Status Bantuan Sosial</p>
-                <p class="text-xs font-bold text-teal-700 mt-2">${Array.isArray(myData.bantuan) && myData.bantuan.length ? myData.bantuan.join(', ') : 'Tidak Terdaftar'}</p>
-              </div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      const lakiCount = accessibleResidents.filter(r => r.jk === 'Laki-laki').length;
-      const perempuanCount = accessibleResidents.filter(r => r.jk === 'Perempuan').length;
-      const bantuanCount = accessibleResidents.filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0).length;
-
-      const rtCardsHtml = (wilayahConfig.rts || []).map(rtObj => {
-        const count = residents.filter(r => r.rt === rtObj.rt).length;
-        return `
-          <div class="ui-card ui-card-hover p-3.5 border border-indigo-100/80 flex items-center justify-between">
-            <div>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-50 text-[10px] font-bold uppercase text-indigo-700">RT ${escapeHTML(rtObj.rt)} / RW ${escapeHTML(rtObj.rw)}</span>
-              <p class="text-xs font-bold text-slate-800 mt-1">${escapeHTML(rtObj.ketua)}</p>
-            </div>
-            <div class="text-right">
-              <span class="text-lg font-extrabold text-indigo-950">${count}</span>
-              <span class="block text-[10px] text-slate-400">Warga</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      const rwCardsHtml = (wilayahConfig.rws || []).map(rwObj => {
-        const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
-        const pengurus = typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-';
-        const count = residents.filter(r => r.rw === rwCode).length;
-        return `
-          <div class="ui-card ui-card-hover p-3.5 border border-sky-100/90 flex items-center justify-between">
-            <div>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-sky-50 text-[10px] font-bold uppercase text-sky-700">Wilayah RW ${escapeHTML(rwCode)}</span>
-              <p class="text-xs font-bold text-slate-800 mt-1">${escapeHTML(pengurus)}</p>
-            </div>
-            <div class="text-right">
-              <span class="text-lg font-extrabold text-sky-950">${count}</span>
-              <span class="block text-[10px] text-slate-400">Warga</span>
-            </div>
-          </div>
-        `;
-      }).join('');
+      const currentSignerRole = appSettings.signerRole || 'Kepala Desa';
+      const roleOptions = [
+        'Kepala Desa',
+        'Sekretaris Desa',
+        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
+        'Kasi Pemerintahan',
+        'Kasi Pelayanan',
+        'Kasi Kesejahteraan',
+        'Kaur Keuangan',
+        'Kaur TU & Umum'
+      ];
+      const hasCurrentInOptions = roleOptions.includes(currentSignerRole);
+      const jabatanUserOptions = [
+        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
+        'Sekretaris Desa',
+        'Kasi Pelayanan',
+        'Kasi Pemerintahan',
+        'Kasi Kesejahteraan',
+        'Kaur TU & Umum',
+        'Operator Dusun',
+        'Ketua RT / Admin RT'
+      ];
 
       container.innerHTML = `
         <div class="space-y-4">
+          <!-- Sapaan User Aktif -->
+          <div class="bg-gradient-to-r from-indigo-700 via-brand-700 to-slate-900 rounded-2xl px-4 py-3 text-white shadow-xs flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p class="text-sm font-extrabold tracking-tight">Hallo, <span class="text-orange-300">${escapeHTML(currentUser.name)}</span></p>
+              <p class="text-[11px] text-indigo-100">${escapeHTML(currentUser.roleLabel)} • ${escapeHTML(appSettings.dusun)}, Desa ${escapeHTML(appSettings.desa)}</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-white/15 text-[10px] font-semibold text-orange-200 border border-white/15">
+              ${escapeHTML(currentUser.wilayahLabel)}
+            </span>
+          </div>
+
           <!-- Notifikasi Permintaan Surat Online Terbaru (Posisi Atas, Warna Orange) -->
           <div class="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-md shadow-orange-500/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
@@ -2852,12 +2470,77 @@
                     <p id="kop-preview-kab" class="text-[11px] font-bold tracking-widest uppercase">Pemerintah Kabupaten ${escapeHTML(appSettings.kabupaten)}</p>
                     <p id="kop-preview-kec" class="text-[11px] font-bold tracking-wider uppercase">Kecamatan ${escapeHTML(appSettings.kecamatan)}</p>
                     <h4 id="kop-preview-desa" class="text-sm font-extrabold tracking-wide uppercase">Desa ${escapeHTML(appSettings.desa)}</h4>
-                    <p id="kop-preview-alamat" class="text-[10px] italic text-slate-600">Alamat: ${escapeHTML(appSettings.alamat)}</p>
-                  </div>
-                  <div class="w-12 shrink-0 hidden sm:block"></div>
-                </div>
+          <!-- Form Pembuatan User Berdasarkan Jabatan & Tersimpan ke Spreadsheet -->
+          <div class="ui-card p-4 border border-indigo-200/90 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">Pembuatan Akun User Perangkat & Jabatan (Tersimpan ke Spreadsheet)</h4>
+                <p class="text-[11px] text-slate-500">Buat user akses login sesuai jabatan perangkat dusun/desa atau Admin RT. Data user otomatis tersimpan ke Google Spreadsheet.</p>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold">${(superAdmins || []).length} User Perangkat</span>
+            </div>
+
+            <form onsubmit="addSuperAdminAccount(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end p-3 rounded-xl bg-indigo-50/50 border border-indigo-100">
+              <div class="sm:col-span-3">
+                <label class="block text-[10px] font-bold text-indigo-950 uppercase mb-1">Pilih Jabatan User *</label>
+                <select id="new-sa-jabatan" onchange="handleNewUserJabatanChange()" required class="w-full px-2.5 bg-white border border-indigo-200 rounded-xl text-xs font-semibold">
+                  ${jabatanUserOptions.map(j => `<option value="${escapeHTML(j)}">${escapeHTML(j)}</option>`).join('')}
+                </select>
+              </div>
+              <div id="new-sa-rt-wrap" class="hidden sm:col-span-2">
+                <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RT *</label>
+                <select id="new-sa-rt-select" class="w-full px-2 bg-white border border-emerald-200 rounded-xl text-xs font-semibold">
+                  ${(wilayahConfig.rts || []).map(r => `<option value="${escapeHTML(r.rt)}">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</option>`).join('')}
+                </select>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Lengkap Pejabat *</label>
+                <input type="text" id="new-sa-nama" required placeholder="Nama lengkap & gelar" class="w-full px-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Username Login *</label>
+                <input type="text" id="new-sa-user" required placeholder="user_perangkat" class="w-full px-2.5 bg-white border border-slate-200 rounded-xl text-xs" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Kata Sandi *</label>
+                <input type="text" id="new-sa-pass" required placeholder="Kata sandi" class="w-full px-2.5 bg-white border border-slate-200 rounded-xl text-xs" />
+              </div>
+              <div class="sm:col-span-2">
+                <button type="submit" class="w-full h-9 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-2xs">+ Buat User</button>
               </div>
             </form>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 text-[10px] uppercase text-slate-500">
+                    <th class="py-1.5 w-8 text-center">No.</th>
+                    <th class="py-1.5">Nama Lengkap</th>
+                    <th class="py-1.5">Jabatan</th>
+                    <th class="py-1.5">Username</th>
+                    <th class="py-1.5">Kata Sandi</th>
+                    <th class="py-1.5 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${(superAdmins || []).map((sa, idx) => `
+                    <tr>
+                      <td class="py-1.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                      <td class="py-1.5 font-bold text-slate-900">${escapeHTML(sa.nama)}</td>
+                      <td class="py-1.5"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 text-[11px] font-semibold">${escapeHTML(sa.jabatan || '-')}</span></td>
+                      <td class="py-1.5 font-mono font-semibold text-slate-800">${escapeHTML(sa.username)}</td>
+                      <td class="py-1.5 font-mono text-slate-600">${escapeHTML(sa.password)}</td>
+                      <td class="py-1.5 text-right">
+                        ${(superAdmins || []).length > 1
+                          ? `<button type="button" onclick="deleteSuperAdminAccount('${escapeHTML(sa.id)}')" class="text-rose-600 font-bold hover:underline">Hapus</button>`
+                          : `<span class="text-[10px] text-slate-400 italic">Akun Utama</span>`
+                        }
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <!-- Pengaturan RW & RT Manual -->
@@ -2984,6 +2667,65 @@
       `;
     }
 
+    function addSuperAdminAccount(e) {
+      e.preventDefault();
+      const nama = document.getElementById('new-sa-nama').value.trim();
+      const jabatan = document.getElementById('new-sa-jabatan').value.trim();
+      const username = document.getElementById('new-sa-user').value.trim();
+      const password = document.getElementById('new-sa-pass').value.trim();
+
+      if (jabatan === 'Ketua RT / Admin RT') {
+        const targetRt = document.getElementById('new-sa-rt-select')?.value;
+        const rtObj = (wilayahConfig.rts || []).find(r => r.rt === targetRt);
+        if (!rtObj) {
+          showToast('Pilih wilayah RT terlebih dahulu.', 'error');
+          return;
+        }
+        if ((wilayahConfig.rts || []).some(r => r.rt !== targetRt && r.username.toLowerCase() === username.toLowerCase())) {
+          showToast(`Username "${username}" sudah dipakai Admin RT lain.`, 'error');
+          return;
+        }
+        rtObj.ketua = nama;
+        rtObj.username = username;
+        rtObj.password = password;
+        saveAllDataToLocal();
+        renderSettingsPage();
+        showToast(`User Admin RT ${targetRt} (${nama}) disimpan & disinkronkan ke Spreadsheet.`, 'success');
+        return;
+      }
+
+      if (superAdmins.some(sa => sa.username.toLowerCase() === username.toLowerCase())) {
+        showToast(`Username "${username}" sudah digunakan oleh user lain.`, 'error');
+        return;
+      }
+
+      superAdmins.push({
+        id: 'sa-' + Date.now(),
+        nama,
+        jabatan,
+        username,
+        password
+      });
+      saveAllDataToLocal();
+      renderSettingsPage();
+      showToast(`User "${nama}" (${jabatan}) berhasil dibuat & disimpan ke Spreadsheet.`, 'success');
+    }
+
+    function deleteSuperAdminAccount(id) {
+      if (superAdmins.length <= 1) {
+        showToast('Minimal harus tersisa 1 akun Super Admin.', 'error');
+        return;
+      }
+      const target = superAdmins.find(sa => sa.id === id);
+      if (!target) return;
+      openConfirmModal('Hapus Akun Super Admin', `Hapus akses Super Admin untuk "${target.nama}" (${target.username})?`, () => {
+        superAdmins = superAdmins.filter(sa => sa.id !== id);
+        saveAllDataToLocal();
+        renderSettingsPage();
+        showToast('Akun Super Admin dihapus.', 'info');
+      });
+    }
+
     function saveGeneralSettings(e) {
       e.preventDefault();
       appSettings.dusun = document.getElementById('set-dusun').value.trim();
@@ -2997,7 +2739,8 @@
       appSettings.kades = document.getElementById('set-kades').value.trim();
       appSettings.alamat = document.getElementById('set-alamat').value.trim();
       if (currentUser && currentUser.role === 'superadmin') {
-        currentUser.name = appSettings.kadus || 'Kepala Dusun';
+        const loggedSa = superAdmins.find(sa => sa.username === currentUser.username);
+        currentUser.name = loggedSa ? loggedSa.nama : (appSettings.kadus || 'Kepala Dusun');
         sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
         const sbName = document.getElementById('sidebar-user-name');
         if (sbName) sbName.textContent = currentUser.name;
@@ -3119,6 +2862,7 @@
     return ContentService.createTextOutput(JSON.stringify({
       status: 'success',
       config: configObj,
+      superAdmins: getSheetRows(ss, 'SuperAdmin'),
       residents: getSheetRows(ss, 'Penduduk'),
       templates: getSheetRows(ss, 'TemplateSurat'),
       requests: getSheetRows(ss, 'PermohonanSurat'),
@@ -3135,6 +2879,7 @@ function doPost(e) {
   configData.updatedAt = new Date().toISOString();
   saveSheetRows(ss, 'Konfigurasi', [configData]);
 
+  if (payload.superAdmins) saveSheetRows(ss, 'SuperAdmin', payload.superAdmins);
   if (payload.residents) saveSheetRows(ss, 'Penduduk', payload.residents);
   if (payload.templates) saveSheetRows(ss, 'TemplateSurat', payload.templates);
   if (payload.requests) saveSheetRows(ss, 'PermohonanSurat', payload.requests);
@@ -3403,6 +3148,18 @@ function saveSheetRows(ss, name, list) {
             localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
             applyBrandingSettings();
           }
+          if (Array.isArray(data.superAdmins) && data.superAdmins.length > 0) {
+            superAdmins = data.superAdmins.map((sa, idx) => ({
+              id: String(sa.id || `sa-${idx + 1}`),
+              username: String(sa.username || '').trim(),
+              password: String(sa.password || '').trim(),
+              nama: String(sa.nama || 'Super Admin').trim(),
+              jabatan: String(sa.jabatan || 'Super Administrator').trim()
+            })).filter(sa => sa.username && sa.password);
+            if (superAdmins.length > 0) {
+              localStorage.setItem(STORAGE_KEYS.SUPERADMINS, JSON.stringify(superAdmins));
+            }
+          }
           if (Array.isArray(data.residents) && data.residents.length > 0) {
             residents = data.residents.map(r => ({
               ...r,
@@ -3469,6 +3226,7 @@ function saveSheetRows(ss, name, list) {
               alamat: appSettings.alamat,
               logoUrl: appSettings.logoUrl
             },
+            superAdmins,
             residents,
             templates: letterTemplates,
             requests: letterRequests,
@@ -3593,3 +3351,13 @@ function saveSheetRows(ss, name, list) {
   </script>
 </body>
 </html>
+```
+
+Dukungan **banyak akun Super Admin** (*multi-account Super Admin*) telah ditambahkan tanpa mengubah struktur aplikasi sebelumnya:
+
+1. **Pengelolaan Akun Super Admin per Perangkat**:
+   - Buka menu **Identitas Dusun & KOP Surat**, lalu gunakan bagian **Kelola Akun Super Admin (Akses Perangkat Dusun)** untuk menambahkan atau menghapus akun Super Admin baru (dilengkapi **Nama Pengguna**, **Jabatan/Perangkat**, **Username Login**, dan **Kata Sandi**).
+   - Akun bawaan yang sudah tersedia: `admin` / `admin123` (Kepala Dusun 2) dan `admin2` / `admin123` (Operator Pelayanan Dusun 2).
+2. **Sinkronisasi Otomatis ke Google Spreadsheet (`Sheet SuperAdmin`)**:
+   - Seluruh akun Super Admin otomatis tersimpan dan terbaca dari sheet **`SuperAdmin`** di Google Spreadsheet sehingga perangkat lain dapat langsung login menggunakan akun masing-masing.
+   - *(Catatan: Pastikan memperbarui kode `Kode.gs` di Google Apps Script Anda dengan kode terbaru di menu **Database & Apps Script** agar sheet `SuperAdmin` ikut disinkronkan).*
