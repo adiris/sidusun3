@@ -1150,56 +1150,526 @@
 
       if (sidebarDusun) sidebarDusun.textContent = `${appSettings.dusun} • Desa ${appSettings.desa}`;
       if (headerWilayah) headerWilayah.textContent = `${appSettings.dusun} • Desa ${appSettings.desa}, Kec. ${appSettings.kecamatan}`;
-// ... existing code ... -->
-    function handleSignerRoleDropdownChange() {
-      const roleSelect = document.getElementById('set-signer-role');
-      const titleInput = document.getElementById('set-signer-title');
-      const desaVal = document.getElementById('set-desa')?.value.trim() || appSettings.desa;
-      if (!roleSelect || !titleInput) return;
-
-      const selectedRole = roleSelect.value;
-      if (selectedRole === 'Kepala Desa') {
-        titleInput.value = `Kepala Desa ${desaVal}`;
-      } else {
-        titleInput.value = `a.n. ${selectedRole}`;
+      if (dateDisp) {
+        dateDisp.textContent = new Date().toLocaleDateString('id-ID', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
       }
     }
 
-    function handleNewUserJabatanChange() {
-      const jabatanSel = document.getElementById('new-sa-jabatan');
-      const rtWrap = document.getElementById('new-sa-rt-wrap');
-      if (!jabatanSel || !rtWrap) return;
-      if (jabatanSel.value === 'Ketua RT / Admin RT') {
-        rtWrap.classList.remove('hidden');
+    // 5. OTENTIKASI LOGIN & NAVIGASI MULTI-USER
+    function switchLoginTab(role) {
+      document.getElementById('login-role').value = role;
+      ['superadmin', 'admin_rt', 'warga'].forEach(r => {
+        const btn = document.getElementById(`tab-role-${r}`);
+        if (!btn) return;
+        btn.className = r === role
+          ? 'py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 bg-white text-brand-700 shadow-xs'
+          : 'py-1.5 px-2 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 text-slate-600';
+      });
+
+      const userLabel = document.getElementById('login-username-label');
+      const userInput = document.getElementById('login-username');
+      const passLabel = document.getElementById('login-password-label');
+      const helper = document.getElementById('login-helper-text');
+      document.getElementById('login-error-box').classList.add('hidden');
+
+      if (role === 'superadmin') {
+        userLabel.textContent = 'Username Super Admin';
+        userInput.placeholder = 'Masukkan username...';
+        passLabel.textContent = 'Kata Sandi';
+        helper.textContent = 'Gunakan akun Super Admin perangkat masing-masing.';
+      } else if (role === 'admin_rt') {
+        userLabel.textContent = 'Username Admin RT';
+        userInput.placeholder = 'Contoh: rt01';
+        passLabel.textContent = 'Kata Sandi RT';
+        helper.textContent = 'Akses terbatas khusus warga dan surat pada wilayah RT terkait.';
       } else {
-        rtWrap.classList.add('hidden');
+        userLabel.textContent = 'NIK (16 Digit)';
+        userInput.placeholder = 'Masukkan 16 digit NIK...';
+        passLabel.textContent = 'PIN Warga';
+        helper.textContent = 'Gunakan NIK dan PIN warga yang terdaftar di dusun.';
       }
     }
 
-    function renderSettingsPage() {
+    function togglePasswordVisibility() {
+      const inp = document.getElementById('login-password');
+      const icon = document.getElementById('eye-icon');
+      if (!inp) return;
+      const isHidden = inp.type === 'password';
+      inp.type = isHidden ? 'text' : 'password';
+      if (icon) {
+        icon.setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('login-role').value;
+      const userVal = document.getElementById('login-username').value.trim();
+      const passVal = document.getElementById('login-password').value.trim();
+      const errBox = document.getElementById('login-error-box');
+      const errMsg = document.getElementById('login-error-msg');
+      errBox.classList.add('hidden');
+
+      if (role === 'superadmin') {
+        const foundSa = (superAdmins || []).find(
+          sa => sa.username.toLowerCase() === userVal.toLowerCase() && sa.password === passVal
+        );
+        if (!foundSa) {
+          errMsg.textContent = 'Username atau kata sandi Super Admin tidak sesuai.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+        const saJabatan = foundSa.jabatan || 'Kepala Desa';
+        appSettings.kades = foundSa.nama;
+        appSettings.signerRole = saJabatan;
+        appSettings.signerTitle = saJabatan === 'Kepala Desa'
+          ? `Kepala Desa ${appSettings.desa}`
+          : `a.n. ${saJabatan}`;
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
+
+        currentUser = {
+          role: 'superadmin',
+          username: foundSa.username,
+          name: foundSa.nama,
+          jabatan: saJabatan,
+          roleLabel: saJabatan,
+          wilayahLabel: 'Semua RT/RW'
+        };
+      } else if (role === 'admin_rt') {
+        const foundRt = (wilayahConfig.rts || []).find(
+          r => r.username.toLowerCase() === userVal.toLowerCase() && r.password === passVal
+        );
+        if (!foundRt) {
+          errMsg.textContent = 'Username atau kata sandi Admin RT tidak ditemukan.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+        currentUser = {
+          role: 'admin_rt',
+          username: foundRt.username,
+          name: foundRt.ketua || `Ketua RT ${foundRt.rt}`,
+          rt: foundRt.rt,
+          rw: foundRt.rw,
+          roleLabel: `Admin RT ${foundRt.rt}`,
+          wilayahLabel: `RT ${foundRt.rt} / RW ${foundRt.rw}`
+        };
+      } else {
+        const foundWarga = residents.find(r => r.nik === userVal && r.pin === passVal);
+        if (!foundWarga) {
+          errMsg.textContent = 'NIK atau PIN warga tidak cocok. Hubungi Admin RT Anda.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+        currentUser = {
+          role: 'warga',
+          nik: foundWarga.nik,
+          name: foundWarga.nama,
+          rt: foundWarga.rt,
+          rw: foundWarga.rw,
+          roleLabel: 'Warga Dusun',
+          wilayahLabel: `RT ${foundWarga.rt} / RW ${foundWarga.rw}`
+        };
+      }
+
+      sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
+      enterApplication();
+    }
+
+    function enterApplication() {
+      if (loginServiceSlideTimer) {
+        clearInterval(loginServiceSlideTimer);
+        loginServiceSlideTimer = null;
+      }
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+
+      const initials = (currentUser.name || 'US')
+        .split(' ')
+        .map(w => w[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      document.getElementById('user-avatar').textContent = initials || 'US';
+      document.getElementById('sidebar-user-name').textContent = currentUser.name;
+      document.getElementById('sidebar-user-role').textContent = currentUser.roleLabel;
+      document.getElementById('sidebar-wilayah-badge').textContent = currentUser.wilayahLabel;
+      document.getElementById('mobile-role-badge').textContent = currentUser.roleLabel;
+
+      const syncBox = document.getElementById('sidebar-sync-box');
+      const syncLabel = document.getElementById('sync-status-label');
+      if (syncBox) {
+        if (currentUser.role === 'superadmin') {
+          syncBox.classList.remove('hidden');
+          if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Terhubung DB Cloud' : 'Database Lokal';
+        } else {
+          syncBox.classList.add('hidden');
+        }
+      }
+
+      applyBrandingSettings();
+      lastKnownPendingCount = null;
+      lastKnownReadyLetterIds = null;
+      updateNotificationBadges();
+      navigateTo('dashboard');
+    }
+
+    function logout() {
+      if (pendingNotifTickerTimer) {
+        clearInterval(pendingNotifTickerTimer);
+        pendingNotifTickerTimer = null;
+      }
+      currentUser = null;
+      sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+      document.getElementById('app-shell').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+      startLoginServiceSlider();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleMobileSidebar() {
+      const sb = document.getElementById('sidebar');
+      const bd = document.getElementById('sidebar-backdrop');
+      if (!sb || !bd) return;
+      const isOpen = !sb.classList.contains('-translate-x-full');
+      if (isOpen) {
+        sb.classList.add('-translate-x-full');
+        bd.classList.add('hidden');
+      } else {
+        sb.classList.remove('-translate-x-full');
+        bd.classList.remove('hidden');
+      }
+    }
+
+    function getNavItemsForRole(role) {
+      if (role === 'superadmin') {
+        return [
+          { id: 'dashboard', label: 'Dashboard Dusun', icon: 'layout-dashboard' },
+          { id: 'penduduk', label: 'Data Penduduk', icon: 'users' },
+          { id: 'bantuan', label: 'Penerima Bantuan', icon: 'heart-handshake' },
+          { id: 'giat', label: 'Kelompok Giat Warga', icon: 'sprout' },
+          { id: 'permohonan', label: 'Permohonan Surat', icon: 'file-text' },
+          { id: 'templates', label: 'Format & Jenis Surat', icon: 'file-cog' },
+          { id: 'pengaturan', label: 'Identitas & KOP Surat', icon: 'sliders-horizontal' },
+          { id: 'appscript', label: 'Database & Apps Script', icon: 'database' }
+        ];
+      }
+      if (role === 'admin_rt') {
+        return [
+          { id: 'dashboard', label: 'Dashboard RT', icon: 'layout-dashboard' },
+          { id: 'penduduk', label: 'Data Warga RT', icon: 'users' },
+          { id: 'bantuan', label: 'Penerima Bantuan', icon: 'heart-handshake' },
+          { id: 'giat', label: 'Kelompok Giat Warga', icon: 'sprout' },
+          { id: 'permohonan', label: 'Permohonan Surat', icon: 'file-text' }
+        ];
+      }
+      return [
+        { id: 'dashboard', label: 'Beranda Warga', icon: 'home' },
+        { id: 'permohonan', label: 'Layanan Surat Online', icon: 'file-plus' },
+        { id: 'profil', label: 'Profil Kependudukan', icon: 'id-card' }
+      ];
+    }
+
+    function renderSidebarNav() {
+      const nav = document.getElementById('sidebar-nav');
+      if (!nav || !currentUser) return;
+      const items = getNavItemsForRole(currentUser.role);
+      const pendingCount = getAccessibleRequests().filter(r => r.status === 'Menunggu Verifikasi').length;
+
+      nav.innerHTML = items.map(item => {
+        const isActive = currentPage === item.id;
+        const theme = SPACE_THEMES[item.id] || SPACE_THEMES.dashboard;
+        const btnClass = isActive
+          ? `${theme.activeNav} font-bold`
+          : 'text-slate-600 hover:bg-slate-100/90 hover:text-slate-900 border-transparent font-medium';
+        const iconWrapClass = isActive ? theme.activeIconBg : theme.iconBg;
+        const badgeHtml = item.id === 'permohonan' && pendingCount > 0 && currentUser.role !== 'warga'
+          ? `<span class="ml-auto px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${isActive ? 'bg-white text-amber-700' : 'bg-amber-500 text-white'}">${pendingCount}</span>`
+          : '';
+
+        return `
+          <button type="button" onclick="navigateTo('${item.id}')" class="w-full px-2.5 py-2 rounded-xl border text-xs transition flex items-center gap-2.5 text-left ${btnClass}">
+            <span class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition ${iconWrapClass}">
+              <i data-lucide="${item.icon}" class="w-3.5 h-3.5"></i>
+            </span>
+            <span class="truncate">${escapeHTML(item.label)}</span>
+            ${badgeHtml}
+          </button>
+        `;
+      }).join('');
+    }
+
+    const PAGE_META = {
+      dashboard: { title: 'Dashboard Utama', subtitle: 'Ringkasan data kependudukan dan layanan administrasi dusun' },
+      penduduk: { title: 'Data Penduduk', subtitle: 'Pengelolaan data induk warga, NIK, KK, dan PIN layanan mandiri' },
+      bantuan: { title: 'Warga Penerima Bantuan', subtitle: 'Pendataan dan penyaluran program bantuan sosial warga' },
+      giat: { title: 'Kelompok Giat Warga', subtitle: 'Kelompok Tani, Paguyuban UMKM, PKK, dan kegiatan produktif warga' },
+      permohonan: { title: 'Permohonan & Layanan Surat', subtitle: 'Pengajuan surat online, verifikasi redaksi, dan pencetakan surat resmi' },
+      templates: { title: 'Format & Varian Jenis Surat', subtitle: 'Atur kode surat dan redaksi otomatis untuk layanan warga' },
+      pengaturan: { title: 'Identitas Dusun, KOP Surat & Wilayah', subtitle: 'Pengaturan identitas dusun, logo KOP surat, akun perangkat, dan RT/RW' },
+      appscript: { title: 'Database & Google Apps Script', subtitle: 'Sinkronisasi basis data real-time dengan Google Spreadsheet' },
+      profil: { title: 'Profil Kependudukan Saya', subtitle: 'Rincian identitas warga yang terdaftar pada sistem dusun' }
+    };
+
+    function navigateTo(pageId) {
+      currentPage = pageId;
+      const workspace = document.getElementById('main-workspace');
+      const spaceDot = document.getElementById('page-space-dot');
+      const theme = SPACE_THEMES[pageId] || SPACE_THEMES.dashboard;
+
+      if (workspace) {
+        workspace.className = `flex-1 flex flex-col min-w-0 transition-colors duration-300 ${theme.bg}`;
+      }
+      if (spaceDot) {
+        spaceDot.className = `w-2.5 h-6 rounded-full shrink-0 transition-all duration-300 ${theme.dot}`;
+      }
+
+      const meta = PAGE_META[pageId] || PAGE_META.dashboard;
+      const titleEl = document.getElementById('page-title');
+      const subEl = document.getElementById('page-subtitle');
+      if (titleEl) titleEl.textContent = meta.title;
+      if (subEl) subEl.textContent = meta.subtitle;
+
+      renderSidebarNav();
+      renderCurrentPage();
+
+      const sb = document.getElementById('sidebar');
+      if (sb && !sb.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        toggleMobileSidebar();
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderCurrentPage() {
+      if (!currentUser) return;
+      if (pendingNotifTickerTimer && currentPage !== 'dashboard') {
+        clearInterval(pendingNotifTickerTimer);
+        pendingNotifTickerTimer = null;
+      }
+
+      switch (currentPage) {
+        case 'dashboard': renderDashboardPage(); break;
+        case 'penduduk': renderResidentsPage(); break;
+        case 'bantuan': renderBantuanPage(); break;
+        case 'giat': renderGiatPage(); break;
+        case 'permohonan': renderPermohonanPage(); break;
+        case 'templates': renderTemplatesPage(); break;
+        case 'pengaturan': renderSettingsPage(); break;
+        case 'appscript': renderAppScriptPage(); break;
+        case 'profil': renderWargaProfilePage(); break;
+        default: renderDashboardPage();
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function getAccessibleResidents() {
+      if (!currentUser) return [];
+      if (currentUser.role === 'superadmin') return residents;
+      if (currentUser.role === 'admin_rt') return residents.filter(r => r.rt === currentUser.rt);
+      return residents.filter(r => r.nik === currentUser.nik);
+    }
+
+    function getAccessibleRequests() {
+      if (!currentUser) return [];
+      if (currentUser.role === 'superadmin') return letterRequests;
+      if (currentUser.role === 'admin_rt') return letterRequests.filter(r => r.rt === currentUser.rt);
+      return letterRequests.filter(r => r.nik === currentUser.nik);
+    }
+
+    function updateNotificationBadges() {
+      if (!currentUser) return;
+      const accessible = getAccessibleRequests();
+      const headerText = document.getElementById('header-notif-text');
+      const headerBadge = document.getElementById('header-notif-badge');
+      const mobileDot = document.getElementById('mobile-notif-dot');
+
+      if (currentUser.role === 'warga') {
+        const readyLetters = accessible.filter(r => r.status === 'Disetujui');
+        const currentReadyIds = readyLetters.map(r => r.id).sort();
+        if (lastKnownReadyLetterIds !== null) {
+          const hasNewlyReady = currentReadyIds.some(id => !lastKnownReadyLetterIds.includes(id));
+          if (hasNewlyReady) {
+            playTingTongSound();
+            showToast('Surat Anda telah selesai diproses dan siap diambil!', 'success');
+          }
+        }
+        lastKnownReadyLetterIds = currentReadyIds;
+
+        if (headerText) headerText.textContent = 'Surat Siap Diambil';
+        if (headerBadge) {
+          headerBadge.textContent = readyLetters.length;
+          headerBadge.classList.toggle('hidden', readyLetters.length === 0);
+        }
+        if (mobileDot) mobileDot.classList.toggle('hidden', readyLetters.length === 0);
+      } else {
+        const pending = accessible.filter(r => r.status === 'Menunggu Verifikasi');
+        if (lastKnownPendingCount !== null && pending.length > lastKnownPendingCount) {
+          playTingTongSound();
+          showToast(`Ada ${pending.length - lastKnownPendingCount} permohonan surat baru masuk!`, 'info');
+        }
+        lastKnownPendingCount = pending.length;
+
+        if (headerText) headerText.textContent = 'Surat Masuk';
+        if (headerBadge) {
+          headerBadge.textContent = pending.length;
+          headerBadge.classList.toggle('hidden', pending.length === 0);
+        }
+        if (mobileDot) mobileDot.classList.toggle('hidden', pending.length === 0);
+      }
+      renderSidebarNav();
+    }
+
+    function startPeriodicDatabaseScan() {
+      if (periodicDbScanTimer) clearInterval(periodicDbScanTimer);
+      periodicDbScanTimer = setInterval(() => {
+        if (appScriptUrl || spreadsheetUrl) {
+          readLatestFromDatabase(true);
+        }
+      }, 30000);
+    }
+
+    function startPendingNotifTicker(pendingList) {
+      if (pendingNotifTickerTimer) {
+        clearInterval(pendingNotifTickerTimer);
+        pendingNotifTickerTimer = null;
+      }
+      if (!Array.isArray(pendingList) || pendingList.length <= 1) return;
+
+      pendingNotifTickerIndex = 0;
+      pendingNotifTickerTimer = setInterval(() => {
+        const tickerEl = document.getElementById('dashboard-pending-applicant-ticker');
+        if (!tickerEl) {
+          clearInterval(pendingNotifTickerTimer);
+          pendingNotifTickerTimer = null;
+          return;
+        }
+        pendingNotifTickerIndex = (pendingNotifTickerIndex + 1) % pendingList.length;
+        const item = pendingList[pendingNotifTickerIndex];
+        tickerEl.style.opacity = '0.2';
+        setTimeout(() => {
+          if (!document.getElementById('dashboard-pending-applicant-ticker')) return;
+          tickerEl.innerHTML = `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-white/25 text-white font-extrabold text-xs animate-applicant-blink">
+              <span>(${pendingNotifTickerIndex + 1}/${pendingList.length})</span>
+              <span>${escapeHTML(item.namaPemohon)}</span>
+              <span class="font-normal text-orange-100">• RT ${escapeHTML(item.rt)}/RW ${escapeHTML(item.rw)} (${escapeHTML(item.templateNama)})</span>
+            </span>
+          `;
+          tickerEl.style.opacity = '1';
+        }, 250);
+      }, 4200);
+    }
+
+    // 6. HALAMAN DASHBOARD (WARGA & ADMIN)
+    function renderDashboardPage() {
       const container = document.getElementById('main-content');
-      const currentSignerRole = appSettings.signerRole || 'Kepala Desa';
-      const roleOptions = [
-        'Kepala Desa',
-        'Sekretaris Desa',
-        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
-        'Kasi Pemerintahan',
-        'Kasi Pelayanan',
-        'Kasi Kesejahteraan',
-        'Kaur Keuangan',
-        'Kaur TU & Umum'
-      ];
-      const hasCurrentInOptions = roleOptions.includes(currentSignerRole);
-      const jabatanUserOptions = [
-        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
-        'Sekretaris Desa',
-        'Kasi Pelayanan',
-        'Kasi Pemerintahan',
-        'Kasi Kesejahteraan',
-        'Kaur TU & Umum',
-        'Operator Dusun',
-        'Ketua RT / Admin RT'
-      ];
+      if (currentUser.role === 'warga') {
+        const me = residents.find(r => r.nik === currentUser.nik);
+        const myRequests = getAccessibleRequests();
+        const readyCount = myRequests.filter(r => r.status === 'Disetujui').length;
+
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-indigo-700 via-brand-700 to-slate-900 rounded-2xl p-4 text-white shadow-xs flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="text-base font-extrabold tracking-tight">Hallo, <span class="text-orange-300">${escapeHTML(currentUser.name)}</span></p>
+                <p class="text-xs text-indigo-100 mt-0.5">NIK: ${escapeHTML(currentUser.nik)} • RT ${escapeHTML(currentUser.rt)} / RW ${escapeHTML(currentUser.rw)}, ${escapeHTML(appSettings.dusun)}</p>
+              </div>
+              <button type="button" onclick="openRequestModal()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold shadow-xs transition">
+                + Ajukan Surat Online
+              </button>
+            </div>
+
+            ${readyCount > 0 ? `
+              <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-4 text-white flex flex-wrap items-center justify-between gap-3 shadow-sm">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="bell-ring" class="w-5 h-5 animate-bell-ring"></i>
+                  <div>
+                    <p class="text-sm font-extrabold">Surat Anda Selesai & Siap Diambil!</p>
+                    <p class="text-xs text-emerald-50">Terdapat ${readyCount} dokumen surat yang telah disetujui perangkat dusun/desa.</p>
+                  </div>
+                </div>
+                <button type="button" onclick="navigateTo('permohonan')" class="px-3.5 py-1.5 rounded-xl bg-white text-emerald-700 text-xs font-extrabold">Lihat Status Surat</button>
+              </div>
+            ` : ''}
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="ui-card p-4 border border-indigo-100">
+                <span class="text-[11px] font-semibold text-slate-500">Total Pengajuan Surat</span>
+                <p class="text-2xl font-extrabold text-slate-900 mt-1">${myRequests.length}</p>
+              </div>
+              <div class="ui-card p-4 border border-emerald-100">
+                <span class="text-[11px] font-semibold text-slate-500">Surat Siap Diambil</span>
+                <p class="text-2xl font-extrabold text-emerald-600 mt-1">${readyCount}</p>
+              </div>
+              <div class="ui-card p-4 border border-teal-100">
+                <span class="text-[11px] font-semibold text-slate-500">Bantuan Terdaftar</span>
+                <p class="text-xs font-bold text-teal-700 mt-2">${me && Array.isArray(me.bantuan) && me.bantuan.length > 0 ? escapeHTML(me.bantuan.join(', ')) : 'Belum ada bantuan terdaftar'}</p>
+              </div>
+            </div>
+
+            <div class="ui-card p-4 border border-slate-200/80 space-y-2.5">
+              <h4 class="text-sm font-bold text-slate-900">Layanan Surat Keterangan Tersedia</h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                ${letterTemplates.map(tpl => `
+                  <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between gap-2.5">
+                    <div>
+                      <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 text-[10px] font-bold">${escapeHTML(tpl.kode)}</span>
+                      <h5 class="text-xs font-bold text-slate-900 mt-1">${escapeHTML(tpl.nama)}</h5>
+                      <p class="text-[11px] text-slate-500 mt-0.5">${escapeHTML(tpl.deskripsi)}</p>
+                    </div>
+                    <button type="button" onclick="openRequestModal('${tpl.id}')" class="w-full py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold">Ajukan Surat Ini</button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const accessibleResidents = getAccessibleResidents();
+      const accessibleRequests = getAccessibleRequests();
+      const pendingRequests = accessibleRequests.filter(r => r.status === 'Menunggu Verifikasi');
+      const lakiCount = accessibleResidents.filter(r => r.jk === 'Laki-laki').length;
+      const perempuanCount = accessibleResidents.filter(r => r.jk === 'Perempuan').length;
+      const bantuanCount = accessibleResidents.filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0).length;
+
+      const visibleRts = currentUser.role === 'admin_rt'
+        ? (wilayahConfig.rts || []).filter(r => r.rt === currentUser.rt)
+        : (wilayahConfig.rts || []);
+      const rtCardsHtml = visibleRts.map(rtObj => {
+        const count = accessibleResidents.filter(r => r.rt === rtObj.rt).length;
+        return `
+          <div class="p-3 rounded-xl bg-indigo-50/50 border border-indigo-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-extrabold text-indigo-950">RT ${escapeHTML(rtObj.rt)} / RW ${escapeHTML(rtObj.rw)}</span>
+              <p class="text-[11px] text-slate-500 truncate">${escapeHTML(rtObj.ketua || '-')}</p>
+            </div>
+            <span class="text-base font-extrabold text-indigo-700">${count} <span class="text-[10px] font-medium text-slate-500">Jiwa</span></span>
+          </div>
+        `;
+      }).join('');
+
+      const visibleRws = currentUser.role === 'admin_rt'
+        ? (wilayahConfig.rws || []).filter(rwObj => (typeof rwObj === 'string' ? rwObj : rwObj.rw) === currentUser.rw)
+        : (wilayahConfig.rws || []);
+      const rwCardsHtml = visibleRws.map(rwObj => {
+        const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+        const pengurus = typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-';
+        const count = accessibleResidents.filter(r => r.rw === rwCode).length;
+        return `
+          <div class="p-3 rounded-xl bg-sky-50/60 border border-sky-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-extrabold text-sky-950">Wilayah RW ${escapeHTML(rwCode)}</span>
+              <p class="text-[11px] text-slate-500">Pengurus: ${escapeHTML(pengurus)}</p>
+            </div>
+            <span class="text-base font-extrabold text-sky-700">${count} <span class="text-[10px] font-medium text-slate-500">Jiwa</span></span>
+          </div>
+        `;
+      }).join('');
 
       container.innerHTML = `
         <div class="space-y-4">
@@ -1286,7 +1756,7 @@
                 <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
                 <span>Statistik Jumlah Penduduk per RT</span>
               </h4>
-              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-bold">${(wilayahConfig.rts || []).length} Wilayah RT</span>
+              <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-bold">${visibleRts.length} Wilayah RT</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
               ${rtCardsHtml}
@@ -1300,7 +1770,7 @@
                 <span class="w-2 h-2 rounded-full bg-sky-500"></span>
                 <span>Statistik Penduduk & Pengurus RW</span>
               </h4>
-              <span class="px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 text-[10px] font-bold">${(wilayahConfig.rws || []).length} Wilayah RW</span>
+              <span class="px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 text-[10px] font-bold">${visibleRws.length} Wilayah RW</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               ${rwCardsHtml}
@@ -2382,6 +2852,18 @@
         'Kaur Keuangan',
         'Kaur TU & Umum'
       ];
+      const jabatanUserOptions = [
+        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
+        'Kepala Desa',
+        'Sekretaris Desa',
+        'Kasi Pemerintahan',
+        'Kasi Pelayanan',
+        'Kasi Kesejahteraan',
+        'Kaur Keuangan',
+        'Kaur TU & Umum',
+        'Operator Dusun',
+        'Ketua RT / Admin RT'
+      ];
       const hasCurrentInOptions = roleOptions.includes(currentSignerRole);
 
       container.innerHTML = `
@@ -2470,6 +2952,14 @@
                     <p id="kop-preview-kab" class="text-[11px] font-bold tracking-widest uppercase">Pemerintah Kabupaten ${escapeHTML(appSettings.kabupaten)}</p>
                     <p id="kop-preview-kec" class="text-[11px] font-bold tracking-wider uppercase">Kecamatan ${escapeHTML(appSettings.kecamatan)}</p>
                     <h4 id="kop-preview-desa" class="text-sm font-extrabold tracking-wide uppercase">Desa ${escapeHTML(appSettings.desa)}</h4>
+                    <p id="kop-preview-alamat" class="text-[10px] italic text-slate-600">Alamat: ${escapeHTML(appSettings.alamat)}</p>
+                  </div>
+                  <div class="w-12 shrink-0 hidden sm:block"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+
           <!-- Form Pembuatan User Berdasarkan Jabatan & Tersimpan ke Spreadsheet -->
           <div class="ui-card p-4 border border-indigo-200/90 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
@@ -2724,6 +3214,17 @@
         renderSettingsPage();
         showToast('Akun Super Admin dihapus.', 'info');
       });
+    }
+
+    function handleNewUserJabatanChange() {
+      const jabatanVal = document.getElementById('new-sa-jabatan')?.value;
+      const rtWrap = document.getElementById('new-sa-rt-wrap');
+      if (!rtWrap) return;
+      if (jabatanVal === 'Ketua RT / Admin RT') {
+        rtWrap.classList.remove('hidden');
+      } else {
+        rtWrap.classList.add('hidden');
+      }
     }
 
     function saveGeneralSettings(e) {
