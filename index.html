@@ -1544,64 +1544,6 @@
       return letterRequests.filter(r => r.nik === currentUser.nik);
     }
 
-    // Mengambil daftar RT dan RW dinamis dari Data Penduduk (digabung dengan konfigurasi wilayah aktif)
-    function getWilayahFromResidents() {
-      const rwMap = new Map();
-      const rtMap = new Map();
-
-      (wilayahConfig.rws || []).forEach(rwObj => {
-        const rwCode = String(typeof rwObj === 'string' ? rwObj : (rwObj.rw || '')).trim().padStart(2, '0');
-        if (rwCode && rwCode !== '00') {
-          rwMap.set(rwCode, {
-            rw: rwCode,
-            pengurus: typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-'
-          });
-        }
-      });
-
-      (wilayahConfig.rts || []).forEach(rtObj => {
-        const rtCode = String(rtObj.rt || '').trim().padStart(2, '0');
-        const rwCode = String(rtObj.rw || '').trim().padStart(2, '0');
-        if (rtCode && rtCode !== '00') {
-          rtMap.set(rtCode, {
-            rt: rtCode,
-            rw: rwCode && rwCode !== '00' ? rwCode : '01',
-            ketua: rtObj.ketua || '-',
-            username: rtObj.username || `rt${rtCode}`,
-            password: rtObj.password || `rt${rtCode}123`
-          });
-        }
-      });
-
-      // Ekstrak semua nilai RT & RW unik yang ada di data penduduk
-      (residents || []).forEach(res => {
-        const resRw = String(res.rw || '').trim().padStart(2, '0');
-        const resRt = String(res.rt || '').trim().padStart(2, '0');
-
-        if (resRw && resRw !== '00' && !rwMap.has(resRw)) {
-          rwMap.set(resRw, { rw: resRw, pengurus: '-' });
-        }
-        if (resRt && resRt !== '00') {
-          if (!rtMap.has(resRt)) {
-            rtMap.set(resRt, {
-              rt: resRt,
-              rw: resRw && resRw !== '00' ? resRw : '01',
-              ketua: '-',
-              username: `rt${resRt}`,
-              password: `rt${resRt}123`
-            });
-          } else if (resRw && resRw !== '00' && !rtMap.get(resRt).rw) {
-            rtMap.get(resRt).rw = resRw;
-          }
-        }
-      });
-
-      return {
-        rws: Array.from(rwMap.values()).sort((a, b) => a.rw.localeCompare(b.rw)),
-        rts: Array.from(rtMap.values()).sort((a, b) => a.rt.localeCompare(b.rt))
-      };
-    }
-
     function updateNotificationBadges() {
       if (!currentUser) return;
       const accessible = getAccessibleRequests();
@@ -1788,11 +1730,10 @@
       const lakiCount = accessibleResidents.filter(r => r.jk === 'Laki-laki').length;
       const perempuanCount = accessibleResidents.filter(r => r.jk === 'Perempuan').length;
       const bantuanCount = accessibleResidents.filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0).length;
-      const dynamicWilayah = getWilayahFromResidents();
 
       const visibleRts = currentUser.role === 'admin_rt'
-        ? dynamicWilayah.rts.filter(r => r.rt === currentUser.rt)
-        : dynamicWilayah.rts;
+        ? (wilayahConfig.rts || []).filter(r => r.rt === currentUser.rt)
+        : (wilayahConfig.rts || []);
       const rtCardsHtml = visibleRts.map(rtObj => {
         const count = accessibleResidents.filter(r => r.rt === rtObj.rt).length;
         return `
@@ -1807,11 +1748,11 @@
       }).join('');
 
       const visibleRws = currentUser.role === 'admin_rt'
-        ? dynamicWilayah.rws.filter(rwObj => rwObj.rw === currentUser.rw)
-        : dynamicWilayah.rws;
+        ? (wilayahConfig.rws || []).filter(rwObj => (typeof rwObj === 'string' ? rwObj : rwObj.rw) === currentUser.rw)
+        : (wilayahConfig.rws || []);
       const rwCardsHtml = visibleRws.map(rwObj => {
-        const rwCode = rwObj.rw;
-        const pengurus = rwObj.pengurus || '-';
+        const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+        const pengurus = typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-';
         const count = accessibleResidents.filter(r => r.rw === rwCode).length;
         return `
           <div class="p-3 rounded-xl bg-sky-50/60 border border-sky-100 flex items-center justify-between">
@@ -1945,22 +1886,21 @@
 
     function renderResidentsPage() {
       const container = document.getElementById('main-content');
-      const dynamicWilayah = getWilayahFromResidents();
       const rtFilterHtml = currentUser.role === 'superadmin'
         ? `<select id="filter-resident-rt" onchange="residentRtFilter = this.value; renderResidentTableBody();" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
             <option value="ALL">Semua RT</option>
-            ${dynamicWilayah.rts.map(r => `<option value="${r.rt}" ${residentRtFilter === r.rt ? 'selected' : ''}>RT ${r.rt} / RW ${r.rw}</option>`).join('')}
+            ${(wilayahConfig.rts || []).map(r => `<option value="${r.rt}" ${residentRtFilter === r.rt ? 'selected' : ''}>RT ${r.rt} / RW ${r.rw}</option>`).join('')}
           </select>`
         : `<span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">Wilayah Terkunci: RT ${escapeHTML(currentUser.rt)}</span>`;
 
-      const rwOptionsHtml = dynamicWilayah.rws.map(rwObj => {
-        const rwCode = rwObj.rw;
+      const rwOptionsHtml = (wilayahConfig.rws || []).map(rwObj => {
+        const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
         return `<option value="${rwCode}">RW ${rwCode}</option>`;
       }).join('');
 
       const availableRts = currentUser.role === 'admin_rt'
-        ? dynamicWilayah.rts.filter(r => r.rt === currentUser.rt)
-        : dynamicWilayah.rts;
+        ? (wilayahConfig.rts || []).filter(r => r.rt === currentUser.rt)
+        : (wilayahConfig.rts || []);
       const rtOptionsHtml = availableRts.map(r => `<option value="${r.rt}">RT ${r.rt} (RW ${r.rw})</option>`).join('');
 
       container.innerHTML = `
@@ -2017,13 +1957,7 @@
                 </div>
                 <div>
                   <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RT *</label>
-                  <input type="text" id="res-rt" list="datalist-resident-rt" oninput="autoSetRwFromRt()" onchange="autoSetRwFromRt()" required maxlength="3" placeholder="01" class="w-full px-2.5 py-1.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs font-semibold" />
-                  <datalist id="datalist-resident-rt">${rtOptionsHtml}</datalist>
-                </div>
-                <div>
-                  <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RW *</label>
-                  <input type="text" id="res-rw" list="datalist-resident-rw" required maxlength="3" placeholder="01" class="w-full px-2.5 py-1.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs font-semibold" />
-                  <datalist id="datalist-resident-rw">${rwOptionsHtml}</datalist>
+                  <select id="res-rt" onchange="autoSetRwFromRt()" required class="w-full px-2.5 py-1.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs font-semibold">${rtOptionsHtml}</select>
                 </div>
                 <div>
                   <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RW *</label>
@@ -2160,16 +2094,6 @@
       document.getElementById('resident-inline-form-title').textContent = 'Input Data Penduduk Baru';
       document.getElementById('resident-submit-btn-label').textContent = 'Simpan Penduduk';
       document.getElementById('resident-cancel-edit-btn').classList.add('hidden');
-      const dynamicWilayah = getWilayahFromResidents();
-      const rtInput = document.getElementById('res-rt');
-      const rwInput = document.getElementById('res-rw');
-      if (currentUser && currentUser.role === 'admin_rt') {
-        if (rtInput) { rtInput.value = currentUser.rt; rtInput.readOnly = true; }
-        if (rwInput) { rwInput.value = currentUser.rw; rwInput.readOnly = true; }
-      } else {
-        if (rtInput) { rtInput.readOnly = false; rtInput.value = dynamicWilayah.rts[0]?.rt || '01'; }
-        if (rwInput) { rwInput.readOnly = false; rwInput.value = dynamicWilayah.rts[0]?.rw || dynamicWilayah.rws[0]?.rw || '01'; }
-      }
       autoSetRwFromRt();
     }
 
@@ -2215,9 +2139,7 @@
       const rtEl = document.getElementById('res-rt');
       const rwEl = document.getElementById('res-rw');
       if (!rtEl || !rwEl) return;
-      const paddedRt = rtEl.value.trim().padStart(2, '0');
-      const dynamicWilayah = getWilayahFromResidents();
-      const found = dynamicWilayah.rts.find(r => r.rt === paddedRt);
+      const found = (wilayahConfig.rts || []).find(r => r.rt === rtEl.value);
       if (found) rwEl.value = found.rw;
     }
 
@@ -2231,8 +2153,6 @@
         return;
       }
 
-      const normRw = document.getElementById('res-rw').value.trim().padStart(2, '0');
-      const normRt = document.getElementById('res-rt').value.trim().padStart(2, '0');
       const existing = id ? residents.find(r => r.id === id) : null;
       const record = {
         id: id || 'res-' + Date.now(),
@@ -2243,8 +2163,8 @@
         jk: document.getElementById('res-jk').value,
         tempatLahir: document.getElementById('res-tempat-lahir').value.trim(),
         tglLahir: document.getElementById('res-tgl-lahir').value,
-        rw: normRw,
-        rt: normRt,
+        rw: document.getElementById('res-rw').value,
+        rt: document.getElementById('res-rt').value,
         status: document.getElementById('res-status').value,
         agama: document.getElementById('res-agama').value,
         pekerjaan: document.getElementById('res-pekerjaan').value.trim(),
@@ -2262,5 +2182,1769 @@
       }
 
       saveAllDataToLocal();
-      renderResidentsPage();
+      resetInlineResidentForm();
+      renderResidentTableBody();
     }
+
+    function deleteResident(id) {
+      const target = residents.find(r => r.id === id);
+      if (!target) return;
+      openConfirmModal('Hapus Data Penduduk', `Yakin ingin menghapus data warga "${target.nama}" (NIK: ${target.nik})?`, () => {
+        residents = residents.filter(r => r.id !== id);
+        saveAllDataToLocal();
+        renderCurrentPage();
+        showToast('Data penduduk dihapus.', 'info');
+      });
+    }
+
+    // 8. DATA WARGA PENERIMA BANTUAN
+    let bantuanSearchQuery = '';
+    let bantuanFilterType = 'ALL';
+    let bantuanResidentPickerQuery = '';
+
+    function filterBantuanResidentOptions(query) {
+      bantuanResidentPickerQuery = query.trim().toLowerCase();
+      const selectEl = document.getElementById('bantuan-resident-select');
+      if (!selectEl) return;
+      const accessible = getAccessibleResidents();
+      const words = bantuanResidentPickerQuery.split(/\s+/).filter(Boolean);
+      const filtered = words.length === 0
+        ? accessible
+        : accessible.filter(r => {
+            const hay = `${r.nama} ${r.nik} rt ${r.rt} ${r.alamat || ''}`.toLowerCase();
+            return words.every(w => hay.includes(w));
+          });
+
+      if (filtered.length === 0) {
+        selectEl.innerHTML = `<option value="">-- Tidak ada warga yang cocok (${escapeHTML(query)}) --</option>`;
+        return;
+      }
+
+      selectEl.innerHTML = (words.length === 0 ? `<option value="">-- Pilih Warga (${filtered.length} warga) --</option>` : '') +
+        filtered.map(r => `<option value="${r.id}">${escapeHTML(r.nama)} (NIK: ${escapeHTML(r.nik)} - RT ${escapeHTML(r.rt)})</option>`).join('');
+    }
+
+    function renderBantuanPage() {
+      const container = document.getElementById('main-content');
+      const accessible = getAccessibleResidents();
+      const recipients = accessible.filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0);
+      bantuanResidentPickerQuery = '';
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Penetapan Bantuan Sosial Warga</h3>
+              <p class="text-[11px] text-slate-500">Cari nama atau NIK warga agar lebih cepat ditemukan tanpa scroll panjang, lalu tetapkan bantuannya.</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold">Total Penerima: ${recipients.length} Warga</span>
+          </div>
+
+          <form onsubmit="assignBantuanToResident(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end p-3.5 rounded-xl bg-teal-50/70 border border-teal-100">
+            <div class="sm:col-span-3">
+              <label class="block text-[10px] font-bold text-teal-900 uppercase mb-1">Cari Warga (Nama / NIK)</label>
+              <div class="relative">
+                <input type="text" id="bantuan-resident-search" oninput="filterBantuanResidentOptions(this.value)" placeholder="Ketik nama / NIK..." class="w-full pl-8 pr-2.5 bg-white border border-teal-200 rounded-xl text-xs focus:ring-2 focus:ring-teal-500 outline-none" />
+                <i data-lucide="search" class="w-3.5 h-3.5 text-teal-500 absolute left-2.5 top-2.5"></i>
+              </div>
+            </div>
+            <div class="sm:col-span-4">
+              <label class="block text-[10px] font-bold text-teal-900 uppercase mb-1">Pilih Warga *</label>
+              <select id="bantuan-resident-select" required class="w-full px-3 bg-white border border-teal-200 rounded-xl text-xs font-medium">
+                <option value="">-- Pilih Warga (${accessible.length} warga) --</option>
+                ${accessible.map(r => `<option value="${r.id}">${escapeHTML(r.nama)} (NIK: ${escapeHTML(r.nik)} - RT ${escapeHTML(r.rt)})</option>`).join('')}
+              </select>
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-[10px] font-bold text-teal-900 uppercase mb-1">Jenis Bantuan *</label>
+              <select id="bantuan-type-select" required class="w-full px-3 bg-white border border-teal-200 rounded-xl text-xs font-medium">
+                ${bantuanTypes.map(bt => `<option value="${escapeHTML(bt)}">${escapeHTML(bt)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <button type="submit" class="w-full h-9 px-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-2xs">+ Tetapkan</button>
+            </div>
+          </form>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <input type="text" value="${escapeHTML(bantuanSearchQuery)}" oninput="bantuanSearchQuery = this.value.trim().toLowerCase(); renderBantuanTableBody();" placeholder="Cari nama atau NIK penerima..." class="flex-1 min-w-[200px] max-w-sm px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+            <select onchange="bantuanFilterType = this.value; renderBantuanTableBody();" class="px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+              <option value="ALL">Semua Jenis Bantuan</option>
+              ${bantuanTypes.map(bt => `<option value="${escapeHTML(bt)}" ${bantuanFilterType === bt ? 'selected' : ''}>${escapeHTML(bt)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 text-[11px] uppercase text-slate-500">
+                  <th class="py-2 px-3 w-10 text-center">No.</th>
+                  <th class="py-2 px-3">Nama Warga & NIK</th>
+                  <th class="py-2 px-3">RT/RW</th>
+                  <th class="py-2 px-3">Jenis Bantuan Diterima</th>
+                </tr>
+              </thead>
+              <tbody id="bantuan-table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      renderBantuanTableBody();
+    }
+
+    function renderBantuanTableBody() {
+      const tbody = document.getElementById('bantuan-table-body');
+      if (!tbody) return;
+      let list = getAccessibleResidents().filter(r => Array.isArray(r.bantuan) && r.bantuan.length > 0);
+      if (bantuanFilterType !== 'ALL') {
+        list = list.filter(r => r.bantuan.includes(bantuanFilterType));
+      }
+      if (bantuanSearchQuery) {
+        const words = bantuanSearchQuery.split(/\s+/).filter(Boolean);
+        list = list.filter(r => words.every(w => `${r.nama} ${r.nik} ${r.bantuan.join(' ')}`.toLowerCase().includes(w)));
+      }
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-5 text-center text-slate-400">Belum ada warga penerima bantuan yang sesuai.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map((r, index) => `
+        <tr class="hover:bg-slate-50 animate-smooth-slide">
+          <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
+          <td class="py-2.5 px-3">
+            <div class="font-bold text-slate-900">${escapeHTML(r.nama)}</div>
+            <div class="text-[11px] font-mono text-slate-500">${escapeHTML(r.nik)}</div>
+          </td>
+          <td class="py-2.5 px-3">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</td>
+          <td class="py-2.5 px-3">
+            <div class="flex flex-wrap gap-1.5">
+              ${r.bantuan.map(bt => `
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-[11px] font-semibold">
+                  ${escapeHTML(bt)}
+                  <button type="button" onclick="removeBantuanFromResident('${r.id}', '${escapeHTML(bt)}')" class="text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              `).join('')}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function assignBantuanToResident(e) {
+      e.preventDefault();
+      const resId = document.getElementById('bantuan-resident-select').value;
+      const jenis = document.getElementById('bantuan-type-select').value;
+      const res = residents.find(r => r.id === resId);
+      if (!res) return;
+      if (!Array.isArray(res.bantuan)) res.bantuan = [];
+      if (!res.bantuan.includes(jenis)) {
+        res.bantuan.push(jenis);
+        saveAllDataToLocal();
+        renderBantuanPage();
+        showToast(`Bantuan "${jenis}" ditambahkan untuk ${res.nama}.`, 'success');
+      } else {
+        showToast('Warga sudah terdaftar pada jenis bantuan tersebut.', 'info');
+      }
+    }
+
+    function removeBantuanFromResident(resId, jenis) {
+      const res = residents.find(r => r.id === resId);
+      if (!res || !Array.isArray(res.bantuan)) return;
+      res.bantuan = res.bantuan.filter(b => b !== jenis);
+      saveAllDataToLocal();
+      renderBantuanPage();
+      showToast('Status bantuan warga diperbarui.', 'info');
+    }
+
+    // 9. KELOMPOK GIAT WARGA (UMKM, KELOMPOK TANI, PKK, DLL.)
+    function renderGiatPage() {
+      const container = document.getElementById('main-content');
+      const accessibleResidents = getAccessibleResidents();
+      const visibleGroups = currentUser.role === 'admin_rt'
+        ? giatGroups.filter(g => !g.rt || g.rt === 'ALL' || g.rt === currentUser.rt)
+        : giatGroups;
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">Tambah Kelompok Giat Warga Baru</h3>
+            <form onsubmit="addGiatGroup(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+              <input type="text" id="giat-nama" required placeholder="Nama Kelompok (mis. Kelompok Tani Makmur / UMKM)" class="sm:col-span-4 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <input type="text" id="giat-kategori" required placeholder="Bidang (Pertanian / UMKM / PKK)" class="sm:col-span-3 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <input type="text" id="giat-jadwal" placeholder="Jadwal (mis. Minggu Pagi)" class="sm:col-span-3 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <button type="submit" class="sm:col-span-2 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold">+ Kelompok</button>
+            </form>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${visibleGroups.map(grp => {
+              const memberObjs = (grp.anggotaNiks || [])
+                .map(nik => residents.find(r => r.nik === nik))
+                .filter(Boolean)
+                .filter(r => currentUser.role !== 'admin_rt' || r.rt === currentUser.rt);
+
+              return `
+                <div class="bg-white rounded-2xl p-4 border border-slate-200/80 flex flex-col justify-between space-y-3">
+                  <div>
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 text-[10px] font-bold uppercase">${escapeHTML(grp.kategori)}</span>
+                        <h4 class="text-sm font-bold text-slate-900 mt-1">${escapeHTML(grp.nama)}</h4>
+                        <p class="text-[11px] text-slate-500">Jadwal: ${escapeHTML(grp.jadwal || '-')}</p>
+                      </div>
+                      <button type="button" onclick="deleteGiatGroup('${grp.id}')" class="px-2 py-1 rounded-lg text-rose-600 hover:bg-rose-50 text-xs font-semibold">Hapus</button>
+                    </div>
+
+                    <form onsubmit="addMemberToGiat(event, '${grp.id}')" class="flex gap-1.5 mt-3">
+                      <select id="select-member-${grp.id}" required class="flex-1 px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                        <option value="">+ Pilih warga untuk ditambahkan...</option>
+                        ${accessibleResidents.map(r => `<option value="${escapeHTML(r.nik)}">${escapeHTML(r.nama)} (RT ${escapeHTML(r.rt)})</option>`).join('')}
+                      </select>
+                      <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0">Tambah</button>
+                    </form>
+
+                    <div class="mt-3 space-y-1.5 max-h-44 overflow-y-auto">
+                      ${memberObjs.length === 0
+                        ? `<p class="text-[11px] text-slate-400 italic py-2">Belum ada anggota terdaftar.</p>`
+                        : memberObjs.map((m, mIdx) => `
+                          <div class="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs">
+                            <div>
+                              <span class="font-semibold text-slate-400 mr-1.5">${mIdx + 1}.</span>
+                              <span class="font-semibold text-slate-800">${escapeHTML(m.nama)}</span>
+                              <span class="text-[10px] text-slate-500 ml-1">(RT ${escapeHTML(m.rt)})</span>
+                            </div>
+                            <button type="button" onclick="removeMemberFromGiat('${grp.id}', '${escapeHTML(m.nik)}')" class="text-rose-600 hover:underline text-[11px] font-semibold">Keluarkan</button>
+                          </div>
+                        `).join('')
+                      }
+                    </div>
+                  </div>
+                  <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
+                    <span>Jumlah Anggota</span>
+                    <strong class="text-slate-800">${memberObjs.length} Warga</strong>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function addGiatGroup(e) {
+      e.preventDefault();
+      giatGroups.unshift({
+        id: 'giat-' + Date.now(),
+        nama: document.getElementById('giat-nama').value.trim(),
+        kategori: document.getElementById('giat-kategori').value.trim(),
+        jadwal: document.getElementById('giat-jadwal').value.trim() || 'Sesuai Kesepakatan',
+        rt: currentUser.role === 'admin_rt' ? currentUser.rt : 'ALL',
+        anggotaNiks: []
+      });
+      saveAllDataToLocal();
+      renderGiatPage();
+      showToast('Kelompok giat warga berhasil dibuat.', 'success');
+    }
+
+    function deleteGiatGroup(id) {
+      giatGroups = giatGroups.filter(g => g.id !== id);
+      saveAllDataToLocal();
+      renderGiatPage();
+      showToast('Kelompok giat dihapus.', 'info');
+    }
+
+    function addMemberToGiat(e, groupId) {
+      e.preventDefault();
+      const sel = document.getElementById(`select-member-${groupId}`);
+      const nik = sel ? sel.value : '';
+      const grp = giatGroups.find(g => g.id === groupId);
+      if (!grp || !nik) return;
+      if (!Array.isArray(grp.anggotaNiks)) grp.anggotaNiks = [];
+      if (!grp.anggotaNiks.includes(nik)) {
+        grp.anggotaNiks.push(nik);
+        saveAllDataToLocal();
+        renderGiatPage();
+        showToast('Anggota berhasil ditambahkan.', 'success');
+      } else {
+        showToast('Warga sudah tergabung di kelompok ini.', 'info');
+      }
+    }
+
+    function removeMemberFromGiat(groupId, nik) {
+      const grp = giatGroups.find(g => g.id === groupId);
+      if (!grp) return;
+      grp.anggotaNiks = (grp.anggotaNiks || []).filter(n => n !== nik);
+      saveAllDataToLocal();
+      renderGiatPage();
+      showToast('Anggota dikeluarkan dari kelompok.', 'info');
+    }
+
+    // 10. PERMOHONAN & RIWAYAT SURAT
+    function renderPermohonanPage() {
+      const container = document.getElementById('main-content');
+      const list = getAccessibleRequests();
+      const isWarga = currentUser.role === 'warga';
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">${isWarga ? 'Pengajuan & Status Surat Saya' : 'Daftar Permohonan Surat Masuk'}</h3>
+              <p class="text-[11px] text-slate-500">${isWarga ? 'Ajukan surat keterangan online dan pantau status kesiapan pengambilan surat.' : 'Verifikasi, edit redaksi isi surat, dan cetak dokumen resmi warga.'}</p>
+            </div>
+            <button type="button" onclick="openRequestModal()" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="file-plus" class="w-3.5 h-3.5"></i> ${isWarga ? 'Ajukan Surat Baru' : 'Buat Surat Warga'}
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 text-[11px] uppercase text-slate-500">
+                  <th class="py-2.5 px-3 w-10 text-center">No.</th>
+                  <th class="py-2.5 px-3">Tanggal</th>
+                  <th class="py-2.5 px-3">Pemohon</th>
+                  <th class="py-2.5 px-3">Jenis Surat & Keperluan</th>
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3 text-right">Tindakan</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-xs">
+                ${list.length === 0
+                  ? `<tr><td colspan="6" class="py-6 text-center text-slate-400">Belum ada riwayat permohonan surat.</td></tr>`
+                  : list.map((req, index) => {
+                    let badgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
+                    if (req.status === 'Disetujui') badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                    else if (req.status === 'Perlu Revisi') badgeClass = 'bg-orange-50 text-orange-700 border-orange-200';
+                    else if (req.status === 'Ditolak') badgeClass = 'bg-rose-50 text-rose-700 border-rose-200';
+
+                    const actionHtml = isWarga
+                      ? `<div class="inline-flex items-center gap-1">
+                          ${req.status === 'Disetujui'
+                            ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px]">Selesai • Siap Diambil</span>`
+                            : req.status === 'Perlu Revisi'
+                              ? `<button type="button" onclick="openRequestModal(null, '${req.id}')" class="px-2.5 py-1 rounded-lg bg-orange-600 text-white font-bold text-[11px]">Perlu Revisi • Edit</button>`
+                              : `<button type="button" onclick="openRequestModal(null, '${req.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[11px]">Edit Isi Surat</button>`}
+                          ${req.status !== 'Disetujui'
+                            ? `<button type="button" onclick="deleteLetterRequest('${req.id}')" class="px-2 py-1 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-[11px]" title="Hapus Permohonan Surat">Hapus</button>`
+                            : ''}
+                        </div>`
+                      : `<div class="inline-flex items-center gap-1">
+                          <button type="button" onclick="openRequestModal(null, '${req.id}')" class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold">Proses / Edit</button>
+                          <button type="button" onclick="openPrintPreview('${req.id}')" class="px-2.5 py-1 rounded-lg bg-brand-600 text-white hover:bg-brand-700 font-semibold">Pratinjau & Cetak</button>
+                          <button type="button" onclick="deleteLetterRequest('${req.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold">Hapus</button>
+                        </div>`;
+
+                    return `
+                      <tr class="hover:bg-slate-50/80">
+                        <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
+                        <td class="py-2.5 px-3 whitespace-nowrap text-slate-500">${escapeHTML(formatCleanDate(req.tanggal))}</td>
+                        <td class="py-2.5 px-3">
+                          <div class="font-bold text-slate-900">${escapeHTML(req.namaPemohon)}</div>
+                          <div class="text-[11px] text-slate-500">RT ${escapeHTML(req.rt)} / RW ${escapeHTML(req.rw)}</div>
+                        </td>
+                        <td class="py-2.5 px-3">
+                          <div class="font-semibold text-slate-800">${escapeHTML(req.templateNama)}</div>
+                          <div class="text-[11px] text-slate-500">${escapeHTML(req.keperluan)}</div>
+                          ${req.nomorSurat ? `<div class="text-[10px] font-mono text-brand-700 mt-0.5">No/Ket: ${escapeHTML(req.nomorSurat)}</div>` : ''}
+                        </td>
+                        <td class="py-2.5 px-3 whitespace-nowrap">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] leading-tight font-bold whitespace-nowrap ${badgeClass}">
+                            ${req.status === 'Disetujui' ? 'Selesai & Siap Diambil' : escapeHTML(req.status)}
+                          </span>
+                        </td>
+                        <td class="py-2.5 px-3 text-right whitespace-nowrap">${actionHtml}</td>
+                      </tr>
+                    `;
+                  }).join('')
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function openRequestModal(preselectedTemplateId = null, editRequestId = null) {
+      const modal = document.getElementById('letter-request-modal');
+      const form = document.getElementById('letter-request-form');
+      form.reset();
+
+      const pemohonSelect = document.getElementById('req-pemohon-nik');
+      const tplSelect = document.getElementById('req-template-id');
+      const adminBox = document.getElementById('req-admin-status-box');
+
+      const accessibleResidents = getAccessibleResidents();
+      pemohonSelect.innerHTML = accessibleResidents.map(r => `<option value="${escapeHTML(r.nik)}">${escapeHTML(r.nama)} (NIK: ${escapeHTML(r.nik)})</option>`).join('');
+      tplSelect.innerHTML = letterTemplates.map(t => `<option value="${t.id}">${escapeHTML(t.nama)}</option>`).join('');
+
+      if (currentUser.role === 'warga') {
+        pemohonSelect.value = currentUser.nik;
+        pemohonSelect.disabled = true;
+        adminBox.classList.add('hidden');
+        adminBox.classList.remove('grid');
+        document.getElementById('req-submit-btn-text').textContent = 'Kirim Permohonan Surat';
+      } else {
+        pemohonSelect.disabled = false;
+        adminBox.classList.remove('hidden');
+        adminBox.classList.add('grid');
+        document.getElementById('req-submit-btn-text').textContent = 'Simpan & Perbarui Status';
+      }
+
+      document.getElementById('req-edit-id').value = editRequestId || '';
+
+      if (editRequestId) {
+        const existing = letterRequests.find(r => r.id === editRequestId);
+        if (existing) {
+          pemohonSelect.value = existing.nik;
+          tplSelect.value = existing.templateId;
+          document.getElementById('req-keperluan').value = existing.keperluan || '';
+          document.getElementById('req-custom-body').value = existing.customBody || '';
+          document.getElementById('req-status').value = existing.status || 'Menunggu Verifikasi';
+          document.getElementById('req-nomor-surat').value = existing.nomorSurat || '';
+        }
+      } else {
+        if (preselectedTemplateId) tplSelect.value = preselectedTemplateId;
+        populateLetterDraft(true);
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeRequestModal() {
+      const modal = document.getElementById('letter-request-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function populateLetterDraft(forceReset = false) {
+      const editId = document.getElementById('req-edit-id').value;
+      if (editId && !forceReset) return;
+
+      const nik = document.getElementById('req-pemohon-nik').value;
+      const tplId = document.getElementById('req-template-id').value;
+      const keperluan = document.getElementById('req-keperluan').value.trim() || '[Isi Keperluan Surat]';
+      const res = residents.find(r => r.nik === nik) || residents[0];
+      const tpl = letterTemplates.find(t => t.id === tplId) || letterTemplates[0];
+      if (!res || !tpl) return;
+
+      const text = tpl.isi
+        .replace(/\{NAMA\}/g, res.nama)
+        .replace(/\{NIK\}/g, res.nik)
+        .replace(/\{TTL\}/g, `${res.tempatLahir}, ${formatCleanDate(res.tglLahir)}`)
+        .replace(/\{PEKERJAAN\}/g, res.pekerjaan)
+        .replace(/\{ALAMAT\}/g, res.alamat)
+        .replace(/\{RT\}/g, res.rt)
+        .replace(/\{RW\}/g, res.rw)
+        .replace(/\{KEPERLUAN\}/g, keperluan);
+
+      document.getElementById('req-custom-body').value = text;
+    }
+
+    function submitLetterRequest(e) {
+      e.preventDefault();
+      const editId = document.getElementById('req-edit-id').value;
+      const nik = document.getElementById('req-pemohon-nik').value;
+      const tplId = document.getElementById('req-template-id').value;
+      const res = residents.find(r => r.nik === nik);
+      const tpl = letterTemplates.find(t => t.id === tplId);
+      if (!res || !tpl) return;
+
+      const isWarga = currentUser.role === 'warga';
+      const statusVal = isWarga ? 'Menunggu Verifikasi' : document.getElementById('req-status').value;
+      const nomorVal = isWarga ? '' : document.getElementById('req-nomor-surat').value.trim();
+
+      const payload = {
+        id: editId || 'req-' + Date.now(),
+        tanggal: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+        nik: res.nik,
+        namaPemohon: res.nama,
+        rt: res.rt,
+        rw: res.rw,
+        templateId: tpl.id,
+        templateNama: tpl.nama,
+        keperluan: document.getElementById('req-keperluan').value.trim(),
+        customBody: document.getElementById('req-custom-body').value,
+        status: statusVal,
+        nomorSurat: nomorVal
+      };
+
+      if (editId) {
+        const idx = letterRequests.findIndex(r => r.id === editId);
+        if (idx !== -1) {
+          payload.tanggal = letterRequests[idx].tanggal;
+          letterRequests[idx] = payload;
+        }
+        showToast('Permohonan surat berhasil diperbarui.', 'success');
+      } else {
+        letterRequests.unshift(payload);
+        showToast('Permohonan surat berhasil dikirim.', 'success');
+      }
+
+      saveAllDataToLocal();
+      updateNotificationBadges();
+      closeRequestModal();
+      renderCurrentPage();
+    }
+
+    function deleteLetterRequest(reqId) {
+      const target = letterRequests.find(r => r.id === reqId);
+      if (!target) return;
+      openConfirmModal(
+        'Hapus Permohonan Surat',
+        `Yakin ingin menghapus permohonan "${target.templateNama}" atas nama ${target.namaPemohon}?`,
+        () => {
+          letterRequests = letterRequests.filter(r => r.id !== reqId);
+          saveAllDataToLocal();
+          updateNotificationBadges();
+          renderCurrentPage();
+          showToast('Permohonan surat berhasil dihapus.', 'info');
+        }
+      );
+    }
+
+    function formatAlignedLetterBody(rawText) {
+      const lines = String(rawText || '').split('\n');
+      let html = '';
+      let tableRows = [];
+
+      const flushTable = () => {
+        if (tableRows.length === 0) return;
+        html += `<table class="w-full my-2 text-xs sm:text-sm border-collapse"><tbody>`;
+        tableRows.forEach(pair => {
+          html += `
+            <tr>
+              <td class="py-0.5 pr-2 align-top w-40 sm:w-44 font-normal">${escapeHTML(pair.label)}</td>
+              <td class="py-0.5 px-1.5 align-top w-4">:</td>
+              <td class="py-0.5 align-top font-medium">${escapeHTML(pair.value)}</td>
+            </tr>
+          `;
+        });
+        html += `</tbody></table>`;
+        tableRows = [];
+      };
+
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          flushTable();
+          html += `<div class="h-2"></div>`;
+          return;
+        }
+        const colonIdx = trimmed.indexOf(':');
+        if (colonIdx > 0 && colonIdx <= 32 && !trimmed.endsWith(':')) {
+          const label = trimmed.slice(0, colonIdx).trim();
+          const value = trimmed.slice(colonIdx + 1).trim();
+          tableRows.push({ label, value });
+        } else {
+          flushTable();
+          html += `<p>${escapeHTML(trimmed)}</p>`;
+        }
+      });
+      flushTable();
+      return html;
+    }
+
+    function openPrintPreview(reqId) {
+      const req = letterRequests.find(r => r.id === reqId);
+      if (!req) return;
+
+      document.getElementById('print-kop-logo').src = appSettings.logoUrl || DEFAULT_SETTINGS.logoUrl;
+      document.getElementById('print-kop-kab').textContent = `Pemerintah Kabupaten ${appSettings.kabupaten}`;
+      document.getElementById('print-kop-kec').textContent = `Kecamatan ${appSettings.kecamatan}`;
+      document.getElementById('print-kop-desa').textContent = `Desa ${appSettings.desa}`;
+      document.getElementById('print-kop-alamat').textContent = `Alamat: ${appSettings.alamat}`;
+
+      document.getElementById('print-letter-title').textContent = req.templateNama;
+      document.getElementById('print-letter-number').textContent = `Nomor: ${req.nomorSurat || '470 / ... / DS / ' + new Date().getFullYear()}`;
+      document.getElementById('print-letter-body').innerHTML = formatAlignedLetterBody(req.customBody);
+
+      const todayStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      document.getElementById('print-date-city').textContent = `${appSettings.desa}, ${todayStr}`;
+
+      const signerRole = appSettings.signerRole || 'Kepala Desa';
+      const headEl = document.getElementById('print-signer-head');
+      const titleEl = document.getElementById('print-signer-title');
+      if (headEl) headEl.textContent = `Kepala Desa ${appSettings.desa}`;
+      if (titleEl) {
+        if (signerRole === 'Kepala Desa') {
+          titleEl.textContent = '';
+          titleEl.classList.add('hidden');
+        } else {
+          const cleanTitle = (appSettings.signerTitle || '')
+            .replace(new RegExp(`^a\\.n\\.?\\s*Kepala\\s+Desa\\s+${appSettings.desa}\\s*\\/\\s*`, 'i'), 'a.n. ')
+            .trim();
+          const customSub = cleanTitle && cleanTitle !== `Kepala Desa ${appSettings.desa}`
+            ? (cleanTitle.toLowerCase().startsWith('a.n') ? cleanTitle : `a.n. ${cleanTitle}`)
+            : `a.n. ${signerRole}`;
+          titleEl.textContent = customSub;
+          titleEl.classList.remove('hidden');
+        }
+      }
+      document.getElementById('print-signer-name').textContent = appSettings.kades;
+
+      const modal = document.getElementById('print-preview-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closePrintModal() {
+      const modal = document.getElementById('print-preview-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // 11. KELOLA FORMAT & JENIS SURAT + PENGATURAN IDENTITAS DUSUN, KOP SURAT & RT/RW
+    function renderTemplatesPage() {
+      const container = document.getElementById('main-content');
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Varian & Format Surat Menyurat</h3>
+              <p class="text-[11px] text-slate-500">Format yang ditambahkan di sini otomatis dapat dipilih oleh warga pada menu layanan surat.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="navigateTo('pengaturan')" class="px-3 py-1.5 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold">Atur KOP & Logo Surat</button>
+              <button type="button" onclick="openTemplateModal()" class="px-3.5 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold">+ Tambah Format Surat</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${letterTemplates.map((t, index) => `
+              <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col justify-between gap-2">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-violet-100 text-violet-700 text-[10px] font-bold">#${index + 1} • Kode: ${escapeHTML(t.kode)}</span>
+                  <h4 class="text-sm font-bold text-slate-900 mt-1">${escapeHTML(t.nama)}</h4>
+                  <p class="text-[11px] text-slate-500 mt-0.5">${escapeHTML(t.deskripsi)}</p>
+                </div>
+                <div class="flex justify-end gap-1.5 pt-2 border-t border-slate-200/70">
+                  <button type="button" onclick="openTemplateModal('${t.id}')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-100">Edit Format</button>
+                  <button type="button" onclick="deleteLetterTemplate('${t.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 text-xs font-semibold text-rose-600 hover:bg-rose-100">Hapus</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openTemplateModal(id = null) {
+      const modal = document.getElementById('template-modal');
+      document.getElementById('template-form').reset();
+      document.getElementById('tpl-id').value = id || '';
+      document.getElementById('template-modal-title').textContent = id ? 'Edit Format Jenis Surat' : 'Tambah Varian Jenis Surat';
+      if (id) {
+        const tpl = letterTemplates.find(t => t.id === id);
+        if (tpl) {
+          document.getElementById('tpl-kode').value = tpl.kode;
+          document.getElementById('tpl-nama').value = tpl.nama;
+          document.getElementById('tpl-deskripsi').value = tpl.deskripsi;
+          document.getElementById('tpl-isi').value = tpl.isi;
+        }
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeTemplateModal() {
+      const modal = document.getElementById('template-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveLetterTemplate(e) {
+      e.preventDefault();
+      const id = document.getElementById('tpl-id').value;
+      const obj = {
+        id: id || 'tpl-' + Date.now(),
+        kode: document.getElementById('tpl-kode').value.trim(),
+        nama: document.getElementById('tpl-nama').value.trim(),
+        deskripsi: document.getElementById('tpl-deskripsi').value.trim(),
+        isi: document.getElementById('tpl-isi').value
+      };
+      if (id) {
+        const idx = letterTemplates.findIndex(t => t.id === id);
+        if (idx !== -1) letterTemplates[idx] = obj;
+      } else {
+        letterTemplates.push(obj);
+      }
+      saveAllDataToLocal();
+      closeTemplateModal();
+      renderTemplatesPage();
+      showToast('Format surat berhasil disimpan.', 'success');
+    }
+
+    function deleteLetterTemplate(id) {
+      letterTemplates = letterTemplates.filter(t => t.id !== id);
+      saveAllDataToLocal();
+      renderTemplatesPage();
+      showToast('Format surat dihapus.', 'info');
+    }
+
+    function handleLogoFileUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const urlInput = document.getElementById('set-logo');
+        if (urlInput) urlInput.value = reader.result;
+        const previewImg = document.getElementById('kop-preview-logo-img');
+        if (previewImg) previewImg.src = reader.result;
+        showToast('Logo berhasil dimuat. Klik Simpan Identitas & KOP Surat.', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateLiveKopPreview() {
+      const kab = document.getElementById('set-kab')?.value.trim() || appSettings.kabupaten;
+      const kec = document.getElementById('set-kec')?.value.trim() || appSettings.kecamatan;
+      const desa = document.getElementById('set-desa')?.value.trim() || appSettings.desa;
+      const alamat = document.getElementById('set-alamat')?.value.trim() || appSettings.alamat;
+      const logo = document.getElementById('set-logo')?.value.trim() || DEFAULT_SETTINGS.logoUrl;
+
+      const pKab = document.getElementById('kop-preview-kab');
+      const pKec = document.getElementById('kop-preview-kec');
+      const pDesa = document.getElementById('kop-preview-desa');
+      const pAlamat = document.getElementById('kop-preview-alamat');
+      const pLogo = document.getElementById('kop-preview-logo-img');
+
+      if (pKab) pKab.textContent = `Pemerintah Kabupaten ${kab}`;
+      if (pKec) pKec.textContent = `Kecamatan ${kec}`;
+      if (pDesa) pDesa.textContent = `Desa ${desa}`;
+      if (pAlamat) pAlamat.textContent = `Alamat: ${alamat}`;
+      if (pLogo) pLogo.src = logo;
+    }
+
+    function handleSignerRoleDropdownChange() {
+      const roleSelect = document.getElementById('set-signer-role');
+      const titleInput = document.getElementById('set-signer-title');
+      const desaVal = document.getElementById('set-desa')?.value.trim() || appSettings.desa;
+      if (!roleSelect || !titleInput) return;
+
+      const selectedRole = roleSelect.value;
+      if (selectedRole === 'Kepala Desa') {
+        titleInput.value = `Kepala Desa ${desaVal}`;
+      } else {
+        titleInput.value = `a.n. ${selectedRole}`;
+      }
+    }
+
+    function renderSettingsPage() {
+      const container = document.getElementById('main-content');
+      const currentSignerRole = appSettings.signerRole || 'Kepala Desa';
+      const roleOptions = [
+        'Kepala Desa',
+        'Sekretaris Desa',
+        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
+        'Kasi Pemerintahan',
+        'Kasi Pelayanan',
+        'Kasi Kesejahteraan',
+        'Kaur Keuangan',
+        'Kaur TU & Umum'
+      ];
+      const jabatanUserOptions = [
+        `Kepala ${appSettings.dusun || 'Dusun 2'}`,
+        'Kepala Desa',
+        'Sekretaris Desa',
+        'Kasi Pemerintahan',
+        'Kasi Pelayanan',
+        'Kasi Kesejahteraan',
+        'Kaur Keuangan',
+        'Kaur TU & Umum',
+        'Operator Dusun',
+        'Ketua RT / Admin RT'
+      ];
+      const hasCurrentInOptions = roleOptions.includes(currentSignerRole);
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <!-- Identitas Dusun & Edit KOP Surat -->
+          <div class="ui-card p-4 border border-sky-200/90 space-y-3.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Identitas Dusun & Pengaturan Edit KOP Surat</h3>
+                <p class="text-[11px] text-slate-500">Atur identitas wilayah dusun, kepala dusun, serta redaksi KOP surat resmi & pejabat penandatangan.</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200 text-[10px] font-bold">Tersinkron ke Header & Cetak Surat</span>
+            </div>
+
+            <form onsubmit="saveGeneralSettings(event)" class="space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Dusun *</label>
+                  <input type="text" id="set-dusun" required value="${escapeHTML(appSettings.dusun)}" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Kepala Dusun (Kadus) *</label>
+                  <input type="text" id="set-kadus" required value="${escapeHTML(appSettings.kadus)}" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Nama Desa (KOP) *</label>
+                  <input type="text" id="set-desa" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.desa)}" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Kecamatan (KOP) *</label>
+                  <input type="text" id="set-kec" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.kecamatan)}" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Kabupaten (KOP) *</label>
+                  <input type="text" id="set-kab" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.kabupaten)}" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs font-semibold" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-5">
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Alamat Lengkap KOP Surat *</label>
+                  <input type="text" id="set-alamat" required oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.alamat)}" placeholder="Jl. Raya Dusun..." class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">URL Logo Kabupaten / Desa</label>
+                  <input type="text" id="set-logo" oninput="updateLiveKopPreview()" value="${escapeHTML(appSettings.logoUrl || '')}" placeholder="https://... atau unggah file di samping" class="w-full px-3 bg-sky-50/60 border border-sky-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Unggah File Logo</label>
+                  <input type="file" accept="image/*" onchange="handleLogoFileUpload(event)" class="w-full text-[11px] text-slate-600 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-sky-100 file:text-sky-800 hover:file:bg-sky-200" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-sky-900 uppercase mb-1">Pilih Jabatan Penandatangan *</label>
+                  <select id="set-signer-role" onchange="handleSignerRoleDropdownChange()" class="w-full px-3 bg-sky-50/70 border border-sky-200 rounded-xl text-xs font-semibold">
+                    ${roleOptions.map(role => `<option value="${escapeHTML(role)}" ${currentSignerRole === role ? 'selected' : ''}>${escapeHTML(role)}</option>`).join('')}
+                    ${!hasCurrentInOptions ? `<option value="${escapeHTML(currentSignerRole)}" selected>${escapeHTML(currentSignerRole)}</option>` : ''}
+                  </select>
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Keterangan Jabatan di Surat *</label>
+                  <input type="text" id="set-signer-title" required value="${escapeHTML((appSettings.signerTitle || 'Kepala Desa ' + appSettings.desa).replace(new RegExp(`^a\\.n\\.?\\s*Kepala\\s+Desa\\s+${appSettings.desa}\\s*\\/\\s*`, 'i'), 'a.n. '))}" placeholder="Contoh: a.n. Kepala Dusun 2" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Pejabat Penandatangan *</label>
+                  <input type="text" id="set-kades" required value="${escapeHTML(appSettings.kades)}" placeholder="Nama lengkap & gelar" class="w-full px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold" />
+                </div>
+                <div class="sm:col-span-3">
+                  <button type="submit" class="w-full h-9 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-2xs flex items-center justify-center gap-1.5">
+                    <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                    <span>Simpan Identitas & KOP</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pratinjau Langsung KOP Surat -->
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Pratinjau Langsung KOP Surat Resmi:</span>
+                <div class="bg-white p-3 rounded-lg border border-slate-200 flex items-center justify-between gap-3 font-serif">
+                  <div class="w-12 h-12 shrink-0 flex items-center justify-center">
+                    <img id="kop-preview-logo-img" src="${escapeHTML(appSettings.logoUrl || DEFAULT_SETTINGS.logoUrl)}" alt="Logo KOP" class="max-h-full max-w-full object-contain" />
+                  </div>
+                  <div class="flex-1 text-center">
+                    <p id="kop-preview-kab" class="text-[11px] font-bold tracking-widest uppercase">Pemerintah Kabupaten ${escapeHTML(appSettings.kabupaten)}</p>
+                    <p id="kop-preview-kec" class="text-[11px] font-bold tracking-wider uppercase">Kecamatan ${escapeHTML(appSettings.kecamatan)}</p>
+                    <h4 id="kop-preview-desa" class="text-sm font-extrabold tracking-wide uppercase">Desa ${escapeHTML(appSettings.desa)}</h4>
+                    <p id="kop-preview-alamat" class="text-[10px] italic text-slate-600">Alamat: ${escapeHTML(appSettings.alamat)}</p>
+                  </div>
+                  <div class="w-12 shrink-0 hidden sm:block"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Form Pembuatan User Berdasarkan Jabatan & Tersimpan ke Spreadsheet -->
+          <div class="ui-card p-4 border border-indigo-200/90 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">Pembuatan Akun User Perangkat & Jabatan (Tersimpan ke Spreadsheet)</h4>
+                <p class="text-[11px] text-slate-500">Buat user akses login sesuai jabatan perangkat dusun/desa atau Admin RT. Data user otomatis tersimpan ke Google Spreadsheet.</p>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold">${(superAdmins || []).length} User Perangkat</span>
+            </div>
+
+            <form onsubmit="addSuperAdminAccount(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end p-3 rounded-xl bg-indigo-50/50 border border-indigo-100">
+              <div class="sm:col-span-3">
+                <label class="block text-[10px] font-bold text-indigo-950 uppercase mb-1">Pilih Jabatan User *</label>
+                <select id="new-sa-jabatan" onchange="handleNewUserJabatanChange()" required class="w-full px-2.5 bg-white border border-indigo-200 rounded-xl text-xs font-semibold">
+                  ${jabatanUserOptions.map(j => `<option value="${escapeHTML(j)}">${escapeHTML(j)}</option>`).join('')}
+                </select>
+              </div>
+              <div id="new-sa-rt-wrap" class="hidden sm:col-span-2">
+                <label class="block text-[10px] font-bold text-emerald-800 uppercase mb-1">Wilayah RT *</label>
+                <select id="new-sa-rt-select" class="w-full px-2 bg-white border border-emerald-200 rounded-xl text-xs font-semibold">
+                  ${(wilayahConfig.rts || []).map(r => `<option value="${escapeHTML(r.rt)}">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</option>`).join('')}
+                </select>
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Nama Lengkap Pejabat *</label>
+                <input type="text" id="new-sa-nama" required placeholder="Nama lengkap & gelar" class="w-full px-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Username Login *</label>
+                <input type="text" id="new-sa-user" required placeholder="user_perangkat" class="w-full px-2.5 bg-white border border-slate-200 rounded-xl text-xs" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Kata Sandi *</label>
+                <input type="text" id="new-sa-pass" required placeholder="Kata sandi" class="w-full px-2.5 bg-white border border-slate-200 rounded-xl text-xs" />
+              </div>
+              <div class="sm:col-span-2">
+                <button type="submit" class="w-full h-9 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-2xs">+ Buat User</button>
+              </div>
+            </form>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 text-[10px] uppercase text-slate-500">
+                    <th class="py-1.5 w-8 text-center">No.</th>
+                    <th class="py-1.5">Nama Lengkap</th>
+                    <th class="py-1.5">Jabatan</th>
+                    <th class="py-1.5">Username</th>
+                    <th class="py-1.5">Kata Sandi</th>
+                    <th class="py-1.5 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${(superAdmins || []).map((sa, idx) => `
+                    <tr>
+                      <td class="py-1.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                      <td class="py-1.5 font-bold text-slate-900">${escapeHTML(sa.nama)}</td>
+                      <td class="py-1.5"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 text-[11px] font-semibold">${escapeHTML(sa.jabatan || '-')}</span></td>
+                      <td class="py-1.5 font-mono font-semibold text-slate-800">${escapeHTML(sa.username)}</td>
+                      <td class="py-1.5 font-mono text-slate-600">${escapeHTML(sa.password)}</td>
+                      <td class="py-1.5 text-right">
+                        ${(superAdmins || []).length > 1
+                          ? `<button type="button" onclick="deleteSuperAdminAccount('${escapeHTML(sa.id)}')" class="text-rose-600 font-bold hover:underline">Hapus</button>`
+                          : `<span class="text-[10px] text-slate-400 italic">Akun Utama</span>`
+                        }
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Pengaturan RW & RT Manual -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            <div class="lg:col-span-5 ui-card p-4 border border-sky-100/90 space-y-3">
+              <h4 class="text-sm font-bold text-slate-900">Kelola Daftar RW & Pengurus RW</h4>
+              <form onsubmit="addRwManual(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end">
+                <div class="sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">No. RW</label>
+                  <input type="text" id="new-rw-input" required maxlength="3" placeholder="03" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-6">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Nama Pengurus RW</label>
+                  <input type="text" id="new-rw-pengurus" required placeholder="Nama Pengurus" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3">
+                  <button type="submit" class="w-full h-9 px-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold">+ RW</button>
+                </div>
+              </form>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-[10px] uppercase text-slate-500">
+                      <th class="py-1.5 w-8 text-center">No.</th>
+                      <th class="py-1.5">RW</th>
+                      <th class="py-1.5">Nama Pengurus RW</th>
+                      <th class="py-1.5 text-right">Hapus</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    ${(wilayahConfig.rws || []).map((rwObj, idx) => {
+                      const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+                      const pengurus = typeof rwObj === 'object' ? (rwObj.pengurus || '-') : '-';
+                      return `
+                        <tr>
+                          <td class="py-1.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                          <td class="py-1.5 font-bold text-sky-800 whitespace-nowrap">RW ${escapeHTML(rwCode)}</td>
+                          <td class="py-1.5">${escapeHTML(pengurus)}</td>
+                          <td class="py-1.5 text-right"><button type="button" onclick="deleteRwManual('${rwCode}')" class="text-rose-600 font-bold">Hapus</button></td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 ui-card p-4 border border-emerald-100/90 space-y-3">
+              <h4 class="text-sm font-bold text-slate-900">Kelola Daftar RT & Akun Login Admin RT</h4>
+              <form onsubmit="addRtManual(event)" class="grid grid-cols-2 sm:grid-cols-12 gap-2 items-end">
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">No. RT</label>
+                  <input type="text" id="new-rt-no" required maxlength="3" placeholder="05" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Wilayah</label>
+                  <select id="new-rt-rw" class="w-full px-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+                    ${(wilayahConfig.rws || []).map(rwObj => {
+                      const rwCode = typeof rwObj === 'string' ? rwObj : rwObj.rw;
+                      return `<option value="${rwCode}">RW ${rwCode}</option>`;
+                    }).join('')}
+                  </select>
+                </div>
+                <div class="col-span-2 sm:col-span-3">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Ketua RT</label>
+                  <input type="text" id="new-rt-ketua" required placeholder="Nama Ketua RT" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">User</label>
+                  <input type="text" id="new-rt-user" required placeholder="rt05" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                </div>
+                <div class="sm:col-span-3 flex gap-1.5 items-end">
+                  <div class="flex-1">
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Sandi</label>
+                    <input type="text" id="new-rt-pass" required placeholder="Sandi" class="w-full px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  </div>
+                  <button type="submit" class="h-9 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shrink-0">+ RT</button>
+                </div>
+              </form>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-200 text-[10px] uppercase text-slate-500">
+                      <th class="py-1.5 w-8 text-center">No.</th>
+                      <th class="py-1.5">RT / RW</th>
+                      <th class="py-1.5">Ketua RT</th>
+                      <th class="py-1.5">Login Admin RT</th>
+                      <th class="py-1.5 text-right">Hapus</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    ${(wilayahConfig.rts || []).map((r, idx) => `
+                      <tr>
+                        <td class="py-1.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                        <td class="py-1.5 font-bold">RT ${escapeHTML(r.rt)} / RW ${escapeHTML(r.rw)}</td>
+                        <td class="py-1.5">${escapeHTML(r.ketua)}</td>
+                        <td class="py-1.5 font-mono text-[11px]">${escapeHTML(r.username)} / ${escapeHTML(r.password)}</td>
+                        <td class="py-1.5 text-right"><button type="button" onclick="deleteRtManual('${r.rt}')" class="text-rose-600 font-bold">Hapus</button></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pengaturan Master Jenis Bantuan -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 space-y-3">
+            <h4 class="text-sm font-bold text-slate-900">Master Jenis Bantuan Sosial Warga</h4>
+            <form onsubmit="addBantuanType(event)" class="flex gap-2 max-w-md">
+              <input type="text" id="new-bantuan-input" required placeholder="Nama jenis bantuan baru..." class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+              <button type="submit" class="px-4 py-1.5 rounded-xl bg-teal-600 text-white text-xs font-bold">+ Tambah Bantuan</button>
+            </form>
+            <div class="flex flex-wrap gap-1.5">
+              ${bantuanTypes.map(bt => `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-semibold">
+                  ${escapeHTML(bt)}
+                  <button type="button" onclick="deleteBantuanType('${escapeHTML(bt)}')" class="text-rose-600 font-bold">×</button>
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addSuperAdminAccount(e) {
+      e.preventDefault();
+      const nama = document.getElementById('new-sa-nama').value.trim();
+      const jabatan = document.getElementById('new-sa-jabatan').value.trim();
+      const username = document.getElementById('new-sa-user').value.trim();
+      const password = document.getElementById('new-sa-pass').value.trim();
+
+      if (jabatan === 'Ketua RT / Admin RT') {
+        const targetRt = document.getElementById('new-sa-rt-select')?.value;
+        const rtObj = (wilayahConfig.rts || []).find(r => r.rt === targetRt);
+        if (!rtObj) {
+          showToast('Pilih wilayah RT terlebih dahulu.', 'error');
+          return;
+        }
+        if ((wilayahConfig.rts || []).some(r => r.rt !== targetRt && r.username.toLowerCase() === username.toLowerCase())) {
+          showToast(`Username "${username}" sudah dipakai Admin RT lain.`, 'error');
+          return;
+        }
+        rtObj.ketua = nama;
+        rtObj.username = username;
+        rtObj.password = password;
+        saveAllDataToLocal();
+        renderSettingsPage();
+        showToast(`User Admin RT ${targetRt} (${nama}) disimpan & disinkronkan ke Spreadsheet.`, 'success');
+        return;
+      }
+
+      if (superAdmins.some(sa => sa.username.toLowerCase() === username.toLowerCase())) {
+        showToast(`Username "${username}" sudah digunakan oleh user lain.`, 'error');
+        return;
+      }
+
+      superAdmins.push({
+        id: 'sa-' + Date.now(),
+        nama,
+        jabatan,
+        username,
+        password
+      });
+      saveAllDataToLocal();
+      renderSettingsPage();
+      showToast(`User "${nama}" (${jabatan}) berhasil dibuat & disimpan ke Spreadsheet.`, 'success');
+    }
+
+    function deleteSuperAdminAccount(id) {
+      if (superAdmins.length <= 1) {
+        showToast('Minimal harus tersisa 1 akun Super Admin.', 'error');
+        return;
+      }
+      const target = superAdmins.find(sa => sa.id === id);
+      if (!target) return;
+      openConfirmModal('Hapus Akun Super Admin', `Hapus akses Super Admin untuk "${target.nama}" (${target.username})?`, () => {
+        superAdmins = superAdmins.filter(sa => sa.id !== id);
+        saveAllDataToLocal();
+        renderSettingsPage();
+        showToast('Akun Super Admin dihapus.', 'info');
+      });
+    }
+
+    function handleNewUserJabatanChange() {
+      const jabatanVal = document.getElementById('new-sa-jabatan')?.value;
+      const rtWrap = document.getElementById('new-sa-rt-wrap');
+      if (!rtWrap) return;
+      if (jabatanVal === 'Ketua RT / Admin RT') {
+        rtWrap.classList.remove('hidden');
+      } else {
+        rtWrap.classList.add('hidden');
+      }
+    }
+
+    function saveGeneralSettings(e) {
+      e.preventDefault();
+      appSettings.dusun = document.getElementById('set-dusun').value.trim();
+      appSettings.desa = document.getElementById('set-desa').value.trim();
+      appSettings.kecamatan = document.getElementById('set-kec').value.trim();
+      appSettings.kabupaten = document.getElementById('set-kab').value.trim();
+      appSettings.kadus = document.getElementById('set-kadus').value.trim();
+      appSettings.logoUrl = document.getElementById('set-logo').value.trim() || DEFAULT_SETTINGS.logoUrl;
+      appSettings.signerRole = document.getElementById('set-signer-role')?.value || 'Kepala Desa';
+      appSettings.signerTitle = document.getElementById('set-signer-title').value.trim();
+      appSettings.kades = document.getElementById('set-kades').value.trim();
+      appSettings.alamat = document.getElementById('set-alamat').value.trim();
+      if (currentUser && currentUser.role === 'superadmin') {
+        const loggedSa = superAdmins.find(sa => sa.username === currentUser.username);
+        currentUser.name = loggedSa ? loggedSa.nama : (appSettings.kadus || 'Kepala Dusun');
+        sessionStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
+        const sbName = document.getElementById('sidebar-user-name');
+        if (sbName) sbName.textContent = currentUser.name;
+      }
+      saveAllDataToLocal();
+      applyBrandingSettings();
+      showToast('Identitas Dusun, Desa & KOP Surat disimpan.', 'success');
+    }
+
+    function addRwManual(e) {
+      e.preventDefault();
+      const rw = document.getElementById('new-rw-input').value.trim().padStart(2, '0');
+      const pengurus = document.getElementById('new-rw-pengurus').value.trim();
+      const existingIdx = (wilayahConfig.rws || []).findIndex(item => (typeof item === 'string' ? item : item.rw) === rw);
+      if (existingIdx !== -1) {
+        wilayahConfig.rws[existingIdx] = { rw, pengurus };
+        showToast(`Data pengurus RW ${rw} diperbarui.`, 'success');
+      } else {
+        wilayahConfig.rws.push({ rw, pengurus });
+        wilayahConfig.rws.sort((a, b) => a.rw.localeCompare(b.rw));
+        showToast(`RW ${rw} & Pengurus berhasil ditambahkan.`, 'success');
+      }
+      saveAllDataToLocal();
+      renderSettingsPage();
+    }
+
+    function deleteRwManual(rw) {
+      wilayahConfig.rws = wilayahConfig.rws.filter(item => (typeof item === 'string' ? item : item.rw) !== rw);
+      saveAllDataToLocal();
+      renderSettingsPage();
+      showToast(`RW ${rw} dihapus.`, 'info');
+    }
+
+    function addRtManual(e) {
+      e.preventDefault();
+      const rt = document.getElementById('new-rt-no').value.trim().padStart(2, '0');
+      const rw = document.getElementById('new-rt-rw').value;
+      const ketua = document.getElementById('new-rt-ketua').value.trim();
+      const username = document.getElementById('new-rt-user').value.trim();
+      const password = document.getElementById('new-rt-pass').value.trim();
+      if (wilayahConfig.rts.some(r => r.rt === rt)) {
+        showToast('Nomor RT sudah ada.', 'error');
+        return;
+      }
+      wilayahConfig.rts.push({ rt, rw, ketua, username, password });
+      wilayahConfig.rts.sort((a, b) => a.rt.localeCompare(b.rt));
+      saveAllDataToLocal();
+      renderSettingsPage();
+      showToast(`RT ${rt} berhasil ditambahkan.`, 'success');
+    }
+
+    function deleteRtManual(rt) {
+      wilayahConfig.rts = wilayahConfig.rts.filter(r => r.rt !== rt);
+      saveAllDataToLocal();
+      renderSettingsPage();
+    }
+
+    function addBantuanType(e) {
+      e.preventDefault();
+      const val = document.getElementById('new-bantuan-input').value.trim();
+      if (val && !bantuanTypes.includes(val)) {
+        bantuanTypes.push(val);
+        saveAllDataToLocal();
+        renderSettingsPage();
+      }
+    }
+
+    function deleteBantuanType(name) {
+      bantuanTypes = bantuanTypes.filter(b => b !== name);
+      saveAllDataToLocal();
+      renderSettingsPage();
+    }
+
+    function renderWargaProfilePage() {
+      const container = document.getElementById('main-content');
+      const me = residents.find(r => r.nik === currentUser.nik);
+      if (!me) {
+        container.innerHTML = `<div class="p-4 bg-white rounded-2xl text-xs">Data warga tidak ditemukan.</div>`;
+        return;
+      }
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-5 border border-slate-200/80 max-w-2xl space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">${escapeHTML(me.nama)}</h3>
+              <p class="text-xs text-slate-500">NIK: ${escapeHTML(me.nik)} • No. KK: ${escapeHTML(me.kk)}</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">RT ${escapeHTML(me.rt)} / RW ${escapeHTML(me.rw)}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div><span class="text-slate-400 block">Tempat, Tanggal Lahir</span><strong>${escapeHTML(me.tempatLahir)}, ${escapeHTML(me.tglLahir)}</strong></div>
+            <div><span class="text-slate-400 block">Jenis Kelamin</span><strong>${escapeHTML(me.jk)}</strong></div>
+            <div><span class="text-slate-400 block">Agama</span><strong>${escapeHTML(me.agama)}</strong></div>
+            <div><span class="text-slate-400 block">Pekerjaan</span><strong>${escapeHTML(me.pekerjaan)}</strong></div>
+            <div class="sm:col-span-2"><span class="text-slate-400 block">Alamat Domisili</span><strong>${escapeHTML(me.alamat)}, RT ${escapeHTML(me.rt)} / RW ${escapeHTML(me.rw)}, ${escapeHTML(appSettings.dusun)}</strong></div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 12. INTEGRASI GOOGLE APPS SCRIPT (SUPER ADMIN)
+    function renderAppScriptPage() {
+      const container = document.getElementById('main-content');
+      const shareLink = appScriptUrl
+        ? `${window.location.origin}${window.location.pathname}?db=${encodeURIComponent(appScriptUrl)}`
+        : '';
+
+      const gsCode = `function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : 'pull';
+  if (action === 'pull') {
+    var configRows = getSheetRows(ss, 'Konfigurasi');
+    var configObj = configRows.length > 0 ? configRows[0] : {};
+    // Simpan otomatis URL Spreadsheet aktif ke dalam sheet Konfigurasi
+    if (!configObj.spreadsheetUrl) {
+      configObj.spreadsheetUrl = ss.getUrl();
+      saveSheetRows(ss, 'Konfigurasi', [configObj]);
+    }
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      config: configObj,
+      superAdmins: getSheetRows(ss, 'SuperAdmin'),
+      residents: getSheetRows(ss, 'Penduduk'),
+      templates: getSheetRows(ss, 'TemplateSurat'),
+      requests: getSheetRows(ss, 'PermohonanSurat'),
+      giatGroups: getSheetRows(ss, 'KelompokGiat')
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var payload = JSON.parse(e.postData.contents);
+  var configData = payload.config || {};
+  configData.spreadsheetUrl = ss.getUrl();
+  configData.updatedAt = new Date().toISOString();
+  saveSheetRows(ss, 'Konfigurasi', [configData]);
+
+  if (payload.superAdmins) saveSheetRows(ss, 'SuperAdmin', payload.superAdmins);
+  if (payload.residents) saveSheetRows(ss, 'Penduduk', payload.residents);
+  if (payload.templates) saveSheetRows(ss, 'TemplateSurat', payload.templates);
+  if (payload.requests) saveSheetRows(ss, 'PermohonanSurat', payload.requests);
+  if (payload.giatGroups) saveSheetRows(ss, 'KelompokGiat', payload.giatGroups);
+  return ContentService.createTextOutput(JSON.stringify({
+    status: 'saved',
+    spreadsheetUrl: ss.getUrl()
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getSheetRows(ss, name) {
+  var sheet = ss.getSheetByName(name);
+  if (!sheet) return [];
+  var values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+  var headers = values[0];
+  return values.slice(1).map(function(row) {
+    var obj = {};
+    headers.forEach(function(h, i) { obj[h] = row[i]; });
+    return obj;
+  });
+}
+
+function saveSheetRows(ss, name, list) {
+  var sheet = ss.getSheetByName(name) || ss.insertSheet(name);
+  sheet.clearContents();
+  if (!list || list.length === 0) return;
+  var headers = Object.keys(list[0]);
+  sheet.appendRow(headers);
+  list.forEach(function(item) {
+    sheet.appendRow(headers.map(function(h) {
+      var val = item[h];
+      return Array.isArray(val) ? val.join(', ') : val;
+    }));
+  });
+}`;
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-3.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">Koneksi Database & Konfigurasi Tersimpan di Spreadsheet</h3>
+                <p class="text-xs text-slate-500">Link Web App & URL Google Spreadsheet disimpan otomatis pada sheet <strong>Konfigurasi</strong> di dalam file Spreadsheet Anda.</p>
+              </div>
+              ${spreadsheetUrl ? `
+                <a href="${escapeHTML(spreadsheetUrl)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold inline-flex items-center gap-1.5 self-start">
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                  <span>Buka File Spreadsheet</span>
+                </a>
+              ` : ''}
+            </div>
+
+            <div class="grid grid-cols-1 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">URL Web App Google Apps Script *</label>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input type="url" id="appscript-url-input" value="${escapeHTML(appScriptUrl)}" placeholder="https://script.google.com/macros/s/XXXXX/exec" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  <button type="button" onclick="saveAppScriptUrl()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold">Simpan ke Spreadsheet</button>
+                  <button type="button" onclick="fetchDatabaseLinkFromKonfigurasiSheet()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold">Ambil dari Sheet Konfigurasi</button>
+                  <button type="button" onclick="autoScanAndSyncDatabase(false)" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold">Scan & Sinkron Cepat</button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">URL Google Spreadsheet (Opsional - Ambil Sheet Konfigurasi Langsung)</label>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input type="url" id="spreadsheet-url-input" value="${escapeHTML(spreadsheetUrl)}" placeholder="https://docs.google.com/spreadsheets/d/XXXXX/edit" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs" />
+                  <button type="button" onclick="pullKonfigurasiBySpreadsheetUrl()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shrink-0">Baca Sheet Konfigurasi</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <span class="text-[10px] font-bold uppercase text-slate-500 block">Link Google Spreadsheet (Diambil dari Sheet Konfigurasi)</span>
+                  <p class="text-xs font-mono text-slate-800 truncate mt-1">${spreadsheetUrl ? escapeHTML(spreadsheetUrl) : 'Belum terambil (Klik "Ambil dari Sheet Konfigurasi" atau "Kirim & Sinkron")'}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <span class="text-[10px] font-bold uppercase text-slate-500 block">Tautan Akses Cepat Perangkat Lain (Otomatis Terhubung DB)</span>
+                  ${shareLink ? `
+                    <div class="flex items-center gap-2 mt-1">
+                      <input type="text" id="share-db-link-input" readonly value="${escapeHTML(shareLink)}" class="flex-1 bg-white px-2 py-1 rounded border border-slate-200 text-[11px] font-mono text-slate-700" />
+                      <button type="button" onclick="copyShareDbLink()" class="px-2.5 py-1 rounded bg-slate-800 text-white text-[10px] font-bold shrink-0">Salin Link</button>
+                    </div>
+                  ` : `<p class="text-xs text-slate-400 mt-1">Simpan atau ambil URL Web App terlebih dahulu untuk membuat link.</p>`}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-slate-900">Kode Google Apps Script (Kode.gs) & Panduan Instalasi</h4>
+              <button type="button" onclick="copyGsCode()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold">Salin Kode</button>
+            </div>
+            <ol class="list-decimal list-inside text-xs text-slate-600 space-y-1">
+              <li>Buka Google Sheets baru → klik menu <strong>Ekstensi (Extensions)</strong> → <strong>Apps Script</strong>.</li>
+              <li>Hapus kode bawaan, tempel kode di bawah ini, lalu klik <strong>Simpan</strong>.</li>
+              <li>Klik <strong>Terapkan (Deploy)</strong> → <strong>Deployment baru</strong> → pilih jenis <strong>Aplikasi Web</strong> → akses: <strong>Siapa saja (Anyone)</strong>.</li>
+              <li>Salin URL Web App yang muncul, tempel di atas, lalu klik <strong>Simpan ke Spreadsheet</strong> agar link database tercatat di sheet <strong>Konfigurasi</strong>.</li>
+            </ol>
+            <textarea id="gs-code-textarea" rows="12" readonly class="w-full p-3.5 bg-slate-900 text-emerald-300 rounded-xl text-xs font-mono">${escapeHTML(gsCode)}</textarea>
+          </div>
+        </div>
+      `;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function saveAppScriptUrl() {
+      appScriptUrl = document.getElementById('appscript-url-input').value.trim();
+      const ssInput = document.getElementById('spreadsheet-url-input');
+      if (ssInput && ssInput.value.trim()) {
+        spreadsheetUrl = ssInput.value.trim();
+        localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+      }
+      localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+      const syncLabel = document.getElementById('sync-status-label');
+      if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+      if (appScriptUrl) {
+        await pushToGoogleAppScript(false);
+        await pullFromGoogleAppScript(true);
+      } else {
+        showToast('URL Google Apps Script dikosongkan.', 'info');
+      }
+      renderCurrentPage();
+    }
+
+    // Mengambil link database (appScriptUrl & spreadsheetUrl) langsung dari sheet 'Konfigurasi'
+    async function fetchDatabaseLinkFromKonfigurasiSheet() {
+      const inputUrl = document.getElementById('appscript-url-input')?.value.trim() || appScriptUrl;
+      if (!inputUrl) {
+        // Jika URL Web App kosong namun URL Spreadsheet diisi, baca langsung sheet Konfigurasi dari Spreadsheet
+        const ssVal = document.getElementById('spreadsheet-url-input')?.value.trim() || spreadsheetUrl;
+        if (ssVal) {
+          await pullKonfigurasiBySpreadsheetUrl();
+          return;
+        }
+        showToast('Masukkan URL Web App Apps Script atau URL Spreadsheet terlebih dahulu.', 'info');
+        return;
+      }
+
+      appScriptUrl = inputUrl;
+      localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+
+      try {
+        const sep = appScriptUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${appScriptUrl}${sep}action=pull&sheet=Konfigurasi`);
+        const data = await res.json();
+        if (data && data.status === 'success' && data.config) {
+          if (data.config.appScriptUrl) {
+            appScriptUrl = String(data.config.appScriptUrl).trim();
+            localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+          }
+          if (data.config.spreadsheetUrl) {
+            spreadsheetUrl = String(data.config.spreadsheetUrl).trim();
+            localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+          }
+          const syncLabel = document.getElementById('sync-status-label');
+          if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+          await pullFromGoogleAppScript(true);
+          renderCurrentPage();
+          showToast('Link database berhasil diambil dari sheet Konfigurasi!', 'success');
+        } else {
+          showToast('Sheet Konfigurasi ditemukan tetapi belum berisi URL database.', 'info');
+        }
+      } catch (err) {
+        showToast('Gagal membaca sheet Konfigurasi. Pastikan Web App berstatus Anyone.', 'error');
+      }
+    }
+
+    // Membaca sheet 'Konfigurasi' langsung melalui Google Visualization API dari URL Spreadsheet
+    async function pullKonfigurasiBySpreadsheetUrl() {
+      const rawSsUrl = document.getElementById('spreadsheet-url-input')?.value.trim() || spreadsheetUrl;
+      const match = rawSsUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!match) {
+        showToast('Format URL Google Spreadsheet tidak valid.', 'error');
+        return;
+      }
+
+      const sheetId = match[1];
+      spreadsheetUrl = rawSsUrl;
+      localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+
+      try {
+        const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Konfigurasi`;
+        const response = await fetch(gvizUrl);
+        const text = await response.text();
+        const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        const parsed = JSON.parse(jsonStr);
+
+        const cols = (parsed.table.cols || []).map(c => (c.label || '').trim());
+        const firstRow = (parsed.table.rows && parsed.table.rows[0]) ? parsed.table.rows[0].c : [];
+        const configObj = {};
+        cols.forEach((colName, idx) => {
+          if (colName && firstRow[idx] && firstRow[idx].v !== null) {
+            configObj[colName] = String(firstRow[idx].v).trim();
+          }
+        });
+
+        if (configObj.appScriptUrl) {
+          appScriptUrl = configObj.appScriptUrl;
+          localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+        }
+        if (configObj.spreadsheetUrl) {
+          spreadsheetUrl = configObj.spreadsheetUrl;
+          localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+        }
+
+        const syncLabel = document.getElementById('sync-status-label');
+        if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Cloud Terhubung' : 'Database Lokal';
+
+        if (appScriptUrl) {
+          await pullFromGoogleAppScript(true);
+        }
+        renderCurrentPage();
+        showToast('Link database dari sheet Konfigurasi berhasil dimuat!', 'success');
+      } catch (err) {
+        showToast('Gagal membaca sheet Konfigurasi. Pastikan Spreadsheet dapat diakses publik (Lihat) atau gunakan URL Web App.', 'error');
+      }
+    }
+
+    function copyShareDbLink() {
+      const inp = document.getElementById('share-db-link-input');
+      if (!inp) return;
+      inp.select();
+      document.execCommand('copy');
+      showToast('Tautan akses otomatis terhubung database berhasil disalin!', 'success');
+    }
+
+    function copyGsCode() {
+      const ta = document.getElementById('gs-code-textarea');
+      ta.select();
+      document.execCommand('copy');
+      showToast('Kode Apps Script berhasil disalin!', 'success');
+    }
+
+    async function pullFromGoogleAppScript(silent = false) {
+      if (!appScriptUrl) {
+        if (!silent) showToast('Silakan masukkan URL Web App Google Apps Script terlebih dahulu.', 'info');
+        return;
+      }
+      try {
+        const sep = appScriptUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${appScriptUrl}${sep}action=pull`);
+        const data = await res.json();
+        if (data && data.status === 'success') {
+          if (data.config) {
+            if (data.config.appScriptUrl) {
+              appScriptUrl = String(data.config.appScriptUrl).trim();
+              localStorage.setItem(STORAGE_KEYS.APPSCRIPT_URL, appScriptUrl);
+            }
+            if (data.config.spreadsheetUrl) {
+              spreadsheetUrl = String(data.config.spreadsheetUrl).trim();
+              localStorage.setItem(STORAGE_KEYS.SPREADSHEET_URL, spreadsheetUrl);
+            }
+            // Perbarui identitas desa & dusun dari sheet Konfigurasi
+            if (data.config.dusun) appSettings.dusun = String(data.config.dusun).trim();
+            if (data.config.desa) appSettings.desa = String(data.config.desa).trim();
+            if (data.config.kecamatan) appSettings.kecamatan = String(data.config.kecamatan).trim();
+            if (data.config.kabupaten) appSettings.kabupaten = String(data.config.kabupaten).trim();
+            if (data.config.kadus) appSettings.kadus = String(data.config.kadus).trim();
+            if (data.config.kades) appSettings.kades = String(data.config.kades).trim();
+            if (data.config.signerTitle) appSettings.signerTitle = String(data.config.signerTitle).trim();
+            if (data.config.alamat) appSettings.alamat = String(data.config.alamat).trim();
+            if (data.config.logoUrl) appSettings.logoUrl = String(data.config.logoUrl).trim();
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
+            applyBrandingSettings();
+          }
+          if (Array.isArray(data.superAdmins) && data.superAdmins.length > 0) {
+            superAdmins = data.superAdmins.map((sa, idx) => ({
+              id: String(sa.id || `sa-${idx + 1}`),
+              username: String(sa.username || '').trim(),
+              password: String(sa.password || '').trim(),
+              nama: String(sa.nama || 'Super Admin').trim(),
+              jabatan: String(sa.jabatan || 'Super Administrator').trim()
+            })).filter(sa => sa.username && sa.password);
+            if (superAdmins.length > 0) {
+              localStorage.setItem(STORAGE_KEYS.SUPERADMINS, JSON.stringify(superAdmins));
+            }
+          }
+          if (Array.isArray(data.residents) && data.residents.length > 0) {
+            residents = data.residents.map(r => ({
+              ...r,
+              nik: String(r.nik || ''),
+              kk: String(r.kk || ''),
+              pin: String(r.pin || ''),
+              tglLahir: formatCleanIsoDateOnly(r.tglLahir),
+              rt: String(r.rt || '').padStart(2, '0'),
+              rw: String(r.rw || '').padStart(2, '0'),
+              bantuan: typeof r.bantuan === 'string' && r.bantuan.trim()
+                ? r.bantuan.split(',').map(s => s.trim()).filter(Boolean)
+                : (Array.isArray(r.bantuan) ? r.bantuan : [])
+            }));
+            localStorage.setItem(STORAGE_KEYS.RESIDENTS, JSON.stringify(residents));
+          }
+          if (Array.isArray(data.templates) && data.templates.length > 0) {
+            letterTemplates = data.templates;
+            localStorage.setItem(STORAGE_KEYS.TEMPLATES, JSON.stringify(letterTemplates));
+          }
+          if (Array.isArray(data.requests) && data.requests.length > 0) {
+            letterRequests = data.requests.map(req => ({
+              ...req,
+              tanggal: formatCleanDate(req.tanggal),
+              nik: String(req.nik || ''),
+              rt: String(req.rt || '').padStart(2, '0'),
+              rw: String(req.rw || '').padStart(2, '0')
+            }));
+            localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(letterRequests));
+          }
+          if (Array.isArray(data.giatGroups) && data.giatGroups.length > 0) {
+            giatGroups = data.giatGroups.map(g => ({
+              ...g,
+              anggotaNiks: typeof g.anggotaNiks === 'string' && g.anggotaNiks.trim()
+                ? g.anggotaNiks.split(',').map(s => s.trim()).filter(Boolean)
+                : (Array.isArray(g.anggotaNiks) ? g.anggotaNiks : [])
+            }));
+            localStorage.setItem(STORAGE_KEYS.GIAT_GROUPS, JSON.stringify(giatGroups));
+          }
+          updateNotificationBadges();
+          if (currentUser) renderCurrentPage();
+          if (!silent) showToast('Konfigurasi & data terbaru berhasil dibaca dari Spreadsheet!', 'success');
+        }
+      } catch (err) {
+        if (!silent) showToast('Gagal membaca data dari Spreadsheet. Periksa izin akses Web App (Anyone).', 'error');
+      }
+    }
+
+    async function pushToGoogleAppScript(silent = false) {
+      if (!appScriptUrl) return;
+      try {
+        await fetch(appScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            config: {
+              appScriptUrl,
+              spreadsheetUrl,
+              dusun: appSettings.dusun,
+              desa: appSettings.desa,
+              kecamatan: appSettings.kecamatan,
+              kabupaten: appSettings.kabupaten,
+              kadus: appSettings.kadus,
+              kades: appSettings.kades,
+              signerTitle: appSettings.signerTitle,
+              alamat: appSettings.alamat,
+              logoUrl: appSettings.logoUrl
+            },
+            superAdmins,
+            residents,
+            templates: letterTemplates,
+            requests: letterRequests,
+            giatGroups
+          })
+        });
+        if (!silent) showToast('Link database & data berhasil disimpan ke Spreadsheet!', 'success');
+      } catch (err) {
+        if (!silent) showToast('Gagal terhubung ke URL Apps Script.', 'error');
+      }
+    }
+
+    async function syncWithAppScript() {
+      await autoScanAndSyncDatabase(false);
+    }
+
+    // Mode Baca Database (Read-Only Pull) saat aplikasi dibuka oleh user lain agar data lokal tidak menimpa cloud
+    async function readLatestFromDatabase(silent = true) {
+      if (isDatabaseSyncing) return;
+      if (!appScriptUrl && !spreadsheetUrl) return;
+
+      isDatabaseSyncing = true;
+      const syncLabel = document.getElementById('sync-status-label');
+      const syncDot = document.getElementById('sync-indicator-dot');
+      const loginSyncBadge = document.getElementById('login-db-sync-badge');
+      if (syncLabel) syncLabel.textContent = 'Membaca DB...';
+      if (loginSyncBadge) loginSyncBadge.textContent = 'Memuat Data Desa...';
+      if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0';
+
+      try {
+        if (!appScriptUrl && spreadsheetUrl) {
+          await pullKonfigurasiBySpreadsheetUrl();
+        }
+        if (appScriptUrl) {
+          await pullFromGoogleAppScript(true);
+        }
+        if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Terhubung DB Cloud' : 'Database Lokal';
+        if (loginSyncBadge) loginSyncBadge.textContent = appScriptUrl ? 'Database Terhubung' : 'Google Sheets Ready';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0';
+        if (!silent) showToast('Data terbaru berhasil dibaca dari database Spreadsheet!', 'success');
+      } catch (err) {
+        if (syncLabel) syncLabel.textContent = 'Gagal Baca DB';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0';
+      } finally {
+        isDatabaseSyncing = false;
+      }
+    }
+
+    // Pemindaian & sinkronisasi penuh (hanya dipanggil manual oleh admin saat ingin kirim & tarik sekaligus)
+    async function autoScanAndSyncDatabase(silent = true) {
+      if (isDatabaseSyncing) return;
+      if (!appScriptUrl && !spreadsheetUrl) {
+        if (!silent) showToast('Silakan masukkan URL Web App Google Apps Script atau URL Spreadsheet terlebih dahulu.', 'info');
+        return;
+      }
+
+      isDatabaseSyncing = true;
+      const syncLabel = document.getElementById('sync-status-label');
+      const syncDot = document.getElementById('sync-indicator-dot');
+      if (syncLabel) syncLabel.textContent = 'Memindai DB...';
+      if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping shrink-0';
+
+      try {
+        if (!appScriptUrl && spreadsheetUrl) {
+          await pullKonfigurasiBySpreadsheetUrl();
+        }
+        if (appScriptUrl) {
+          await pushToGoogleAppScript(true);
+          await pullFromGoogleAppScript(true);
+        }
+
+        if (syncLabel) syncLabel.textContent = appScriptUrl ? 'Tersinkron Otomatis' : 'Database Lokal';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0';
+        if (!silent) showToast('Scan & sinkronisasi cepat database selesai!', 'success');
+      } catch (err) {
+        if (syncLabel) syncLabel.textContent = 'Gagal Scan DB';
+        if (syncDot) syncDot.className = 'w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0';
+        if (!silent) showToast('Gagal memindai database. Periksa koneksi internet atau URL Apps Script.', 'error');
+      } finally {
+        isDatabaseSyncing = false;
+      }
+    }
+
+    // 13. BOOTSTRAP APLIKASI SAAT HALAMAN DIMUAT
+    window.addEventListener('DOMContentLoaded', async () => {
+      ['click', 'touchstart', 'keydown'].forEach(evt => {
+        document.addEventListener(evt, unlockAudioContext, { passive: true });
+      });
+
+      loadAppData();
+      applyBrandingSettings();
+      startLoginServiceSlider();
+
+      // Prioritaskan memuat data terbaru dari database Spreadsheet saat halaman dibuka
+      if (appScriptUrl || spreadsheetUrl) {
+        await readLatestFromDatabase(true);
+      }
+      startPeriodicDatabaseScan();
+
+      // Baca ulang data terbaru dari database saat tab kembali aktif
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && (appScriptUrl || spreadsheetUrl)) {
+          readLatestFromDatabase(true);
+        }
+      });
+
+      const savedSession = sessionStorage.getItem(STORAGE_KEYS.SESSION);
+      if (savedSession) {
+        try {
+          currentUser = JSON.parse(savedSession);
+          if (currentUser) {
+            enterApplication();
+            return;
+          }
+        } catch (e) {
+          sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+        }
+      }
+
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
