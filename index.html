@@ -1053,6 +1053,37 @@
         .replace(/'/g, '&#39;');
     }
 
+    function formatCleanDate(rawVal) {
+      if (!rawVal) return '-';
+      const str = String(rawVal).trim();
+      if (!str || str === '-') return '-';
+      // Hilangkan timestamp ISO (contoh: T17:00:00.000Z) dari Google Sheets
+      if (/^\d{4}-\d{2}-\d{2}T/.test(str)) {
+        const d = new Date(str);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        return str.split('T')[0];
+      }
+      return str.replace(/T\d{2}:\d{2}:\d{2}(\.\d+)?Z?/g, '').trim();
+    }
+
+    function formatCleanIsoDateOnly(rawVal) {
+      if (!rawVal) return '';
+      const str = String(rawVal).trim();
+      if (/^\d{4}-\d{2}-\d{2}T/.test(str)) {
+        const d = new Date(str);
+        if (!isNaN(d.getTime())) {
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          return `${y}-${m}-${day}`;
+        }
+        return str.split('T')[0];
+      }
+      return str.replace(/T\d{2}:\d{2}:\d{2}(\.\d+)?Z?/g, '').trim();
+    }
+
     function safeParse(key, fallback) {
       try {
         const raw = localStorage.getItem(key);
@@ -2506,7 +2537,7 @@
                     return `
                       <tr class="hover:bg-slate-50/80">
                         <td class="py-2.5 px-3 text-center font-semibold text-slate-500">${index + 1}</td>
-                        <td class="py-2.5 px-3 whitespace-nowrap text-slate-500">${escapeHTML(req.tanggal || '-')}</td>
+                        <td class="py-2.5 px-3 whitespace-nowrap text-slate-500">${escapeHTML(formatCleanDate(req.tanggal))}</td>
                         <td class="py-2.5 px-3">
                           <div class="font-bold text-slate-900">${escapeHTML(req.namaPemohon)}</div>
                           <div class="text-[11px] text-slate-500">RT ${escapeHTML(req.rt)} / RW ${escapeHTML(req.rw)}</div>
@@ -2601,7 +2632,7 @@
       const text = tpl.isi
         .replace(/\{NAMA\}/g, res.nama)
         .replace(/\{NIK\}/g, res.nik)
-        .replace(/\{TTL\}/g, `${res.tempatLahir}, ${res.tglLahir}`)
+        .replace(/\{TTL\}/g, `${res.tempatLahir}, ${formatCleanDate(res.tglLahir)}`)
         .replace(/\{PEKERJAAN\}/g, res.pekerjaan)
         .replace(/\{ALAMAT\}/g, res.alamat)
         .replace(/\{RT\}/g, res.rt)
@@ -3730,6 +3761,7 @@ function saveSheetRows(ss, name, list) {
               nik: String(r.nik || ''),
               kk: String(r.kk || ''),
               pin: String(r.pin || ''),
+              tglLahir: formatCleanIsoDateOnly(r.tglLahir),
               rt: String(r.rt || '').padStart(2, '0'),
               rw: String(r.rw || '').padStart(2, '0'),
               bantuan: typeof r.bantuan === 'string' && r.bantuan.trim()
@@ -3745,6 +3777,7 @@ function saveSheetRows(ss, name, list) {
           if (Array.isArray(data.requests) && data.requests.length > 0) {
             letterRequests = data.requests.map(req => ({
               ...req,
+              tanggal: formatCleanDate(req.tanggal),
               nik: String(req.nik || ''),
               rt: String(req.rt || '').padStart(2, '0'),
               rw: String(req.rw || '').padStart(2, '0')
