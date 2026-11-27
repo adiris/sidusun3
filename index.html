@@ -889,6 +889,8 @@
     let lastKnownReadyLetterIds = null;
     let sharedAudioCtx = null;
     let periodicDbScanTimer = null;
+    let backgroundTickerWorker = null;
+    let silentKeepAliveNode = null;
     let loginServiceSlideTimer = null;
     let loginServiceSlideIndex = 0;
 
@@ -939,6 +941,37 @@
         if (sharedAudioCtx.state === 'suspended') {
           sharedAudioCtx.resume();
         }
+        // Keep-alive audio super pelan (nyaris 0) agar tab browser tidak ditangguhkan saat di-minimize / pindah tab
+        if (!silentKeepAliveNode && sharedAudioCtx.state === 'running') {
+          const silentOsc = sharedAudioCtx.createOscillator();
+          const silentGain = sharedAudioCtx.createGain();
+          silentOsc.frequency.setValueAtTime(30, sharedAudioCtx.currentTime);
+          silentGain.gain.setValueAtTime(0.00001, sharedAudioCtx.currentTime);
+          silentOsc.connect(silentGain);
+          silentGain.connect(sharedAudioCtx.destination);
+          silentOsc.start();
+          silentKeepAliveNode = silentOsc;
+        }
+        // Minta izin notifikasi sistem OS agar muncul juga saat browser diminimize
+        if ('Notification' in window && Notification.permission === 'default') {
+          Notification.requestPermission().catch(() => {});
+        }
+      } catch (e) {}
+    }
+
+    function sendSystemNotification(title, bodyText) {
+      try {
+        if ('Notification' in window && Notification.permission === 'granted') {
+          const notif = new Notification(title, {
+            body: bodyText,
+            tag: 'sidusun-surat-notif',
+            renotify: true
+          });
+          notif.onclick = () => {
+            window.focus();
+            notif.close();
+          };
+        }
       } catch (e) {}
     }
 
@@ -951,7 +984,9 @@
           sharedAudioCtx = new AudioCtx();
         }
         const ctx = sharedAudioCtx;
-        if (ctx.state === 'suspended') ctx.resume();
+        if (ctx.state === 'suspended') {
+          ctx.resume().catch(() => {});
+        }
 
         const now = ctx.currentTime;
 
@@ -1493,6 +1528,7 @@
           if (hasNewlyReady) {
             playTingTongSound();
             showToast('Surat Anda telah selesai diproses dan siap diambil!', 'success');
+            sendSystemNotification('SIDUSUN • Surat Siap Diambil', 'Pengajuan surat Anda telah selesai diproses dan siap diambil.');
           }
         }
         lastKnownReadyLetterIds = currentReadyIds;
@@ -1506,8 +1542,16 @@
       } else {
         const pending = accessible.filter(r => r.status === 'Menunggu Verifikasi');
         if (lastKnownPendingCount !== null && pending.length > lastKnownPendingCount) {
+          const diff = pending.length - lastKnownPendingCount;
+          const latestApplicant = pending[0];
           playTingTongSound();
-          showToast(`Ada ${pending.length - lastKnownPendingCount} permohonan surat baru masuk!`, 'info');
+          showToast(`Ada ${diff} permohonan surat baru masuk!`, 'info');
+          sendSystemNotification(
+            'SIDUSUN • Permohonan Surat Masuk',
+            latestApplicant
+              ? `${latestApplicant.namaPemohon} (${latestApplicant.templateNama})`
+              : `Ada ${diff} permohonan surat baru menunggu verifikasi.`
+          );
         }
         lastKnownPendingCount = pending.length;
 
@@ -1522,12 +1566,31 @@
     }
 
     function startPeriodicDatabaseScan() {
-      if (periodicDbScanTimer) clearInterval(periodicDbScanTimer);
-      periodicDbScanTimer = setInterval(() => {
+      if (periodicDbScanTimer) {
+        clearInterval(periodicDbScanTimer);
+        periodicDbScanTimer = null;
+      }
+      if (backgroundTickerWorker) {
+        backgroundTickerWorker.terminate();
+        backgroundTickerWorker = null;
+      }
+
+      const runBackgroundSync = () => {
         if (appScriptUrl || spreadsheetUrl) {
           readLatestFromDatabase(true);
         }
-      }, 30000);
+      };
+
+      // Gunakan Web Worker timer agar interval 30 detik TIDAK diperlambat browser saat pindah tab / minimize
+      try {
+        const workerBlob = new Blob([
+          `setInterval(() => { postMessage('tick'); }, 30000);`
+        ], { type: 'application/javascript' });
+        backgroundTickerWorker = new Worker(URL.createObjectURL(workerBlob));
+        backgroundTickerWorker.onmessage = () => runBackgroundSync();
+      } catch (e) {
+        periodicDbScanTimer = setInterval(runBackgroundSync, 30000);
+      }
     }
 
     function startPendingNotifTicker(pendingList) {
