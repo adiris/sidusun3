@@ -3852,13 +3852,3 @@ function saveSheetRows(ss, name, list) {
   </script>
 </body>
 </html>
-```
-
-Dukungan **banyak akun Super Admin** (*multi-account Super Admin*) telah ditambahkan tanpa mengubah struktur aplikasi sebelumnya:
-
-1. **Pengelolaan Akun Super Admin per Perangkat**:
-   - Buka menu **Identitas Dusun & KOP Surat**, lalu gunakan bagian **Kelola Akun Super Admin (Akses Perangkat Dusun)** untuk menambahkan atau menghapus akun Super Admin baru (dilengkapi **Nama Pengguna**, **Jabatan/Perangkat**, **Username Login**, dan **Kata Sandi**).
-   - Akun bawaan yang sudah tersedia: `admin` / `admin123` (Kepala Dusun 2) dan `admin2` / `admin123` (Operator Pelayanan Dusun 2).
-2. **Sinkronisasi Otomatis ke Google Spreadsheet (`Sheet SuperAdmin`)**:
-   - Seluruh akun Super Admin otomatis tersimpan dan terbaca dari sheet **`SuperAdmin`** di Google Spreadsheet sehingga perangkat lain dapat langsung login menggunakan akun masing-masing.
-   - *(Catatan: Pastikan memperbarui kode `Kode.gs` di Google Apps Script Anda dengan kode terbaru di menu **Database & Apps Script** agar sheet `SuperAdmin` ikut disinkronkan).*
